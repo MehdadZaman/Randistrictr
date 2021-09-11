@@ -21,7 +21,6 @@ function App() {
           <Feature coordinates={[40.914224, -73.11623]} />
         </Layer>
       </Map>
-      ;
     </div>
   );
 }
