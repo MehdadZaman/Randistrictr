@@ -2,6 +2,11 @@
 
 Lawrence Lin, Kevin Chao, Mehdad Zaman, Gordon Zhong
 
+## Technologies
+- [React](https://reactjs.org/)
+- [Tailwind CSS](https://tailwindcss.com/)
+- [Mapbox GL](https://www.mapbox.com/)
+
 ## Installation
 
 ### Client
