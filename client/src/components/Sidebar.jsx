@@ -14,13 +14,13 @@ const Sidebar = ({ map }) => {
           </div>
         ) : null}
       </aside>
-      <Button
+      <button
         className='toggleButton'
-        style={{ left: expanded ? '350px' : '15px' }}
+        style={{ left: expanded ? '350px' : '15px', transition: 'left 0.5s' }}
         onClick={() => setExpanded(!expanded)}
       >
         {expanded ? '<' : '>'}
-      </Button>
+      </button>
     </>
   );
 };
