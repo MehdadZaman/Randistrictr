@@ -1,5 +1,6 @@
+import React, { useState, useMemo } from 'react';
+import { Sidebar, Tab } from 'react-leaflet-sidebarv2';
 import { geoJSON } from 'leaflet';
-import React, { useState, useMemo, useCallback } from 'react';
 import {
   MapContainer,
   TileLayer,
@@ -8,39 +9,16 @@ import {
   useMap,
   GeoJSON,
 } from 'react-leaflet';
-import states from '../constants/states';
 import Position from './Position';
-import StatesSelect from './StatesSelect';
+import { center, zoom, bounds } from '../constants/map';
+import StateSelect from './StatesSelect';
+
 import MaryLandGEOJSON from '../constants/cb_2020_24_bg_500k.json';
 import sample from '../constants/sample.json';
-const center = [41.650833, -94.059747];
-const zoom = 5;
-const bounds = [
-  [36.935487, -114.183315],
-  [48.128666, -74.063806],
-];
 
 const GEOJSONLayer = ({ map }) => {
   geoJSON(MaryLandGEOJSON).addTo(map);
   return <div></div>;
-};
-
-const SetStateBounds = ({ map }) => {
-  const handleStateSelect = useCallback(
-    (stateName) => {
-      try {
-        const state = states.find((state) => state.name === stateName);
-        console.log('stateName', stateName);
-        console.log('state', state);
-        map.fitBounds(state.bounds);
-      } catch {
-        console.log('invalid state!');
-      }
-    },
-    [map]
-  );
-
-  return <StatesSelect onChange={handleStateSelect} />;
 };
 
 const Map = () => {
@@ -49,6 +27,7 @@ const Map = () => {
   const displayMap = useMemo(
     () => (
       <MapContainer
+        className='sidebar-map'
         style={{ height: '100vh', zIndex: 0 }}
         center={center}
         zoom={zoom}
@@ -57,7 +36,6 @@ const Map = () => {
         boundsOptions={bounds}
         maxBounds={bounds}
         minZoom={5}
-        zoom
         zoomControl={false}
       >
         <TileLayer
@@ -72,8 +50,13 @@ const Map = () => {
 
   return (
     <div>
-      {map ? <SetStateBounds map={map} /> : null}
+      <aside></aside>
+      <div></div>
+      {map ? <StateSelect map={map} /> : null}
       {map ? <Position map={map} /> : null}
+      <Sidebar id='sidebar'>
+        <Tab>s</Tab>
+      </Sidebar>
       {map ? <GEOJSONLayer map={map} /> : null}
       {displayMap}
     </div>
