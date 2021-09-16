@@ -28,7 +28,7 @@ const Position = ({ map }) => {
     fontFamily: 'monospace',
     zIndex: 1,
     position: 'absolute',
-    top: 0,
+    top: 50,
     left: 60,
     margin: '12px',
     borderRadius: '4px',

@@ -1,9 +1,25 @@
 import React, { useState, useMemo } from 'react';
 import { Sidebar, Tab } from 'react-leaflet-sidebarv2';
-import { MapContainer, TileLayer, ZoomControl } from 'react-leaflet';
+import { geoJSON } from 'leaflet';
+import {
+  MapContainer,
+  TileLayer,
+  ZoomControl,
+  Popup,
+  useMap,
+  GeoJSON,
+} from 'react-leaflet';
 import Position from './Position';
 import { center, zoom, bounds } from '../constants/map';
 import StateSelect from './StatesSelect';
+
+import MaryLandGEOJSON from '../constants/cb_2020_24_bg_500k.json';
+import sample from '../constants/sample.json';
+
+const GEOJSONLayer = ({ map }) => {
+  geoJSON(MaryLandGEOJSON).addTo(map);
+  return <div></div>;
+};
 
 const Map = () => {
   const [map, setMap] = useState(null);
@@ -41,6 +57,7 @@ const Map = () => {
       <Sidebar id='sidebar'>
         <Tab>s</Tab>
       </Sidebar>
+      {map ? <GEOJSONLayer map={map} /> : null}
       {displayMap}
     </div>
   );
