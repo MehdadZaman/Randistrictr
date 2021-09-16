@@ -20,10 +20,14 @@ const bounds = [
 const SetStateBounds = ({ map }) => {
   const handleStateSelect = useCallback(
     (stateName) => {
-      const state = states.find((state) => state.name === stateName);
-      console.log('stateName', stateName);
-      console.log('state', state);
-      map.fitBounds(state.bounds);
+      try {
+        const state = states.find((state) => state.name === stateName);
+        console.log('stateName', stateName);
+        console.log('state', state);
+        map.fitBounds(state.bounds);
+      } catch {
+        console.log('invalid state!');
+      }
     },
     [map]
   );
