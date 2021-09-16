@@ -1,7 +1,6 @@
-import { Button } from '@chakra-ui/button';
 import { useState } from 'react';
+import StateSelect from '../StatesSelect';
 import './sidebar.css';
-import StateSelect from './StatesSelect';
 
 const Sidebar = ({ map }) => {
   const [expanded, setExpanded] = useState(false);
