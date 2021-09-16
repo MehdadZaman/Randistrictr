@@ -1,3 +1,4 @@
+import { geoJSON } from 'leaflet';
 import React, { useState, useMemo, useCallback } from 'react';
 import {
   MapContainer,
@@ -5,17 +6,24 @@ import {
   ZoomControl,
   Popup,
   useMap,
+  GeoJSON,
 } from 'react-leaflet';
 import states from '../constants/states';
 import Position from './Position';
 import StatesSelect from './StatesSelect';
-
+import MaryLandGEOJSON from '../constants/cb_2020_24_bg_500k.json';
+import sample from '../constants/sample.json'
 const center = [41.650833, -94.059747];
 const zoom = 5;
 const bounds = [
   [36.935487, -114.183315],
   [48.128666, -74.063806],
 ];
+
+const GEOJSONLayer = ({map}) => {
+  geoJSON(MaryLandGEOJSON).addTo(map)
+  return (<div></div>)
+}
 
 const SetStateBounds = ({ map }) => {
   const handleStateSelect = useCallback(
@@ -65,6 +73,7 @@ const Map = () => {
     <div>
       {map ? <SetStateBounds map={map} /> : null}
       {map ? <Position map={map} /> : null}
+      {map ? <GEOJSONLayer map={map}/> : null}
       {displayMap}
     </div>
   );
