@@ -29,7 +29,7 @@ const Position = ({ map }) => {
     zIndex: 1,
     position: 'absolute',
     top: 50,
-    left: 60,
+    left: 0,
     margin: '12px',
     borderRadius: '4px',
   };
