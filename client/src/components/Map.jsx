@@ -1,35 +1,9 @@
-import React, { useState, useMemo, useCallback } from 'react';
-import {
-  MapContainer,
-  TileLayer,
-  ZoomControl,
-  Popup,
-  useMap,
-} from 'react-leaflet';
-import states from '../constants/states';
+import React, { useState, useMemo } from 'react';
+import { Sidebar, Tab } from 'react-leaflet-sidebarv2';
+import { MapContainer, TileLayer, ZoomControl } from 'react-leaflet';
 import Position from './Position';
-import StatesSelect from './StatesSelect';
-
-const center = [41.650833, -94.059747];
-const zoom = 5;
-const bounds = [
-  [36.935487, -114.183315],
-  [48.128666, -74.063806],
-];
-
-const SetStateBounds = ({ map }) => {
-  const handleStateSelect = useCallback(
-    (stateName) => {
-      const state = states.find((state) => state.name === stateName);
-      console.log('stateName', stateName);
-      console.log('state', state);
-      map.fitBounds(state.bounds);
-    },
-    [map]
-  );
-
-  return <StatesSelect onChange={handleStateSelect} />;
-};
+import { center, zoom, bounds } from '../constants/map';
+import StateSelect from './StatesSelect';
 
 const Map = () => {
   const [map, setMap] = useState(null);
@@ -37,6 +11,7 @@ const Map = () => {
   const displayMap = useMemo(
     () => (
       <MapContainer
+        className='sidebar-map'
         style={{ height: '100vh', zIndex: 0 }}
         center={center}
         zoom={zoom}
@@ -45,7 +20,7 @@ const Map = () => {
         boundsOptions={bounds}
         maxBounds={bounds}
         minZoom={5}
-        zoom
+        zoomControl={false}
       >
         <TileLayer
           attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
@@ -59,8 +34,13 @@ const Map = () => {
 
   return (
     <div>
-      {map ? <SetStateBounds map={map} /> : null}
+      <aside></aside>
+      <div></div>
+      {map ? <StateSelect map={map} /> : null}
       {map ? <Position map={map} /> : null}
+      <Sidebar id='sidebar'>
+        <Tab>s</Tab>
+      </Sidebar>
       {displayMap}
     </div>
   );
