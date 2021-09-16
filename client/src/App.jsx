@@ -3,7 +3,7 @@ import Map from './components/Map';
 
 function App() {
   return (
-    <div>
+    <div style={{ height: '100vh' }}>
       <Map />
     </div>
   );

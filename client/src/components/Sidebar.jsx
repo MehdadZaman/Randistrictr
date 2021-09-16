@@ -8,11 +8,10 @@ const Sidebar = ({ map }) => {
   return (
     <>
       <aside className='sidebar' style={{ width: expanded ? '350px' : '15px' }}>
-        {expanded ? (
-          <div>
-            <StateSelect map={map} />
-          </div>
-        ) : null}
+        <div style={{ display: expanded ? 'block' : 'none', padding: 10 }}>
+          <span>Select State</span>
+          <StateSelect map={map} />
+        </div>
       </aside>
       <button
         className='toggleButton'

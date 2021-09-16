@@ -22,7 +22,7 @@ const Map = () => {
     () => (
       <MapContainer
         className='sidebar-map'
-        style={{ height: '95vh', zIndex: 0, minHeight: 390, minWidth: 768 }}
+        style={{ height: '100vh', zIndex: 0, minHeight: 390, minWidth: 768 }}
         center={center}
         zoom={zoom}
         scrollWheelZoom={false}
