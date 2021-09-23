@@ -9,7 +9,7 @@
 .toggleButton {
   background-color: #fff;
   position: absolute;
-  top: calc(50vh);
+  top: calc(45vh);
   z-index: 1000;
   transition: left 0.5s;
   width: 20px;

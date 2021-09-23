@@ -1,6 +1,5 @@
 import { useState } from 'react';
-import StateSelect from '../StatesSelect';
-import './sidebar.css';
+import './index.css';
 
 const Sidebar = ({ map }) => {
   const [expanded, setExpanded] = useState(false);
@@ -8,8 +7,7 @@ const Sidebar = ({ map }) => {
     <>
       <aside className='sidebar' style={{ width: expanded ? '350px' : '15px' }}>
         <div style={{ display: expanded ? 'block' : 'none', padding: 10 }}>
-          <span>Select State</span>
-          <StateSelect map={map} />
+          <span>Select Something</span>
         </div>
       </aside>
       <button

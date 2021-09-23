@@ -1,4 +1,5 @@
 import React from 'react';
+import Navbar from './components/navbar';
 import Map from './components/Map';
 
 function App() {

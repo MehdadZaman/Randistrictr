@@ -2,7 +2,8 @@ import React, { useState, useMemo } from 'react';
 import { MapContainer, TileLayer, ZoomControl, GeoJSON } from 'react-leaflet';
 import Position from './Position';
 import { center, zoom, bounds } from '../constants/map';
-import Sidebar from './sidebar/Sidebar';
+import Sidebar from './sidebar';
+import Navbar from './navbar';
 import MaryLandGEOJSON from '../constants/cb_2020_24_bg_500k.json';
 
 const Map = () => {
@@ -12,7 +13,7 @@ const Map = () => {
     () => (
       <MapContainer
         className='sidebar-map'
-        style={{ height: '100vh', zIndex: 0, minHeight: 390, minWidth: 768 }}
+        style={{ height: '91vh', zIndex: 0, minHeight: 390, minWidth: 768 }}
         center={center}
         zoom={zoom}
         scrollWheelZoom={false}
@@ -34,11 +35,14 @@ const Map = () => {
   );
 
   return (
-    <div>
-      {map ? <Sidebar map={map} /> : null}
-      {map ? <Position map={map} /> : null}
-      {displayMap}
-    </div>
+    <>
+      {map ? <Navbar map={map} /> : null}
+      <div style={{ position: 'relative' }}>
+        {map ? <Sidebar map={map} /> : null}
+        {map ? <Position map={map} /> : null}
+        {displayMap}
+      </div>
+    </>
   );
 };
 
