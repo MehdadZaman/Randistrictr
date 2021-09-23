@@ -1,11 +1,18 @@
 import React, { useState, useMemo } from 'react';
 import { MapContainer, TileLayer, ZoomControl, GeoJSON } from 'react-leaflet';
-import Position from './Position';
 import { center, zoom, bounds } from '../constants/map';
-import Sidebar from './sidebar';
+// Components
 import Navbar from './navbar';
-import MaryLandGEOJSON from '../constants/cb_2020_24_bg_500k.json';
+import Sidebar from './sidebar';
+import Position from './Position';
+// JSON
 import statesdata from '../json/states.json';
+import MaryLandCongressionalDistricts from '../json/congressional-districts/maryland_congressional_districts.json';
+import MichiganCongressionalDistricts from '../json/congressional-districts/michigan_congressional_districts.json';
+import UtahCongressionalDistricts from '../json/congressional-districts/utah_congressional_districts.json';
+import MaryLandVotingDistricts from '../json/voting districts/maryland_voting_simplified.json';
+import MichiganVotingDistricts from '../json/voting districts/michigan_voting_simplified.json';
+import UtahVotingDistricts from '../json/voting districts/utah_voting_simplified.json';
 
 const COLOR_0 = '#F06E45';
 const COLOR_1 = '#C9A83E';
@@ -95,6 +102,9 @@ const Map = () => {
           url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
         />
         <GeoJSON data={statesdata} onEachFeature={onEachFeature} />
+        <GeoJSON data={MaryLandCongressionalDistricts} />
+        <GeoJSON data={MichiganCongressionalDistricts} />
+        <GeoJSON data={UtahCongressionalDistricts} />
         <ZoomControl position='bottomright' />
       </MapContainer>
     );
