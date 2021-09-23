@@ -1,14 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 
-const center = [-73.11623, 40.914224];
-const zoom = 13;
-
 const Position = ({ map }) => {
   const [position, setPosition] = useState(map.getCenter());
-
-  const onClick = useCallback(() => {
-    map.setView(center, zoom);
-  }, [map]);
 
   const onMove = useCallback(() => {
     setPosition(map.getCenter());

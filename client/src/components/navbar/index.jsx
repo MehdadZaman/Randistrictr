@@ -3,10 +3,8 @@ import {
   Flex,
   Text,
   Stack,
-  Select,
   useColorModeValue,
   useBreakpointValue,
-  useDisclosure,
 } from '@chakra-ui/react';
 import StateSelect from '../StatesSelect';
 
@@ -69,10 +67,6 @@ const Navbar = ({ map }) => {
 };
 
 const DesktopNav = ({ map }) => {
-  const linkColor = useColorModeValue('gray.600', 'gray.200');
-  const linkHoverColor = useColorModeValue('gray.800', 'white');
-  const popoverContentBgColor = useColorModeValue('white', 'gray.800');
-
   return (
     <Stack direction={'row'} spacing={4}>
       <Box>{/* <StateSelect map={map} /> */}</Box>
