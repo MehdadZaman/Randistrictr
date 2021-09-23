@@ -4,7 +4,14 @@ import Position from './Position';
 import { center, zoom, bounds } from '../constants/map';
 import Sidebar from './sidebar';
 import Navbar from './navbar';
-import MaryLandGEOJSON from '../constants/cb_2020_24_bg_500k.json';
+// import MaryLandGEOJSON from '../constants/cb_2020_24_bg_500k.json';
+import MaryLandCongressionalDistricts from '../constants/congressional-districts/maryland_congressional_districts.json';
+import MichiganCongressionalDistricts from '../constants/congressional-districts/michigan_congressional_districts.json';
+import UtahCongressionalDistricts from '../constants/congressional-districts/utah_congressional_districts.json';
+
+import MaryLandVotingDistricts from '../constants/voting districts/maryland_voting_simplified.json';
+import MichiganVotingDistricts from '../constants/voting districts/michigan_voting_simplified.json';
+import UtahVotingDistricts from '../constants/voting districts/utah_voting_simplified.json';
 
 const Map = () => {
   const [map, setMap] = useState(null);
@@ -27,7 +34,9 @@ const Map = () => {
           attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
           url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
         />
-        {/* <GeoJSON data={MaryLandGEOJSON} /> */}
+        <GeoJSON data={MaryLandCongressionalDistricts} />
+        <GeoJSON data={MichiganCongressionalDistricts} />
+        <GeoJSON data={UtahCongressionalDistricts} />
         <ZoomControl position='bottomright' />
       </MapContainer>
     ),
