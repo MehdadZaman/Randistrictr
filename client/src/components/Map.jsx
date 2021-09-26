@@ -12,6 +12,7 @@ import Navbar from './navbar';
 import Sidebar from './sidebar';
 import Position from './Position';
 import TabView from './TabView';
+import DistrictingDetails from './DistrictingDetails';
 // JSON
 import statesdata from '../json/states.json';
 import MaryLandCongressionalDistricts from '../json/congressional-districts/maryland_congressional_districts.json';
@@ -154,7 +155,11 @@ const Map = () => {
         ) : null}
         {map ? <Position map={map} /> : null}
         {displayMap}
-        {map ? <Sidebar map={map} position='right'></Sidebar> : null}
+        {map ? (
+          <Sidebar map={map} position='right'>
+            <DistrictingDetails selectedState={selectedState} />
+          </Sidebar>
+        ) : null}
       </div>
     </>
   );
