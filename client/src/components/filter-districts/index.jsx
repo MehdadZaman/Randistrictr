@@ -49,8 +49,8 @@ const FilterDistricts = ({ map, onFilter }) => {
         </h1>
         <ReactSlider
           className='horizontal-slider'
-          thumbClassName='example-thumb'
-          trackClassName='example-track'
+          thumbClassName='thumb'
+          trackClassName='track'
           defaultValue={[
             minMinorityMajorityDistricts,
             maxMinorityMajorityDistricts,
@@ -58,7 +58,7 @@ const FilterDistricts = ({ map, onFilter }) => {
           onChange={setMinorityMajorityDistricts}
           ariaLabel={['Lower thumb', 'Upper thumb']}
           ariaValuetext={(state) => `Thumb value ${state.valueNow}`}
-          renderThumb={(props, state) => <div {...props}>{state.valueNow}</div>}
+          // renderThumb={(props, state) => <div {...props}>{state.valueNow}</div>}
           pearling
           // minDistance={0}
           min={0}
