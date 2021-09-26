@@ -10,12 +10,13 @@ import {
   Input,
   Button,
 } from '@chakra-ui/react';
+import ReactSlider from 'react-slider';
 
 const FilterDistricts = ({ map, onFilter }) => {
-  const [minMinorityMajorityDistricts, setminMinorityMajorityDistricts] =
-    useState(3);
-  const [maxMinorityMajorityDistricts, setmaxMinorityMajorityDistricts] =
-    useState(3);
+  const [
+    [minMinorityMajorityDistricts, maxMinorityMajorityDistricts],
+    setMinorityMajorityDistricts,
+  ] = useState([0, 3]);
 
   const [minThreshold, setMinThreshold] = useState(50);
   const [minPopulationScore, setMinPopulationScore] = useState(75);
@@ -46,7 +47,25 @@ const FilterDistricts = ({ map, onFilter }) => {
             {minMinorityMajorityDistricts}{' '}
           </span>
         </h1>
-        <Slider
+        <ReactSlider
+          className='horizontal-slider'
+          thumbClassName='example-thumb'
+          trackClassName='example-track'
+          defaultValue={[
+            minMinorityMajorityDistricts,
+            maxMinorityMajorityDistricts,
+          ]}
+          onChange={setMinorityMajorityDistricts}
+          ariaLabel={['Lower thumb', 'Upper thumb']}
+          ariaValuetext={(state) => `Thumb value ${state.valueNow}`}
+          renderThumb={(props, state) => <div {...props}>{state.valueNow}</div>}
+          pearling
+          // minDistance={0}
+          min={0}
+          max={5}
+        />
+
+        {/* <Slider
           aria-label='slider-ex-2'
           colorScheme='blue'
           defaultValue={minMinorityMajorityDistricts}
@@ -62,7 +81,7 @@ const FilterDistricts = ({ map, onFilter }) => {
             <SliderFilledTrack />
           </SliderTrack>
           <SliderThumb />
-        </Slider>
+        </Slider> */}
       </div>
 
       <div style={{ margin: '2vh' }}>
@@ -75,7 +94,7 @@ const FilterDistricts = ({ map, onFilter }) => {
             {maxMinorityMajorityDistricts}{' '}
           </span>
         </h1>
-        <Slider
+        {/* <Slider
           aria-label='slider-ex-2'
           colorScheme='blue'
           defaultValue={maxMinorityMajorityDistricts}
@@ -91,7 +110,7 @@ const FilterDistricts = ({ map, onFilter }) => {
             <SliderFilledTrack />
           </SliderTrack>
           <SliderThumb />
-        </Slider>
+        </Slider> */}
       </div>
 
       <div style={{ margin: '2vh' }}>
