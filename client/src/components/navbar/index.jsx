@@ -8,7 +8,7 @@ import {
 } from '@chakra-ui/react';
 import StateSelect from '../StatesSelect';
 
-const Navbar = ({ map }) => {
+const Navbar = ({ map, selectState }) => {
   return (
     <Box h='9vh'>
       <Flex
@@ -59,7 +59,7 @@ const Navbar = ({ map }) => {
           >
             Sign Up
           </Button> */}
-          <StateSelect map={map} />
+          <StateSelect map={map} selectState={(state) => selectState(state)} />
         </Stack>
       </Flex>
     </Box>

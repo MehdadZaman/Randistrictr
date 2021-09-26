@@ -20,7 +20,6 @@ import UtahCongressionalDistricts from '../json/congressional-districts/utah_con
 import MaryLandVotingDistricts from '../json/voting districts/maryland_voting_simplified.json';
 import MichiganVotingDistricts from '../json/voting districts/michigan_voting_simplified.json';
 import UtahVotingDistricts from '../json/voting districts/utah_voting_simplified.json';
-import DistrictingPreview from './DistrictingPreview';
 
 const COLOR_0 = '#F06E45';
 const COLOR_1 = '#C9A83E';
@@ -144,11 +143,13 @@ const Map = () => {
 
   return (
     <>
-      {map ? <Navbar map={map} /> : null}
+      {map ? (
+        <Navbar map={map} selectState={(state) => setSelectedState(state)} />
+      ) : null}
       <div style={{ position: 'relative' }}>
         {map ? (
           <Sidebar map={map}>
-            <TabView />
+            <TabView selectedState={selectedState} />
           </Sidebar>
         ) : null}
         {map ? <Position map={map} /> : null}
