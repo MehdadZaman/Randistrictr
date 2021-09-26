@@ -12,6 +12,7 @@ import Navbar from './navbar';
 import Sidebar from './sidebar';
 import Position from './Position';
 import TabView from './TabView';
+import DistrictingDetails from './DistrictingDetails';
 // JSON
 import statesdata from '../json/states.json';
 import MarylandCongressionalDistricts from '../json/congressional-districts/maryland_congressional_districts.json';
@@ -222,7 +223,9 @@ const Map = () => {
             onToggle={() => setRightSidebarExpanded(!rightSidebarExpanded)}
             map={map}
             position='right'
-          ></Sidebar>
+          >
+            <DistrictingDetails selectedState={selectedState} />
+          </Sidebar>
         ) : null}
       </div>
     </>

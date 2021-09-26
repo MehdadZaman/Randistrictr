@@ -1,0 +1,15 @@
+import React from 'react';
+import { Stack } from '@chakra-ui/react';
+import DistrictingCard from './DistrictingCard';
+
+function DistrictingCardList({ cards, onSelect }) {
+  return (
+    <Stack spacing={8}>
+      {cards.map((card) => (
+        <DistrictingCard key={card.title} card={card} />
+      ))}
+    </Stack>
+  );
+}
+
+export default DistrictingCardList;

@@ -14,7 +14,7 @@
   background-color: #fff;
   position: absolute;
   top: calc(45vh);
-  z-index: 1000;
+  z-index: 1;
   width: 20px;
   height: 36px;
 }
