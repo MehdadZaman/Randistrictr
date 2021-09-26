@@ -3,7 +3,7 @@
   background-color: #fff;
   position: absolute;
   z-index: 1000;
-  overflow: visible;
+  overflow-x: visible;
   box-shadow: 0 1px 5px rgb(0 0 0 / 65%);
   top: 0;
   bottom: 0;

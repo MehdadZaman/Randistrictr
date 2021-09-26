@@ -157,7 +157,7 @@ const Map = () => {
     );
   }, [map, activeGeoJSON, votingGeoJSON]);
 
-  const handleSelect = () => {
+  const handleSelect = (districting) => {
     switch (selectedState) {
       case 'Maryland': {
         setActiveGeoJSON(MarylandCongressionalDistricts);

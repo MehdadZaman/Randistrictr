@@ -25,7 +25,7 @@ const DistrictingCardPopover = ({ card, onSelect }) => {
     >
       <PopoverTrigger>
         <Box d='flex' justifyContent='center' w='95%'>
-          <DistrictingCard property={card} />
+          <DistrictingCard property={card} onSelect={onSelect} />
         </Box>
       </PopoverTrigger>
       <PopoverContent
@@ -49,7 +49,7 @@ const DistrictingCardPopover = ({ card, onSelect }) => {
   );
 };
 
-const DistrictingCard = ({ property }) => {
+const DistrictingCard = ({ property, onSelect }) => {
   return (
     <Box shadow='md' borderWidth='1px' borderRadius='1g' overflow='hidden'>
       <Image src={property.imageUrl} alt={property.imageAlt}></Image>
@@ -84,7 +84,12 @@ const DistrictingCard = ({ property }) => {
           pb={2}
         >
           <ButtonGroup size='sm'>
-            <Button colorScheme='green'>Use!</Button>
+            <Button
+              colorScheme='green'
+              onClick={() => onSelect(property.title)}
+            >
+              Use!
+            </Button>
           </ButtonGroup>
         </Box>
       </Box>

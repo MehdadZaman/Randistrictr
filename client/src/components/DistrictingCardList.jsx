@@ -6,7 +6,7 @@ function DistrictingCardList({ cards, onSelect }) {
   return (
     <Stack spacing={8}>
       {cards.map((card) => (
-        <DistrictingCard key={card.title} card={card} />
+        <DistrictingCard key={card.title} card={card} onSelect={onSelect} />
       ))}
     </Stack>
   );
