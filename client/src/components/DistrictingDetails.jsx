@@ -175,7 +175,6 @@ const DistrictingDetails = ({ selectedState }) => {
                 </Accordion>
               </TabPanel>
               <TabPanel>
-                <div>Donald Trump won!</div>
 
 
 
