@@ -39,12 +39,12 @@ const FilterDistricts = ({ map, onFilter }) => {
     <>
       <div style={{ margin: '2vh' }}>
         <h1>
-          <span style={{ color: 'gray' }}>
-            Minimum Majority-Minority districts:{' '}
-          </span>{' '}
+          <span style={{ color: 'gray' }}>Majority-Minority districts: </span>
+          <br />
           <span style={{ marginLeft: '1vh' }}>
             {' '}
-            {minMinorityMajorityDistricts}{' '}
+            Min: {minMinorityMajorityDistricts}, Max:{' '}
+            {maxMinorityMajorityDistricts}
           </span>
         </h1>
         <ReactSlider
@@ -64,55 +64,7 @@ const FilterDistricts = ({ map, onFilter }) => {
           min={0}
           max={5}
         />
-
-        {/* <Slider
-          aria-label='slider-ex-2'
-          colorScheme='blue'
-          defaultValue={minMinorityMajorityDistricts}
-          max={5}
-          onChangeEnd={(val) => {
-            setminMinorityMajorityDistricts(val);
-            setmaxMinorityMajorityDistricts(
-              Math.max(val, maxMinorityMajorityDistricts)
-            );
-          }}
-        >
-          <SliderTrack>
-            <SliderFilledTrack />
-          </SliderTrack>
-          <SliderThumb />
-        </Slider> */}
       </div>
-
-      <div style={{ margin: '2vh' }}>
-        <h1>
-          <span style={{ color: 'gray' }}>
-            Maximum Majority-Minority districts:{' '}
-          </span>{' '}
-          <span style={{ marginLeft: '1vh' }}>
-            {' '}
-            {maxMinorityMajorityDistricts}{' '}
-          </span>
-        </h1>
-        {/* <Slider
-          aria-label='slider-ex-2'
-          colorScheme='blue'
-          defaultValue={maxMinorityMajorityDistricts}
-          max={5}
-          onChangeEnd={(val) => {
-            setmaxMinorityMajorityDistricts(val);
-            setminMinorityMajorityDistricts(
-              Math.min(minMinorityMajorityDistricts, val)
-            );
-          }}
-        >
-          <SliderTrack>
-            <SliderFilledTrack />
-          </SliderTrack>
-          <SliderThumb />
-        </Slider> */}
-      </div>
-
       <div style={{ margin: '2vh' }}>
         <h1>
           <span style={{ color: 'gray' }}>
