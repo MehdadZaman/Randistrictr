@@ -16,15 +16,17 @@ const DistrictingDetails = ({selectedState}) => {
     <Box p={1}>
       {selectedState ? (
         <Box>
-          <Stack spacing={0.25} m={2}>
+          <Stack spacing={0.25} m={2}> {/*ADD THE STATE FLAG*/}
             <Text fontSize='4xl' as="b">{selectedState}</Text>
+            <Text fontSize='1xl' as="i">Number of Congressional Districts: 8</Text>
             <Text fontSize='1xl' as="i">Population: 6,065,436</Text>
           </Stack>
 
           <Tabs index={tabIndex} onChange={(index) => setTabIndex(index)}>
           <TabList>
-            <Tab>Census</Tab>
-            <Tab>Graph</Tab>
+            <Tab>Population</Tab>
+            <Tab>Districting</Tab>
+            <Tab>Government</Tab>
           </TabList>
           <TabPanels>
             <TabPanel>
@@ -32,6 +34,9 @@ const DistrictingDetails = ({selectedState}) => {
             </TabPanel>
             <TabPanel>
               <div>Graph data cannot lie</div>
+            </TabPanel>
+            <TabPanel>
+              <div>Donald Trump won!</div>
             </TabPanel>
           </TabPanels>
         </Tabs>
