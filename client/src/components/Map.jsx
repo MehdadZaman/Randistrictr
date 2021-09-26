@@ -14,10 +14,10 @@ import Position from './Position';
 import TabView from './TabView';
 // JSON
 import statesdata from '../json/states.json';
-import MaryLandCongressionalDistricts from '../json/congressional-districts/maryland_congressional_districts.json';
+import MarylandCongressionalDistricts from '../json/congressional-districts/maryland_congressional_districts.json';
 import MichiganCongressionalDistricts from '../json/congressional-districts/michigan_congressional_districts.json';
 import UtahCongressionalDistricts from '../json/congressional-districts/utah_congressional_districts.json';
-import MaryLandVotingDistricts from '../json/voting districts/maryland_voting_simplified.json';
+import MarylandVotingDistricts from '../json/voting districts/maryland_voting_simplified.json';
 import MichiganVotingDistricts from '../json/voting districts/michigan_voting_simplified.json';
 import UtahVotingDistricts from '../json/voting districts/utah_voting_simplified.json';
 
@@ -42,19 +42,23 @@ function getColor(d) {
     : COLOR_0;
 }
 function style(feature) {
+  console.log('Feature properties', feature.properties);
   return {
-    fillColor: getColor(feature.properties.COUNT),
-    weight: 1,
+    // fillColor: getColor(feature.properties.COUNT),
+    // weight: 1,
     opacity: 1,
-    color: 'white',
-    dashArray: '3',
-    fillOpacity: 0.8,
+    color: '#3388ff',
+    fillOpacity: 0.2,
   };
 }
 
 const Map = () => {
   const [map, setMap] = useState(null);
   const [selectedState, setSelectedState] = useState();
+  const [activeGeoJSON, setActiveGeoJSON] = useState();
+  const [votingGeoJSON, setVotingGeoJSON] = useState();
+  const [leftSidebarExpanded, setLeftSidebarExpanded] = useState(false);
+  const [rightSidebarExpanded, setRightSidebarExpanded] = useState(false);
 
   const displayMap = useMemo(() => {
     let mapRef;
@@ -73,15 +77,11 @@ const Map = () => {
     const highlightFeature = (e) => {
       let layer = e.target;
       const { NAME } = e.target.feature.properties;
-      // setSelected({
-      //   province: `${NAME_3}, ${NAME_2}`,
-      //   count: COUNT
-      // });
       layer.setStyle({
-        weight: 2,
-        color: '#DF1995',
+        // weight: 2,
+        // color: '#DF1995',
         dashArray: '',
-        fillOpacity: 1,
+        fillOpacity: 0.6,
       });
       // if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
       //   layer.bringToFront();
@@ -93,6 +93,9 @@ const Map = () => {
     };
     const zoomToFeature = (e) => {
       console.log('TARGET FEATURE', e.target);
+      setLeftSidebarExpanded(true);
+      setActiveGeoJSON(null);
+      setSelectedState(e.target.feature.properties.NAME);
       mapRef.fitBounds(e.target.getBounds());
     };
 
@@ -106,6 +109,16 @@ const Map = () => {
 
     const onZoomEnd = (map) => {
       const currentZoom = map.getZoom();
+      console.log('CZ', currentZoom);
+      if (selectedState === 'Maryland' && currentZoom >= 9) {
+        setVotingGeoJSON(MarylandVotingDistricts);
+      } else if (selectedState === 'Michigan' && currentZoom >= 7) {
+        setVotingGeoJSON(MichiganVotingDistricts);
+      } else if (selectedState === 'Utah' && currentZoom >= 8) {
+        setVotingGeoJSON(UtahVotingDistricts);
+      } else {
+        setVotingGeoJSON(null);
+      }
     };
 
     return (
@@ -130,6 +143,8 @@ const Map = () => {
         />
         <MapEvents />
         <GeoJSON data={statesdata} onEachFeature={onEachFeature} />
+        {activeGeoJSON ? <GeoJSON data={activeGeoJSON} /> : null}
+        {votingGeoJSON ? <GeoJSON data={votingGeoJSON} /> : null}
         {/* <GeoJSON data={MaryLandCongressionalDistricts} />
         <GeoJSON data={MichiganCongressionalDistricts} />
         <GeoJSON data={UtahCongressionalDistricts} />
@@ -139,22 +154,76 @@ const Map = () => {
         <ZoomControl position='bottomright' />
       </MapContainer>
     );
-  }, [map]);
+  }, [map, activeGeoJSON, votingGeoJSON]);
+
+  const handleSelect = () => {
+    switch (selectedState) {
+      case 'Maryland': {
+        setActiveGeoJSON(MarylandCongressionalDistricts);
+        setRightSidebarExpanded(true);
+        break;
+      }
+      case 'Michigan': {
+        setActiveGeoJSON(MichiganCongressionalDistricts);
+        setRightSidebarExpanded(true);
+        break;
+      }
+      case 'Utah': {
+        setActiveGeoJSON(UtahCongressionalDistricts);
+        setRightSidebarExpanded(true);
+        break;
+      }
+      default: {
+        setActiveGeoJSON(null);
+        setRightSidebarExpanded(false);
+        break;
+      }
+    }
+  };
 
   return (
     <>
       {map ? (
-        <Navbar map={map} selectState={(state) => setSelectedState(state)} />
+        <Navbar
+          map={map}
+          selectedState={selectedState}
+          onSelect={(state) => {
+            if (state) {
+              setLeftSidebarExpanded(true);
+            } else {
+              setLeftSidebarExpanded(false);
+            }
+            setActiveGeoJSON(null);
+            setSelectedState(state);
+          }}
+        />
       ) : null}
       <div style={{ position: 'relative' }}>
         {map ? (
-          <Sidebar map={map}>
-            <TabView selectedState={selectedState} />
+          <Sidebar
+            expanded={leftSidebarExpanded}
+            onToggle={() => setLeftSidebarExpanded(!leftSidebarExpanded)}
+            map={map}
+          >
+            {selectedState ? (
+              <TabView selectedState={selectedState} onSelect={handleSelect} />
+            ) : (
+              <h1 style={{ fontSize: '3vh', transform: 'translateY(350%)' }}>
+                Please select a state to continue
+              </h1>
+            )}
           </Sidebar>
         ) : null}
         {map ? <Position map={map} /> : null}
         {displayMap}
-        {map ? <Sidebar map={map} position='right'></Sidebar> : null}
+        {map ? (
+          <Sidebar
+            expanded={rightSidebarExpanded}
+            onToggle={() => setRightSidebarExpanded(!rightSidebarExpanded)}
+            map={map}
+            position='right'
+          ></Sidebar>
+        ) : null}
       </div>
     </>
   );

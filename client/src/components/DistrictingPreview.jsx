@@ -15,15 +15,15 @@ import {
   PopoverCloseButton,
 } from '@chakra-ui/react';
 
-const DistrictingPreview = () => {
+const DistrictingPreview = ({ onSelect }) => {
   const initialFocusRef = useRef();
 
   return (
     <Popover
       initialFocusRef={initialFocusRef}
-      placement='top-start'
-      offset={[5, -235]} //i hate styling
-      matchWidth={true} // does this do anything?
+      placement='right'
+      offset={[5, 0]} //i hate styling
+      trigger='hover'
     >
       <PopoverTrigger>
         <Box d='flex' justifyContent='center' w='95%'>
@@ -61,10 +61,12 @@ const DistrictingPreview = () => {
         >
           <Box fontSize='sm'> Display on Map? </Box>
           <ButtonGroup size='sm'>
-            <Button colorScheme='blue' ref={initialFocusRef}>
+            <Button colorScheme='red' ref={initialFocusRef}>
               Cancel
             </Button>
-            <Button colorScheme='green'>Use!</Button>
+            <Button colorScheme='green' onClick={onSelect}>
+              Use!
+            </Button>
           </ButtonGroup>
         </PopoverFooter>
       </PopoverContent>
