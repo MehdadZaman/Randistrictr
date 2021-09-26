@@ -223,6 +223,7 @@ const Map = () => {
             onToggle={() => setRightSidebarExpanded(!rightSidebarExpanded)}
             map={map}
             position='right'
+            width={450}
           >
             <DistrictingDetails selectedState={selectedState} />
           </Sidebar>

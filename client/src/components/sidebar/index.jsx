@@ -1,7 +1,14 @@
 import { useState } from 'react';
 import './index.css';
 
-const Sidebar = ({ map, expanded, onToggle, position, children }) => {
+const Sidebar = ({
+  map,
+  expanded,
+  onToggle,
+  position,
+  width = 350,
+  children,
+}) => {
   let positionStyle = { top: 10, bottom: 10 };
   let buttonStyle = {
     left: expanded ? '350px' : '15px',
@@ -27,7 +34,7 @@ const Sidebar = ({ map, expanded, onToggle, position, children }) => {
     <>
       <aside
         className='sidebar'
-        style={{ ...positionStyle, width: expanded ? '350px' : '15px' }}
+        style={{ ...positionStyle, width: expanded ? width : '15px' }}
       >
         <div style={{ display: expanded ? 'block' : 'none', padding: 10 }}>
           {children}
