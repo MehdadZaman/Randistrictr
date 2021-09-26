@@ -25,14 +25,14 @@ function getColor(d) {
   return d > 222
     ? COLOR_222
     : d > 140
-    ? COLOR_140
-    : d > 75
-    ? COLOR_75
-    : d > 300
-    ? COLOR_24
-    : d > 0
-    ? COLOR_1
-    : COLOR_0;
+      ? COLOR_140
+      : d > 75
+        ? COLOR_75
+        : d > 300
+          ? COLOR_24
+          : d > 0
+            ? COLOR_1
+            : COLOR_0;
 }
 function style(feature) {
   return {
@@ -112,9 +112,9 @@ const Map = () => {
 
   return (
     <>
-      {map ? <Navbar map={map} /> : null}
+      {map ? <Navbar map={map} selectState={(state) => setSelectedState(state)} /> : null}
       <div style={{ position: 'relative' }}>
-        {map ? <Sidebar map={map} /> : null}
+        {map ? <Sidebar map={map} selectedState={selectedState} /> : null}
         {map ? <Position map={map} /> : null}
         {displayMap}
       </div>
