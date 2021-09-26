@@ -16,8 +16,10 @@ function DistrictingCardList() {
     const props = {
         imageUrl: "https://filipinotimes.net/wp-content/uploads/2019/08/moth-balls.jpg",
         imageAlt: "Maryland",
-        title: "This districting is very special!",
-        description: "Description",
+        title: "Random Districting 1",
+        description: "This districting minimized the number of majority minority districts.",
+        congressionalDistricts: 8,
+        votingDistricts: "8,654",
         minorityMajorityDistrict: 3,
         threshold: 50,
         maxPopulationRange: 137429,
