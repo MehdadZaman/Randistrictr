@@ -1,5 +1,6 @@
 import React from 'react';
 import { Stack, VStack, Box, Heading, Text } from "@chakra-ui/react"
+import DistrictingCard from './DistrictingCard';
 
 
 function Feature({ title, desc, ...rest }) {
@@ -14,6 +15,7 @@ function Feature({ title, desc, ...rest }) {
 function DistrictingCardList() {
 return (
     <Stack spacing={8}>
+    <DistrictingCard />
     <Feature
         title="Kaiwen"
         desc="The future can be even brighter but a goal without a plan is just a wish"
