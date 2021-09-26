@@ -38,11 +38,11 @@ const DistrictingCardPopover = ({ card, onSelect }) => {
         </PopoverHeader>
         <PopoverCloseButton />
         <PopoverBody fontSize='sm'>
-          <Text>3 Majority Minority districts at 50% threshold</Text>
-          <Text>Maximum Population Range: 137249</Text>
-          <Text>Mattingly Population Score: 86</Text>
-          <Text>Efficiency Gap Measure: 0.44</Text>
-          <Text>Polsby Popper Score: 0.42</Text>
+          <Text>{card.minorityMajorityDistrict} Majority Minority districts at {card.threshold}% threshold</Text>
+          <Text>Maximum Population Range: {card.maxPopulationRange}</Text>
+          <Text>Mattingly Population Score: {card.populationScore}</Text>
+          <Text>Efficiency Gap Measure: {card.efficiencyGapMeasure}</Text>
+          <Text>Polsby Popper Score: {card.polsbyPopperScore}</Text>
         </PopoverBody>
       </PopoverContent>
     </Popover>
