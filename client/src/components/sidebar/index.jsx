@@ -1,9 +1,7 @@
 import { useState } from 'react';
 import './index.css';
 
-const Sidebar = ({ map, position, children }) => {
-  const [expanded, setExpanded] = useState(false);
-
+const Sidebar = ({ map, expanded, onToggle, position, children }) => {
   let positionStyle = { top: 10, bottom: 10 };
   let buttonStyle = {
     left: expanded ? '350px' : '15px',
@@ -35,11 +33,7 @@ const Sidebar = ({ map, position, children }) => {
           {children}
         </div>
       </aside>
-      <button
-        className='toggleButton'
-        style={buttonStyle}
-        onClick={() => setExpanded(!expanded)}
-      >
+      <button className='toggleButton' style={buttonStyle} onClick={onToggle}>
         {expanded ? expandIcon : collapseIcon}
       </button>
     </>
