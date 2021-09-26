@@ -19,6 +19,7 @@ import UtahCongressionalDistricts from '../json/congressional-districts/utah_con
 import MaryLandVotingDistricts from '../json/voting districts/maryland_voting_simplified.json';
 import MichiganVotingDistricts from '../json/voting districts/michigan_voting_simplified.json';
 import UtahVotingDistricts from '../json/voting districts/utah_voting_simplified.json';
+import DistrictingPreview from './DistrictingPreview';
 
 const COLOR_0 = '#F06E45';
 const COLOR_1 = '#C9A83E';
@@ -144,9 +145,14 @@ const Map = () => {
     <>
       {map ? <Navbar map={map} /> : null}
       <div style={{ position: 'relative' }}>
-        {map ? <Sidebar map={map} /> : null}
+        {map ? (
+          <Sidebar map={map}>
+            <DistrictingPreview />
+          </Sidebar>
+        ) : null}
         {map ? <Position map={map} /> : null}
         {displayMap}
+        {map ? <Sidebar map={map} position='right'></Sidebar> : null}
       </div>
     </>
   );
