@@ -13,19 +13,31 @@ function Feature({ title, desc, ...rest }) {
   }
   
 function DistrictingCardList() {
-return (
-    <Stack spacing={8}>
-    <DistrictingCard />
-    <Feature
-        title="Kaiwen"
-        desc="The future can be even brighter but a goal without a plan is just a wish"
-    />
-    <Feature
-        title="Academy"
-        desc="You deserve good things. With a whooping 10-15% interest rate per annum, grow your savings on your own terms with our completely automated process"
-    />
-    </Stack>
-)
-}
+    const props = {
+        imageUrl: "https://filipinotimes.net/wp-content/uploads/2019/08/moth-balls.jpg",
+        imageAlt: "Maryland",
+        title: "This districting is very special!",
+        description: "Description",
+        minorityMajorityDistrict: 3,
+        threshold: 50,
+        maxPopulationRange: 137429,
+        populationScore: 86,
+        efficiencyGapMeasure: 0.44,
+        polsbyPopperScore: 0.42,
+      };
+    return (
+        <Stack spacing={8}>
+        <DistrictingCard property={props}/>
+        <Feature
+            title="Kaiwen"
+            desc="The future can be even brighter but a goal without a plan is just a wish"
+        />
+        <Feature
+            title="Academy"
+            desc="You deserve good things. With a whooping 10-15% interest rate per annum, grow your savings on your own terms with our completely automated process"
+        />
+        </Stack>
+    );
+};
   
 export default DistrictingCardList;
