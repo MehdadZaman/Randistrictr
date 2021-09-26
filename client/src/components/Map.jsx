@@ -11,6 +11,7 @@ import { center, zoom, bounds } from '../constants/map';
 import Navbar from './navbar';
 import Sidebar from './sidebar';
 import Position from './Position';
+import TabView from './TabView';
 // JSON
 import statesdata from '../json/states.json';
 import MaryLandCongressionalDistricts from '../json/congressional-districts/maryland_congressional_districts.json';
@@ -147,7 +148,7 @@ const Map = () => {
       <div style={{ position: 'relative' }}>
         {map ? (
           <Sidebar map={map}>
-            <DistrictingPreview />
+            <TabView />
           </Sidebar>
         ) : null}
         {map ? <Position map={map} /> : null}
