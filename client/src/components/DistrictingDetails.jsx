@@ -2,6 +2,7 @@ import { React, useState } from 'react';
 import {
   Box,
   Text,
+  Heading,
   Tabs,
   TabList,
   TabPanels,
@@ -22,6 +23,8 @@ import {
   AccordionPanel,
   AccordionIcon,
 } from '@chakra-ui/react';
+// import { PieChart } from 'react-minimal-pie-chart';
+import PieChart from './PieChart';
 
 const DistrictingDetails = ({ selectedState, isDistrictSelected }) => {
   const [tabIndex, setTabIndex] = useState(0);
@@ -40,7 +43,14 @@ const DistrictingDetails = ({ selectedState, isDistrictSelected }) => {
               <AccordionIcon />
             </AccordionButton>
           </h2>
-          <AccordionPanel pb={4}>
+          <AccordionPanel paddingX={0} pb={4}>
+            <Heading size='md' textAlign='center'>
+              Population Percentage Per Race
+            </Heading>
+            <PieChart data={data} />
+            <Heading size='md' mb={5} textAlign='center'>
+              Population Percentage Per Political Party
+            </Heading>
             <Table
               style={{
                 paddingLeft: '0vh',
@@ -52,47 +62,18 @@ const DistrictingDetails = ({ selectedState, isDistrictSelected }) => {
             >
               <Thead>
                 <Tr style={{ textAlign: 'center' }}>
-                  <Th>Race</Th>
-                  <Th>Population Percentage</Th>
+                  <Th>Political Party</Th>
+                  <Th>Percentage of Votes</Th>
                 </Tr>
               </Thead>
               <Tbody>
                 <Tr>
-                  <Td>White</Td>
-                  <Td>50%</Td>
+                  <Td>Democratic</Td>
+                  <Td>52.5%</Td>
                 </Tr>
                 <Tr>
-                  <Td>Black or African American</Td>
-                  <Td>31.1%</Td>
-                </Tr>
-                <Tr>
-                  <Td>American Indian and Alaska Native</Td>
-                  <Td>0.6%</Td>
-                </Tr>
-
-                <Tr>
-                  <Td>Asian</Td>
-                  <Td>6.7%</Td>
-                </Tr>
-
-                <Tr>
-                  <Td>Native Hawaiian and Other Pacific Islander</Td>
-                  <Td>0.1%</Td>
-                </Tr>
-
-                <Tr>
-                  <Td>Two or more races</Td>
-                  <Td>2.9%</Td>
-                </Tr>
-
-                <Tr>
-                  <Td>Hispanic or Latino</Td>
-                  <Td>10.6%</Td>
-                </Tr>
-
-                <Tr>
-                  <Td>Other</Td>
-                  <Td>8.5%</Td>
+                  <Td>Republican</Td>
+                  <Td>47.5%</Td>
                 </Tr>
               </Tbody>
             </Table>
@@ -104,6 +85,38 @@ const DistrictingDetails = ({ selectedState, isDistrictSelected }) => {
     return retVal;
   }
 
+  const data = [
+    {
+      title: 'White',
+      value: 50,
+      color: '#7400B8',
+    },
+    {
+      title: 'Black or African American',
+      value: 31.1,
+      color: '#5E60CE',
+    },
+    {
+      title: 'Hispanic or Latino',
+      value: 10.6,
+      color: '#4EA8DE',
+    },
+    {
+      title: 'Asian',
+      value: 6.7,
+      color: '#56CFE1',
+    },
+    {
+      title: 'Other',
+      value: 1.6,
+      color: '#64DFDF',
+    },
+    // {
+    //   title: 'Two or more races',
+    //   value: 1.6,
+    //   color: '#80FFDB',
+    // },
+  ];
   return (
     <Box p={1}>
       {selectedState ? (
@@ -130,6 +143,13 @@ const DistrictingDetails = ({ selectedState, isDistrictSelected }) => {
             </TabList>
             <TabPanels>
               <TabPanel>
+                <Heading size='md' textAlign='center'>
+                  Population Percentage Per Race
+                </Heading>
+                <PieChart data={data} />
+                <Heading size='md' mb={5} textAlign='center'>
+                  Population Percentage Per Political Party
+                </Heading>
                 <Table
                   style={{
                     paddingLeft: '0vh',
@@ -139,50 +159,20 @@ const DistrictingDetails = ({ selectedState, isDistrictSelected }) => {
                   variant='simple'
                   size='sm'
                 >
-                  <TableCaption>Race Statistics</TableCaption>
                   <Thead>
                     <Tr style={{ textAlign: 'center' }}>
-                      <Th>Race</Th>
-                      <Th>Population Percentage</Th>
+                      <Th>Political Party</Th>
+                      <Th>Percentage of Votes</Th>
                     </Tr>
                   </Thead>
                   <Tbody>
                     <Tr>
-                      <Td>White</Td>
-                      <Td>50%</Td>
+                      <Td>Democratic</Td>
+                      <Td>52.5%</Td>
                     </Tr>
                     <Tr>
-                      <Td>Black or African American</Td>
-                      <Td>31.1%</Td>
-                    </Tr>
-                    <Tr>
-                      <Td>American Indian and Alaska Native</Td>
-                      <Td>0.6%</Td>
-                    </Tr>
-
-                    <Tr>
-                      <Td>Asian</Td>
-                      <Td>6.7%</Td>
-                    </Tr>
-
-                    <Tr>
-                      <Td>Native Hawaiian and Other Pacific Islander</Td>
-                      <Td>0.1%</Td>
-                    </Tr>
-
-                    <Tr>
-                      <Td>Two or more races</Td>
-                      <Td>2.9%</Td>
-                    </Tr>
-
-                    <Tr>
-                      <Td>Hispanic or Latino</Td>
-                      <Td>10.6%</Td>
-                    </Tr>
-
-                    <Tr>
-                      <Td>Other</Td>
-                      <Td>8.5%</Td>
+                      <Td>Republican</Td>
+                      <Td>47.5%</Td>
                     </Tr>
                   </Tbody>
                 </Table>
@@ -247,10 +237,6 @@ const DistrictingDetails = ({ selectedState, isDistrictSelected }) => {
                       <Td isNumeric>5</Td>
                       <Td isNumeric>3</Td>
                     </Tr>
-
-
-
-
                   </Tbody>
                 </Table>
               </TabPanel>
