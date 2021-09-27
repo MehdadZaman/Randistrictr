@@ -23,7 +23,7 @@ import {
   AccordionIcon,
 } from '@chakra-ui/react';
 
-const DistrictingDetails = ({ selectedState }) => {
+const DistrictingDetails = ({ selectedState, isDistrictSelected }) => {
   const [tabIndex, setTabIndex] = useState(0);
 
   function addAccordianItems() {
@@ -125,8 +125,8 @@ const DistrictingDetails = ({ selectedState }) => {
           <Tabs index={tabIndex} onChange={(index) => setTabIndex(index)}>
             <TabList>
               <Tab>Population</Tab>
-              <Tab>Districting</Tab>
-              <Tab>Statistics</Tab>
+              <Tab isDisabled={!isDistrictSelected}>Districting</Tab>
+              <Tab isDisabled={!isDistrictSelected}>Statistics</Tab>
             </TabList>
             <TabPanels>
               <TabPanel>

@@ -58,7 +58,7 @@ function style(feature) {
 const Map = () => {
   const [map, setMap] = useState(null);
   const [selectedState, setSelectedState, selectedStateRef] = useStateRef();
-  const [activeGeoJSON, setActiveGeoJSON] = useState();
+  const [activeGeoJSON, setActiveGeoJSON] = useState(null);
   const [votingGeoJSON, setVotingGeoJSON] = useState();
   const [leftSidebarExpanded, setLeftSidebarExpanded] = useState(false);
   const [rightSidebarExpanded, setRightSidebarExpanded] = useState(false);
@@ -216,6 +216,7 @@ const Map = () => {
     setActiveGeoJSON(null);
     setLeftSidebarExpanded(false);
     setRightSidebarExpanded(false);
+    setSelectedState('');
     map.fitBounds(bounds);
   };
   return (
@@ -264,7 +265,10 @@ const Map = () => {
             position='right'
             width={450}
           >
-            <DistrictingDetails selectedState={selectedState} />
+            <DistrictingDetails
+              selectedState={selectedState}
+              isDistrictSelected={!!activeGeoJSON}
+            />
           </Sidebar>
         ) : null}
       </div>
