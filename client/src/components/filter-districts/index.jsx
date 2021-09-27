@@ -9,6 +9,11 @@ import {
   Select,
   Input,
   Button,
+  NumberInput,
+  NumberInputField,
+  NumberInputStepper,
+  NumberIncrementStepper,
+  NumberDecrementStepper,
 } from '@chakra-ui/react';
 import ReactSlider from 'react-slider';
 
@@ -26,13 +31,18 @@ const FilterDistricts = ({ map, onFilter }) => {
   const [efficiencyGapMeasure, setEfficiencyGapMeasure] = useState(0);
   const [polsbyPopperScore, setPolsbyPopperScore] = useState(0);
 
+  const [isLoading, setIsLoading] = useState(false);
   function handleSubmitFilter() {
-    console.log('You clicked submit.');
-    if (!efficiencyGapMeasure || !polsbyPopperScore) {
-      console.log('Please fill in all filters');
-    } else {
+    // if (!efficiencyGapMeasure || !polsbyPopperScore) {
+    //   console.log('Please fill in all filters');
+    // } else {
+    //   onFilter();
+    // }
+    setIsLoading(true);
+    setTimeout(() => {
       onFilter();
-    }
+      setIsLoading(false);
+    }, 750);
   }
 
   return (
@@ -133,15 +143,23 @@ const FilterDistricts = ({ map, onFilter }) => {
             Maximum Efficiency Gap Measure:{' '}
           </span>
         </h1>
-        <Input
+        <NumberInput
           variant='outline'
           placeholder=''
           type='number'
-          onChange={(event) => {
-            //if (event)
-            setEfficiencyGapMeasure(event.target.value);
+          min={0}
+          max={1}
+          step={0.01}
+          onChange={(value) => {
+            setEfficiencyGapMeasure(value);
           }}
-        />
+        >
+          <NumberInputField />
+          <NumberInputStepper>
+            <NumberIncrementStepper />
+            <NumberDecrementStepper />
+          </NumberInputStepper>
+        </NumberInput>
       </div>
 
       <div style={{ margin: '2vh' }}>
@@ -150,18 +168,33 @@ const FilterDistricts = ({ map, onFilter }) => {
             Geometric Pactness Polsby Popper Score:{' '}
           </span>
         </h1>
-        <Input
+        <NumberInput
           variant='outline'
           placeholder=''
           type='number'
-          onChange={(event) => {
+          min={0}
+          max={1}
+          step={0.01}
+          onChange={(value) => {
             //if (event)
-            setPolsbyPopperScore(event.target.value);
+            console.log(value);
+            setPolsbyPopperScore(value);
           }}
-        />
+        >
+          <NumberInputField />
+          <NumberInputStepper>
+            <NumberIncrementStepper />
+            <NumberDecrementStepper />
+          </NumberInputStepper>
+        </NumberInput>
       </div>
-      <div style={{ margin: '4vh' }}>
-        <Button colorScheme='blue' size='lg' onClick={handleSubmitFilter}>
+      <div style={{ margin: '4vh', textAlign: 'center' }}>
+        <Button
+          isLoading={isLoading}
+          colorScheme='blue'
+          size='lg'
+          onClick={handleSubmitFilter}
+        >
           Filter
         </Button>
       </div>
