@@ -235,6 +235,22 @@ const DistrictingDetails = ({ selectedState }) => {
                       <Td isNumeric>88%</Td>
                       <Td isNumeric>71%</Td>
                     </Tr>
+
+                    <Tr>
+                      <Td>Republican Districts</Td>
+                      <Td isNumeric>3</Td>
+                      <Td isNumeric>5</Td>
+                    </Tr>
+
+                    <Tr>
+                      <Td>Democratic Districts</Td>
+                      <Td isNumeric>5</Td>
+                      <Td isNumeric>3</Td>
+                    </Tr>
+
+
+
+
                   </Tbody>
                 </Table>
               </TabPanel>
