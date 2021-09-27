@@ -11,7 +11,7 @@ const Sidebar = ({
 }) => {
   let positionStyle = { top: 10, bottom: 10 };
   let buttonStyle = {
-    left: expanded ? '350px' : '15px',
+    left: expanded ? width : '15px',
     transition: 'left 0.5s',
     borderRadius: '0 4px 4px 0',
   };
@@ -23,7 +23,7 @@ const Sidebar = ({
       right: 0,
     };
     buttonStyle = {
-      right: expanded ? '350px' : '15px',
+      right: expanded ? width : '15px',
       transition: 'right 0.5s',
       borderRadius: '4px 0 0 4px',
     };
