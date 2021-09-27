@@ -1,5 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { Tabs, TabList, TabPanels, Tab, TabPanel } from '@chakra-ui/react';
+import {
+  Tabs,
+  TabList,
+  TabPanels,
+  Tab,
+  TabPanel,
+  Heading,
+} from '@chakra-ui/react';
 import FilterDistricts from './filter-districts';
 import DistrictingPreview from './DistrictingPreview';
 import MarylandRedistricting from '../assets/maryland-redistricting.png';
@@ -54,17 +61,16 @@ const TabView = ({ selectedState, onSelect }) => {
       </TabList>
       <TabPanels style={{ overflowY: 'auto', height: '100%' }}>
         <TabPanel>
-          <div style={{ textAlign: 'center' }}>
-            <h1>Filter for {selectedState} districts</h1>
-            <FilterDistricts
-              onFilter={() => {
-                setCards(generateDummyCards(6));
-                setTabIndex(1);
-              }}
-            />
-          </div>
+          <Heading size='md'>Filters for {selectedState} districts</Heading>
+          <FilterDistricts
+            onFilter={() => {
+              setCards(generateDummyCards(6));
+              setTabIndex(1);
+            }}
+          />
         </TabPanel>
         <TabPanel style={{ overflowY: 'hidden', height: '100%' }}>
+          <Heading size='md'>{cards.length} redistrictings generated</Heading>
           <DistrictingPreview cards={cards} onSelect={onSelect} />
         </TabPanel>
       </TabPanels>

@@ -5,6 +5,7 @@ import {
   ZoomControl,
   GeoJSON,
   useMapEvents,
+  Pane,
 } from 'react-leaflet';
 import { center, zoom, bounds } from '../constants/map';
 // Components
@@ -21,6 +22,7 @@ import UtahCongressionalDistricts from '../json/congressional-districts/utah_con
 import MarylandVotingDistricts from '../json/voting districts/maryland_voting_simplified.json';
 import MichiganVotingDistricts from '../json/voting districts/michigan_voting_simplified.json';
 import UtahVotingDistricts from '../json/voting districts/utah_voting_simplified.json';
+import useStateRef from '../hooks/useStateRef';
 
 const COLOR_0 = '#F06E45';
 const COLOR_1 = '#C9A83E';
@@ -48,14 +50,14 @@ function style(feature) {
     // fillColor: getColor(feature.properties.COUNT),
     // weight: 1,
     opacity: 1,
-    color: '#3388ff',
-    fillOpacity: 0.2,
+    color: '#DF1995', //#3388ff
+    fillOpacity: 0.15,
   };
 }
 
 const Map = () => {
   const [map, setMap] = useState(null);
-  const [selectedState, setSelectedState] = useState();
+  const [selectedState, setSelectedState, selectedStateRef] = useStateRef();
   const [activeGeoJSON, setActiveGeoJSON] = useState();
   const [votingGeoJSON, setVotingGeoJSON] = useState();
   const [leftSidebarExpanded, setLeftSidebarExpanded] = useState(false);
@@ -82,7 +84,7 @@ const Map = () => {
         // weight: 2,
         // color: '#DF1995',
         dashArray: '',
-        fillOpacity: 0.6,
+        fillOpacity: 0.3,
       });
       // if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
       //   layer.bringToFront();
@@ -94,11 +96,15 @@ const Map = () => {
     };
     const zoomToFeature = (e) => {
       console.log('TARGET FEATURE', e.target);
-      setLeftSidebarExpanded(true);
-      setRightSidebarExpanded(true);
-      setActiveGeoJSON(null);
-      setSelectedState(e.target.feature.properties.NAME);
-      mapRef.fitBounds(e.target.getBounds());
+      const { NAME } = e.target.feature.properties;
+      if (NAME !== selectedStateRef.current) {
+        setLeftSidebarExpanded(true);
+        setRightSidebarExpanded(true);
+        setActiveGeoJSON(null);
+        setSelectedState(NAME);
+      }
+
+      map.fitBounds(e.target.getBounds());
     };
 
     const onEachFeature = (feature, layer) => {
@@ -107,6 +113,11 @@ const Map = () => {
         mouseout: resetHighlight,
         click: zoomToFeature,
       });
+      layer.setStyle({
+        color: '#DF1995',
+        zIndex: 999,
+      });
+      // layer.setZIndex(999);
     };
 
     const onZoomEnd = (map) => {
@@ -131,6 +142,7 @@ const Map = () => {
         zoom={zoom}
         scrollWheelZoom={false}
         whenCreated={(map) => {
+          console.log('MAP CREATED');
           mapRef = map;
           setMap(map);
         }}
@@ -144,9 +156,26 @@ const Map = () => {
           url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
         />
         <MapEvents />
-        <GeoJSON data={statesdata} onEachFeature={onEachFeature} />
-        {activeGeoJSON ? <GeoJSON data={activeGeoJSON} /> : null}
-        {votingGeoJSON ? <GeoJSON data={votingGeoJSON} /> : null}
+        <Pane name='states' style={{ zIndex: 420 }}>
+          <GeoJSON data={statesdata} onEachFeature={onEachFeature} />
+        </Pane>
+        <Pane name='congressional' style={{ zIndex: 410 }}>
+          {activeGeoJSON ? (
+            <GeoJSON
+              data={activeGeoJSON}
+              style={{ color: 'green', fillOpacity: 0.2 }}
+            />
+          ) : null}
+        </Pane>
+        <Pane name='voting' style={{ zIndex: 400 }}>
+          {votingGeoJSON ? (
+            <GeoJSON
+              data={votingGeoJSON}
+              style={{ color: '#3388ff', fillOpacity: 0.2 }}
+            />
+          ) : null}
+        </Pane>
+
         {/* <GeoJSON data={MaryLandCongressionalDistricts} />
         <GeoJSON data={MichiganCongressionalDistricts} />
         <GeoJSON data={UtahCongressionalDistricts} />
@@ -183,12 +212,19 @@ const Map = () => {
     }
   };
 
+  const handleReset = () => {
+    setActiveGeoJSON(null);
+    setLeftSidebarExpanded(false);
+    setRightSidebarExpanded(false);
+    map.fitBounds(bounds);
+  };
   return (
     <>
       {map ? (
         <Navbar
           map={map}
           selectedState={selectedState}
+          onReset={handleReset}
           onSelect={(state) => {
             if (state) {
               setLeftSidebarExpanded(true);

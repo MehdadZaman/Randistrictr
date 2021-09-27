@@ -39,28 +39,25 @@ const FilterDistricts = ({ map, onFilter }) => {
     <>
       <div style={{ margin: '2vh' }}>
         <h1>
-          <span style={{ color: 'gray' }}>Majority-Minority districts: </span>
+          <span style={{ color: 'gray' }}>Majority-Minority Districts: </span>
           <br />
-          <span style={{ marginLeft: '1vh' }}>
-            {' '}
+          <span>
             Min: {minMinorityMajorityDistricts}, Max:{' '}
             {maxMinorityMajorityDistricts}
           </span>
         </h1>
+
         <ReactSlider
           className='horizontal-slider'
           thumbClassName='thumb'
           trackClassName='track'
-          defaultValue={[
-            minMinorityMajorityDistricts,
-            maxMinorityMajorityDistricts,
-          ]}
+          value={[minMinorityMajorityDistricts, maxMinorityMajorityDistricts]}
           onChange={setMinorityMajorityDistricts}
           ariaLabel={['Lower thumb', 'Upper thumb']}
-          ariaValuetext={(state) => `Thumb value ${state.valueNow}`}
+          // ariaValuetext={(state) => `Thumb value ${state.valueNow}`}
           // renderThumb={(props, state) => <div {...props}>{state.valueNow}</div>}
           pearling
-          // minDistance={0}
+          minDistance={0}
           min={0}
           max={5}
         />
@@ -68,16 +65,17 @@ const FilterDistricts = ({ map, onFilter }) => {
       <div style={{ margin: '2vh' }}>
         <h1>
           <span style={{ color: 'gray' }}>
-            Minimum Threshold for Majority-Minority districts:{' '}
-          </span>{' '}
-          <span style={{ marginLeft: '1vh' }}> {minThreshold}</span>%
+            Minimum Threshold for Majority-Minority Districts:
+          </span>
+          <br />
+          <span>{minThreshold}</span>%
         </h1>
         <Slider
           aria-label='slider-ex-2'
           colorScheme='blue'
           defaultValue={minThreshold}
           max={100}
-          onChangeEnd={(val) => setMinThreshold(val)}
+          onChange={(val) => setMinThreshold(val)}
         >
           <SliderTrack>
             <SliderFilledTrack />
@@ -111,15 +109,16 @@ const FilterDistricts = ({ map, onFilter }) => {
 
       <div style={{ margin: '2vh' }}>
         <h1>
-          <span style={{ color: 'gray' }}>Minimum Population Score: </span>{' '}
-          <span style={{ marginLeft: '1vh' }}> {minPopulationScore}</span>%
+          <span style={{ color: 'gray' }}>Minimum Population Score: </span>
+          <br />
+          <span>{minPopulationScore}</span>%
         </h1>
         <Slider
           aria-label='slider-ex-2'
           colorScheme='blue'
           defaultValue={minPopulationScore}
           max={100}
-          onChangeEnd={(val) => setMinPopulationScore(val)}
+          onChange={(val) => setMinPopulationScore(val)}
         >
           <SliderTrack>
             <SliderFilledTrack />
@@ -161,7 +160,6 @@ const FilterDistricts = ({ map, onFilter }) => {
           }}
         />
       </div>
-
       <div style={{ margin: '4vh' }}>
         <Button colorScheme='blue' size='lg' onClick={handleSubmitFilter}>
           Filter

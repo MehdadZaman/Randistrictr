@@ -1,8 +1,12 @@
 /* Slider */
 .horizontal-slider {
   width: 100%;
-  max-width: 500px;
-  height: 50px;
+  /* max-width: 500px; */
+  display: inline-block;
+  height: 10px;
+  cursor: pointer;
+  padding: 7px 0 7px 0;
+  width: 290px;
 }
 
 .thumb {
@@ -33,7 +37,7 @@
   border-color: var(--chakra-colors-transparent);
   transition-property: transform;
   transition-duration: var(--chakra-transition-duration-normal);
-  top: 42%;
+  top: 50%;
   -webkit-transform: translateY(-50%);
   -moz-transform: translateY(-50%);
   -ms-transform: translateY(-50%);
@@ -44,21 +48,18 @@
 }
 
 .track {
-  top: 20px;
   height: 4px;
   background: var(--chakra-colors-gray-200);
   border-radius: var(--chakra-radii-sm);
 }
 
 .track-1 {
-  top: 20px;
   height: 4px;
   background-color: var(--chakra-colors-blue-500);
   border-radius: var(--chakra-radii-sm);
 }
 
 .track-2 {
-  top: 20px;
   height: 4px;
   background: var(--chakra-colors-gray-200);
   border-radius: var(--chakra-radii-sm);

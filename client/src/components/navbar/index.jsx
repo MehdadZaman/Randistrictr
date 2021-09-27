@@ -3,13 +3,14 @@ import {
   Flex,
   Heading,
   Stack,
+  Button,
   useColorModeValue,
   useBreakpointValue,
 } from '@chakra-ui/react';
 import Position from '../Position';
 import StateSelect from '../StatesSelect';
 
-const Navbar = ({ map, selectedState, onSelect }) => {
+const Navbar = ({ map, selectedState, onReset, onSelect }) => {
   return (
     <Box h='9vh'>
       <Flex
@@ -36,7 +37,21 @@ const Navbar = ({ map, selectedState, onSelect }) => {
             <DesktopNav map={map} />
           </Flex>
         </Flex>
-        <Box flex={1}>{map ? <Position map={map} /> : null}</Box>
+
+        <Box flex={1}>
+          {map ? (
+            <div
+              style={{
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}
+            >
+              <Position map={map} />
+              <Button onClick={onReset}>Reset All</Button>
+            </div>
+          ) : null}
+        </Box>
 
         <Stack flex={1} justify={'flex-end'} direction={'row'} spacing={6}>
           {/* <Button

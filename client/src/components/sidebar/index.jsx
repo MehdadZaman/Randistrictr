@@ -6,7 +6,7 @@ const Sidebar = ({
   expanded,
   onToggle,
   position,
-  width = 350,
+  width = 375,
   children,
 }) => {
   let positionStyle = { top: 10, bottom: 10 };

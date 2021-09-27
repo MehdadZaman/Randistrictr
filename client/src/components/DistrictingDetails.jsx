@@ -31,21 +31,27 @@ const DistrictingDetails = ({ selectedState }) => {
 
     for (let i = 1; i <= 8; i++) {
       retVal.push(
-
-        <AccordionItem>
+        <AccordionItem key={i}>
           <h2>
             <AccordionButton>
-              <Box flex="1" textAlign="left">
+              <Box flex='1' textAlign='left'>
                 District # {i} statistics
               </Box>
               <AccordionIcon />
             </AccordionButton>
           </h2>
           <AccordionPanel pb={4}>
-
-            <Table style={{ paddingLeft: "0vh", paddingRight: "0vh", paddingTop: "2vh" }} variant="simple" size="sm">
+            <Table
+              style={{
+                paddingLeft: '0vh',
+                paddingRight: '0vh',
+                paddingTop: '2vh',
+              }}
+              variant='simple'
+              size='sm'
+            >
               <Thead>
-                <Tr style={{ textAlign: "center" }}>
+                <Tr style={{ textAlign: 'center' }}>
                   <Th>Race</Th>
                   <Th>Population Percentage</Th>
                 </Tr>
@@ -90,7 +96,6 @@ const DistrictingDetails = ({ selectedState }) => {
                 </Tr>
               </Tbody>
             </Table>
-
           </AccordionPanel>
         </AccordionItem>
       );
@@ -103,10 +108,18 @@ const DistrictingDetails = ({ selectedState }) => {
     <Box p={1}>
       {selectedState ? (
         <Box>
-          <Stack spacing={0.25} m={2}> {/*ADD THE STATE FLAG*/}
-            <Text fontSize='4xl' as="b">{selectedState}</Text>
-            <Text fontSize='1xl' as="i">Number of Congressional Districts: 8</Text>
-            <Text fontSize='1xl' as="i">Population: 6,065,436</Text>
+          <Stack spacing={0.25} m={2}>
+            {' '}
+            {/*ADD THE STATE FLAG*/}
+            <Text fontSize='4xl' as='b'>
+              {selectedState}
+            </Text>
+            <Text fontSize='1xl' as='i'>
+              Number of Congressional Districts: 8
+            </Text>
+            <Text fontSize='1xl' as='i'>
+              Population: 6,065,436
+            </Text>
           </Stack>
 
           <Tabs index={tabIndex} onChange={(index) => setTabIndex(index)}>
@@ -117,10 +130,18 @@ const DistrictingDetails = ({ selectedState }) => {
             </TabList>
             <TabPanels>
               <TabPanel>
-                <Table style={{ paddingLeft: "0vh", paddingRight: "0vh", paddingTop: "2vh" }} variant="simple" size="sm">
+                <Table
+                  style={{
+                    paddingLeft: '0vh',
+                    paddingRight: '0vh',
+                    paddingTop: '2vh',
+                  }}
+                  variant='simple'
+                  size='sm'
+                >
                   <TableCaption>Race Statistics</TableCaption>
                   <Thead>
-                    <Tr style={{ textAlign: "center" }}>
+                    <Tr style={{ textAlign: 'center' }}>
                       <Th>Race</Th>
                       <Th>Population Percentage</Th>
                     </Tr>
@@ -165,21 +186,16 @@ const DistrictingDetails = ({ selectedState }) => {
                     </Tr>
                   </Tbody>
                 </Table>
-
               </TabPanel>
               <TabPanel>
-                <Accordion>
-                  {
-                    addAccordianItems()
-                  }
-                </Accordion>
+                <Accordion>{addAccordianItems()}</Accordion>
               </TabPanel>
               <TabPanel>
-
-
-
-                <Table variant="simple" size="sm">
-                  <TableCaption>Simulated Redistricting statistics vs enacted districting statistics</TableCaption>
+                <Table variant='simple' size='sm'>
+                  <TableCaption>
+                    Simulated Redistricting statistics vs enacted districting
+                    statistics
+                  </TableCaption>
                   <Thead>
                     <Tr>
                       <Th></Th>
@@ -188,7 +204,6 @@ const DistrictingDetails = ({ selectedState }) => {
                     </Tr>
                   </Thead>
                   <Tbody>
-
                     <Tr>
                       <Td>Majority Minority Districts</Td>
                       <Td isNumeric>2</Td>
@@ -196,7 +211,9 @@ const DistrictingDetails = ({ selectedState }) => {
                     </Tr>
 
                     <Tr>
-                      <Td>Difference between least and most populous districts</Td>
+                      <Td>
+                        Difference between least and most populous districts
+                      </Td>
                       <Td isNumeric>0.1%</Td>
                       <Td isNumeric>0.5%</Td>
                     </Tr>
@@ -218,46 +235,25 @@ const DistrictingDetails = ({ selectedState }) => {
                       <Td isNumeric>88%</Td>
                       <Td isNumeric>71%</Td>
                     </Tr>
-
                   </Tbody>
                 </Table>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
               </TabPanel>
             </TabPanels>
           </Tabs>
         </Box>
       ) : (
-        <h1 style={{ display: "flex", justifyContent: "center", fontSize: '3vh', transform: 'translateY(350%)' }}>
+        <h1
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+            fontSize: '3vh',
+            transform: 'translateY(350%)',
+          }}
+        >
           Please select a state to continue
         </h1>
       )}
     </Box>
-
-
   );
 };
 
