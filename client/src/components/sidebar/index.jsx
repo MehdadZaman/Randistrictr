@@ -36,8 +36,10 @@ const Sidebar = ({
         className='sidebar'
         style={{ ...positionStyle, width: expanded ? width : '15px' }}
       >
-        <div style={{ display: expanded ? 'block' : 'none', padding: 10 }}>
-          {children}
+        <div className='sidebarWrapper'>
+          <div style={{ display: expanded ? 'block' : 'none', padding: 10 }}>
+            {children}
+          </div>
         </div>
       </aside>
       <button className='toggleButton' style={buttonStyle} onClick={onToggle}>

@@ -2,13 +2,17 @@
   background-color: #fff;
   position: absolute;
   z-index: 1000;
-  overflow-x: visible;
+  overflow: visible;
   box-shadow: 0 1px 5px rgb(0 0 0 / 65%);
   top: 0;
   bottom: 0;
   transition: width 0.5s;
 }
 
+.sidebarWrapper {
+  overflow-y: auto;
+  height: 100%;
+}
 .toggleButton {
   background-color: #fff;
   position: absolute;

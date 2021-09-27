@@ -199,7 +199,7 @@ const Map = () => {
           }}
         />
       ) : null}
-      <div style={{ position: 'relative' }}>
+      <div style={{ position: 'relative', overflow: 'hidden' }}>
         {map ? (
           <Sidebar
             expanded={leftSidebarExpanded}

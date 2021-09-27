@@ -13,14 +13,14 @@ const TabView = ({ selectedState, onSelect }) => {
         <Tab>Filter District</Tab>
         <Tab>Select District</Tab>
       </TabList>
-      <TabPanels>
+      <TabPanels style={{ overflowY: 'auto', height: '100%' }}>
         <TabPanel>
           <div style={{ textAlign: 'center' }}>
             <h1>Filter for {selectedState} districts</h1>
             <FilterDistricts onFilter={() => setTabIndex(1)} />
           </div>
         </TabPanel>
-        <TabPanel>
+        <TabPanel style={{ overflowY: 'hidden', height: '100%' }}>
           <DistrictingPreview onSelect={onSelect} />
         </TabPanel>
       </TabPanels>
