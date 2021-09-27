@@ -1,11 +1,12 @@
 import {
   Box,
   Flex,
-  Text,
+  Heading,
   Stack,
   useColorModeValue,
   useBreakpointValue,
 } from '@chakra-ui/react';
+import Position from '../Position';
 import StateSelect from '../StatesSelect';
 
 const Navbar = ({ map, selectedState, onSelect }) => {
@@ -22,19 +23,20 @@ const Navbar = ({ map, selectedState, onSelect }) => {
         borderColor={useColorModeValue('gray.200', 'gray.900')}
         align={'center'}
       >
-        <Flex flex={3} justify={{ base: 'center', md: 'start' }}>
-          <Text
+        <Flex flex={1} justify={{ base: 'center', md: 'start' }}>
+          <Heading
             textAlign={useBreakpointValue({ base: 'center', md: 'left' })}
             fontFamily={'heading'}
             color={useColorModeValue('gray.800', 'white')}
           >
             Randistrictr
-          </Text>
+          </Heading>
 
           <Flex display={{ base: 'none', md: 'flex' }} ml={10}>
             <DesktopNav map={map} />
           </Flex>
         </Flex>
+        <Box flex={1}>{map ? <Position map={map} /> : null}</Box>
 
         <Stack flex={1} justify={'flex-end'} direction={'row'} spacing={6}>
           {/* <Button

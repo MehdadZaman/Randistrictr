@@ -38,7 +38,10 @@ const DistrictingCardPopover = ({ card, onSelect }) => {
         </PopoverHeader>
         <PopoverCloseButton />
         <PopoverBody fontSize='sm'>
-          <Text>{card.minorityMajorityDistrict} Majority Minority districts at {card.threshold}% threshold</Text>
+          <Text>
+            {card.minorityMajorityDistrict} Majority Minority districts at{' '}
+            {card.threshold}% threshold
+          </Text>
           <Text>Maximum Population Range: {card.maxPopulationRange}</Text>
           <Text>Mattingly Population Score: {card.populationScore}</Text>
           <Text>Efficiency Gap Measure: {card.efficiencyGapMeasure}</Text>
@@ -63,7 +66,7 @@ const DistrictingCard = ({ property, onSelect }) => {
           ml='1'
         >
           {property.congressionalDistricts} Congressional &bull;{' '}
-          {property.votingDistricts} Voting
+          {property.votingDistricts.toLocaleString()} Voting
         </Box>
         <Box
           mt='1'

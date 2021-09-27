@@ -20,12 +20,14 @@ const Sidebar = ({
   if (position === 'right') {
     positionStyle = {
       ...positionStyle,
+      bottom: 100,
       right: 0,
     };
     buttonStyle = {
       right: expanded ? width : '15px',
       transition: 'right 0.5s',
       borderRadius: '4px 0 0 4px',
+      top: 'calc(40vh)',
     };
     expandIcon = '>';
     collapseIcon = '<';

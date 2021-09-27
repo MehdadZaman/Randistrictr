@@ -95,6 +95,7 @@ const Map = () => {
     const zoomToFeature = (e) => {
       console.log('TARGET FEATURE', e.target);
       setLeftSidebarExpanded(true);
+      setRightSidebarExpanded(true);
       setActiveGeoJSON(null);
       setSelectedState(e.target.feature.properties.NAME);
       mapRef.fitBounds(e.target.getBounds());
@@ -191,8 +192,10 @@ const Map = () => {
           onSelect={(state) => {
             if (state) {
               setLeftSidebarExpanded(true);
+              setRightSidebarExpanded(true);
             } else {
               setLeftSidebarExpanded(false);
+              setRightSidebarExpanded(false);
             }
             setActiveGeoJSON(null);
             setSelectedState(state);
@@ -215,7 +218,7 @@ const Map = () => {
             )}
           </Sidebar>
         ) : null}
-        {map ? <Position map={map} /> : null}
+
         {displayMap}
         {map ? (
           <Sidebar

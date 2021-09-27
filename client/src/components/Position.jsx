@@ -20,7 +20,7 @@ const Position = ({ map }) => {
     padding: '6px 12px',
     fontFamily: 'monospace',
     zIndex: 1,
-    position: 'absolute',
+    // position: 'absolute',
     top: 10,
     right: 0,
     margin: '12px',
