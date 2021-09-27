@@ -156,7 +156,7 @@ const Map = () => {
         <ZoomControl position='bottomright' />
       </MapContainer>
     );
-  }, [map, activeGeoJSON, votingGeoJSON]);
+  }, [map, selectedState, activeGeoJSON, votingGeoJSON]);
 
   const handleSelect = (districting) => {
     switch (selectedState) {
