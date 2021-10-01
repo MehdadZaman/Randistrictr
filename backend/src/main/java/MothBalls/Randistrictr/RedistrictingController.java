@@ -12,11 +12,24 @@ import java.io.FileReader;
 @RequestMapping("api")
 @RestController
 public class RedistrictingController {
+
     @GetMapping("/redistricting")
     public JSONObject getRedistricting(@RequestParam String stateName, @RequestParam String redistrictNumber) {
         return parseGEOJSON(stateName);
     }
 
+    @GetMapping("/redistricting")
+    public JSONObject returnStateJson(@RequestParam(value = "state", defaultValue = "maryland") String state,
+                                  @RequestParam(value = "minOpportunity", defaultValue = "2") String minOpportunity,
+                                  @RequestParam(value = "maxOpportunity", defaultValue = "6") String maxOpportunity,
+                                  @RequestParam(value = "minThreshold", defaultValue = "0.5") String minThreshold,
+                                  @RequestParam(value = "maxDiff", defaultValue = "0.07") String maxDiff,
+                                  @RequestParam(value = "maxEffGap", defaultValue = "0.9") String maxEffGap,
+                                  @RequestParam(value = "minPolsbyPopper", defaultValue = "0.5") String minPolsbyPopper,
+                                  @RequestParam(value = "iterations", defaultValue = "100") String iterations) {
+
+        return parseGEOJSON(state);
+    }
 
     //Statenames are acronyms
     // i.e. MD == Maryland, MI = Michigan, UT = Utah
@@ -42,5 +55,4 @@ public class RedistrictingController {
         }
         return null;
     }
-
 }
