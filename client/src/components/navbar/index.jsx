@@ -47,7 +47,6 @@ const Navbar = ({ map, selectedState, onReset, onSelect }) => {
                 alignItems: 'center',
               }}
             >
-              <Position map={map} />
               <Button onClick={onReset}>Reset All</Button>
             </div>
           ) : null}

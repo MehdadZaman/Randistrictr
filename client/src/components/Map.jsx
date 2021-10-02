@@ -188,9 +188,9 @@ const Map = () => {
     );
   }, [map, selectedState, activeGeoJSON, votingGeoJSON]);
 
-  const handleSelect = async (districting) => {
+  const handleSelect = async (redistrictNumber) => {
     const res = await apiCaller.get('/redistricting', {
-      params: { state: selectedState },
+      params: { stateName: selectedState, redistrictNumber },
     });
     console.log(res.data);
     switch (selectedState) {
@@ -224,6 +224,30 @@ const Map = () => {
     setSelectedState('');
     map.fitBounds(bounds);
   };
+
+  const handleRunAlgorithm = async (
+    minOpportunity,
+    maxOpportunity,
+    minThreshold,
+    maxDiff,
+    maxEffGap,
+    minPolsbyPopper,
+    numIterations
+  ) => {
+    const res = await apiCaller.get('/run-algorithm', {
+      params: {
+        stateName: selectedState,
+        minOpportunity,
+        maxOpportunity,
+        minThreshold,
+        maxDiff,
+        maxEffGap,
+        minPolsbyPopper,
+        numIterations,
+      },
+    });
+    console.log(res.data);
+  };
   return (
     <>
       {map ? (
@@ -252,7 +276,12 @@ const Map = () => {
             map={map}
           >
             {selectedState ? (
-              <TabView selectedState={selectedState} onSelect={handleSelect} />
+              <TabView
+                selectedState={selectedState}
+                onSelect={handleSelect}
+                onRun={handleRunAlgorithm}
+                isDistrictSelected={!!activeGeoJSON}
+              />
             ) : (
               <h1 style={{ fontSize: '3vh', transform: 'translateY(350%)' }}>
                 Please select a state to continue

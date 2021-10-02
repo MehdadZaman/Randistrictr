@@ -17,22 +17,20 @@ import {
 } from '@chakra-ui/react';
 import ReactSlider from 'react-slider';
 
-const FilterDistricts = ({ map, onFilter }) => {
-  const [
-    [minMinorityMajorityDistricts, maxMinorityMajorityDistricts],
-    setMinorityMajorityDistricts,
-  ] = useState([0, 3]);
+const RunAlgorithm = ({ map, onRun }) => {
+  const [[minOpportunity, maxOpportunity], setOpportunity] = useState([0, 3]);
 
   const [minThreshold, setMinThreshold] = useState(50);
   const [minPopulationScore, setMinPopulationScore] = useState(75);
 
   const [maxDiff, setMaxDiff] = useState();
 
-  const [efficiencyGapMeasure, setEfficiencyGapMeasure] = useState(0);
-  const [polsbyPopperScore, setPolsbyPopperScore] = useState(0);
+  const [maxEffGap, setMaxEffGap] = useState(0.5);
+  const [minPolsbyPopper, setMinPolsbyPopper] = useState(0.5);
+  const [numIterations, setNumIterations] = useState(10);
 
   const [isLoading, setIsLoading] = useState(false);
-  function handleSubmitFilter() {
+  function handleRun() {
     // if (!efficiencyGapMeasure || !polsbyPopperScore) {
     //   console.log('Please fill in all filters');
     // } else {
@@ -40,9 +38,17 @@ const FilterDistricts = ({ map, onFilter }) => {
     // }
     setIsLoading(true);
     setTimeout(() => {
-      onFilter();
+      onRun(
+        minOpportunity,
+        maxOpportunity,
+        minThreshold,
+        maxDiff,
+        maxEffGap,
+        minPolsbyPopper,
+        numIterations
+      );
       setIsLoading(false);
-    }, 750);
+    }, 3000);
   }
 
   return (
@@ -52,8 +58,7 @@ const FilterDistricts = ({ map, onFilter }) => {
           <span style={{ color: 'gray' }}>Majority-Minority Districts: </span>
           <br />
           <span>
-            Min: {minMinorityMajorityDistricts}, Max:{' '}
-            {maxMinorityMajorityDistricts}
+            Min: {minOpportunity}, Max: {maxOpportunity}
           </span>
         </h1>
 
@@ -61,8 +66,8 @@ const FilterDistricts = ({ map, onFilter }) => {
           className='horizontal-slider'
           thumbClassName='thumb'
           trackClassName='track'
-          value={[minMinorityMajorityDistricts, maxMinorityMajorityDistricts]}
-          onChange={setMinorityMajorityDistricts}
+          value={[minOpportunity, maxOpportunity]}
+          onChange={setOpportunity}
           ariaLabel={['Lower thumb', 'Upper thumb']}
           // ariaValuetext={(state) => `Thumb value ${state.valueNow}`}
           // renderThumb={(props, state) => <div {...props}>{state.valueNow}</div>}
@@ -85,7 +90,8 @@ const FilterDistricts = ({ map, onFilter }) => {
           colorScheme='blue'
           defaultValue={minThreshold}
           max={100}
-          onChange={(val) => setMinThreshold(val)}
+          value={minThreshold}
+          onChange={setMinThreshold}
         >
           <SliderTrack>
             <SliderFilledTrack />
@@ -105,6 +111,7 @@ const FilterDistricts = ({ map, onFilter }) => {
           variant='outline'
           placeholder='Select percentage'
           style={{ marginTop: '1vh' }}
+          value={maxDiff}
           onChange={(event) => {
             setMaxDiff(event.target.value);
           }}
@@ -128,7 +135,8 @@ const FilterDistricts = ({ map, onFilter }) => {
           colorScheme='blue'
           defaultValue={minPopulationScore}
           max={100}
-          onChange={(val) => setMinPopulationScore(val)}
+          value={minPopulationScore}
+          onChange={setMinPopulationScore}
         >
           <SliderTrack>
             <SliderFilledTrack />
@@ -150,10 +158,8 @@ const FilterDistricts = ({ map, onFilter }) => {
           min={0}
           max={1}
           step={0.01}
-          value={efficiencyGapMeasure}
-          onChange={(value) => {
-            setEfficiencyGapMeasure(value);
-          }}
+          value={maxEffGap}
+          onChange={setMaxEffGap}
         >
           <NumberInputField />
           <NumberInputStepper>
@@ -176,9 +182,29 @@ const FilterDistricts = ({ map, onFilter }) => {
           min={0}
           max={1}
           step={0.01}
-          value={polsbyPopperScore}
+          value={minPolsbyPopper}
+          onChange={setMinPolsbyPopper}
+        >
+          <NumberInputField />
+          <NumberInputStepper>
+            <NumberIncrementStepper />
+            <NumberDecrementStepper />
+          </NumberInputStepper>
+        </NumberInput>
+      </div>
+      <div style={{ margin: '2vh' }}>
+        <h1 style={{ marginBottom: '1vh' }}>
+          <span style={{ color: 'gray' }}>Number of Iterations: </span>
+        </h1>
+        <NumberInput
+          variant='outline'
+          type='number'
+          min={1}
+          max={100}
+          step={1}
+          value={numIterations}
           onChange={(value) => {
-            setPolsbyPopperScore(value);
+            setNumIterations(value);
           }}
         >
           <NumberInputField />
@@ -193,13 +219,13 @@ const FilterDistricts = ({ map, onFilter }) => {
           isLoading={isLoading}
           colorScheme='blue'
           size='lg'
-          onClick={handleSubmitFilter}
+          onClick={handleRun}
         >
-          Filter
+          Run Algorithm
         </Button>
       </div>
     </>
   );
 };
 
-export default FilterDistricts;
+export default RunAlgorithm;

@@ -12,8 +12,9 @@ import DistrictingPreview from './DistrictingPreview';
 import MarylandRedistricting from '../assets/maryland-redistricting.png';
 import MichiganRedistricting from '../assets/michigan-redistricting.png';
 import UtahRedistricting from '../assets/utah-redistricting.png';
+import RunAlgorithm from './run-algorithm';
 
-const TabView = ({ selectedState, onSelect }) => {
+const TabView = ({ selectedState, isDistrictSelected, onSelect, onRun }) => {
   const [tabIndex, setTabIndex] = useState(0);
   const [cards, setCards] = useState([]);
 
@@ -31,6 +32,7 @@ const TabView = ({ selectedState, onSelect }) => {
     // let types = ['the number of majority minority districts', 'the population score']
     for (let i = 1; i <= numCards; i++) {
       cards.push({
+        number: i,
         imageUrl,
         imageAlt: selectedState,
         title: `Random Districting ${i}`,
@@ -58,6 +60,7 @@ const TabView = ({ selectedState, onSelect }) => {
       <TabList>
         <Tab>Filter District</Tab>
         <Tab>Select District</Tab>
+        <Tab isDisabled={!isDistrictSelected}>Run Algorithm</Tab>
       </TabList>
       <TabPanels style={{ overflowY: 'auto', height: '100%' }}>
         <TabPanel>
@@ -72,6 +75,9 @@ const TabView = ({ selectedState, onSelect }) => {
         <TabPanel style={{ overflowY: 'hidden', height: '100%' }}>
           <Heading size='md'>{cards.length} redistrictings generated</Heading>
           <DistrictingPreview cards={cards} onSelect={onSelect} />
+        </TabPanel>
+        <TabPanel>
+          <RunAlgorithm onRun={onRun} />
         </TabPanel>
       </TabPanels>
     </Tabs>

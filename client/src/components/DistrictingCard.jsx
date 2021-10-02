@@ -89,7 +89,7 @@ const DistrictingCard = ({ property, onSelect }) => {
           <ButtonGroup size='sm'>
             <Button
               colorScheme='green'
-              onClick={() => onSelect(property.title)}
+              onClick={() => onSelect(property.number)}
             >
               Use!
             </Button>
