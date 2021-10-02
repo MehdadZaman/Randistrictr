@@ -8,15 +8,15 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.FileReader;
 
-
+@CrossOrigin("*")
 @RequestMapping("api")
 @RestController
 public class RedistrictingController {
 
-    @GetMapping("/redistricting")
-    public JSONObject getRedistricting(@RequestParam String stateName, @RequestParam String redistrictNumber) {
-        return parseGEOJSON(stateName);
-    }
+//    @GetMapping("/redistricting")
+//    public JSONObject getRedistricting(@RequestParam String stateName, @RequestParam String redistrictNumber) {
+//        return parseGEOJSON(stateName);
+//    }
 
     @GetMapping("/redistricting")
     public JSONObject returnStateJson(@RequestParam(value = "state", defaultValue = "maryland") String state,
@@ -39,13 +39,13 @@ public class RedistrictingController {
         JSONParser parser = new JSONParser();
         try {
             switch (stateName) {
-                case "MD":
+                case "Maryland":
                     obj = parser.parse(new FileReader("src/main/java/MothBalls/Randistrictr/constants/maryland_congressional_districts.json"));
                     break;
-                case "MI":
+                case "Michigan":
                     obj = parser.parse(new FileReader("src/main/java/MothBalls/Randistrictr/constants/michigan_congressional_districts.json"));
                     break;
-                case "UT":
+                case "Utah":
                     obj = parser.parse(new FileReader("src/main/java/MothBalls/Randistrictr/constants/utah_congressional_districts.json"));
                     break;
             }

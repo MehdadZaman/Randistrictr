@@ -23,6 +23,7 @@ import MarylandVotingDistricts from '../json/voting districts/maryland_voting_si
 import MichiganVotingDistricts from '../json/voting districts/michigan_voting_simplified.json';
 import UtahVotingDistricts from '../json/voting districts/utah_voting_simplified.json';
 import useStateRef from '../hooks/useStateRef';
+import apiCaller from '../utils/apiCaller';
 
 const COLOR_0 = '#F06E45';
 const COLOR_1 = '#C9A83E';
@@ -187,7 +188,11 @@ const Map = () => {
     );
   }, [map, selectedState, activeGeoJSON, votingGeoJSON]);
 
-  const handleSelect = (districting) => {
+  const handleSelect = async (districting) => {
+    const res = await apiCaller.get('/redistricting', {
+      params: { state: selectedState },
+    });
+    console.log(res.data);
     switch (selectedState) {
       case 'Maryland': {
         setActiveGeoJSON(MarylandCongressionalDistricts);
