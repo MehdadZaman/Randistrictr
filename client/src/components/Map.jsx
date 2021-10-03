@@ -192,29 +192,31 @@ const Map = () => {
     const res = await apiCaller.get('/redistricting', {
       params: { stateName: selectedState, redistrictNumber },
     });
-    console.log(res.data);
-    switch (selectedState) {
-      case 'Maryland': {
-        setActiveGeoJSON(MarylandCongressionalDistricts);
-        setRightSidebarExpanded(true);
-        break;
-      }
-      case 'Michigan': {
-        setActiveGeoJSON(MichiganCongressionalDistricts);
-        setRightSidebarExpanded(true);
-        break;
-      }
-      case 'Utah': {
-        setActiveGeoJSON(UtahCongressionalDistricts);
-        setRightSidebarExpanded(true);
-        break;
-      }
-      default: {
-        setActiveGeoJSON(null);
-        setRightSidebarExpanded(false);
-        break;
-      }
-    }
+    setActiveGeoJSON(res.data);
+    setRightSidebarExpanded(true);
+    // console.log(res.data);
+    // switch (selectedState) {
+    //   case 'Maryland': {
+    //     setActiveGeoJSON(MarylandCongressionalDistricts);
+    //     setRightSidebarExpanded(true);
+    //     break;
+    //   }
+    //   case 'Michigan': {
+    //     setActiveGeoJSON(MichiganCongressionalDistricts);
+    //     setRightSidebarExpanded(true);
+    //     break;
+    //   }
+    //   case 'Utah': {
+    //     setActiveGeoJSON(UtahCongressionalDistricts);
+    //     setRightSidebarExpanded(true);
+    //     break;
+    //   }
+    //   default: {
+    //     setActiveGeoJSON(null);
+    //     setRightSidebarExpanded(false);
+    //     break;
+    //   }
+    // }
   };
 
   const handleReset = () => {
@@ -246,6 +248,7 @@ const Map = () => {
         numIterations,
       },
     });
+    setActiveGeoJSON(res.data);
     console.log(res.data);
   };
   return (
