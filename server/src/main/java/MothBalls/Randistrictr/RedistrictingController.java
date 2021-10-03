@@ -9,6 +9,10 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.io.FileReader;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Locale;
+import java.util.Set;
 
 @CrossOrigin("*")
 @RequestMapping("randistrictr")
@@ -37,19 +41,12 @@ public class RedistrictingController {
     public JSONObject parseGEOJSON(String stateName) {
         Object obj = new Object();
         JSONParser parser = new JSONParser();
+        Set<String> states = new HashSet<>(Arrays.asList("maryland", "michigan", "utah"));
         try {
-            switch (stateName) {
-                case "Maryland":
-                    obj = parser.parse(new FileReader("src/main/java/MothBalls/Randistrictr/constants/maryland_congressional_districts.json"));
-                    break;
-                case "Michigan":
-                    obj = parser.parse(new FileReader("src/main/java/MothBalls/Randistrictr/constants/michigan_congressional_districts.json"));
-                    break;
-                case "Utah":
-                    obj = parser.parse(new FileReader("src/main/java/MothBalls/Randistrictr/constants/utah_congressional_districts.json"));
-                    break;
-                default:
-                    throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The state selected is not one of the three available states");
+            if (states.contains(stateName.toLowerCase())) {
+               obj = parser.parse(new FileReader("src/main/java/MothBalls/Randistrictr/constants/" + stateName.toLowerCase() + "_congressional_districts.json"));
+            } else {
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The state selected is not one of the three available states");
             }
             return (JSONObject) obj;
         }
