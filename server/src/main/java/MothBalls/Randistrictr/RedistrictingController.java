@@ -3,22 +3,26 @@ package MothBalls.Randistrictr;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.io.FileReader;
 
 @CrossOrigin("*")
-@RequestMapping("api")
+@RequestMapping("randistrictr")
 @RestController
 public class RedistrictingController {
 
     @GetMapping("/redistricting")
-    public JSONObject getRedistricting(@RequestParam String stateName, @RequestParam String redistrictNumber) {
+    public JSONObject getRedistricting(@RequestParam(value = "stateName", defaultValue = "Maryland") String stateName,
+                                       @RequestParam(value = "redistrictNumber", defaultValue = "1") String redistrictNumber) {
         return parseGEOJSON(stateName);
     }
 
     @GetMapping("/run-algorithm")
-    public JSONObject returnStateJson(@RequestParam(value = "stateName", defaultValue = "maryland") String stateName,
+    public JSONObject returnStateJson(@RequestParam(value = "stateName", defaultValue = "Maryland") String stateName,
                                   @RequestParam(value = "minOpportunity", defaultValue = "2") String minOpportunity,
                                   @RequestParam(value = "maxOpportunity", defaultValue = "6") String maxOpportunity,
                                   @RequestParam(value = "minThreshold", defaultValue = "0.5") String minThreshold,
@@ -30,9 +34,6 @@ public class RedistrictingController {
         return parseGEOJSON(stateName);
     }
 
-    //Statenames are acronyms
-    // i.e. MD == Maryland, MI = Michigan, UT = Utah
-    // take the content root when getting path
     public JSONObject parseGEOJSON(String stateName) {
         Object obj = new Object();
         JSONParser parser = new JSONParser();
@@ -47,11 +48,16 @@ public class RedistrictingController {
                 case "Utah":
                     obj = parser.parse(new FileReader("src/main/java/MothBalls/Randistrictr/constants/utah_congressional_districts.json"));
                     break;
+                default:
+                    throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The state selected is not one of the three available states");
             }
             return (JSONObject) obj;
-        } catch(Exception e) {
-            e.printStackTrace();
         }
-        return null;
+        catch(ResponseStatusException e) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The state selected is not one of the three available states");
+        }
+        catch(Exception e) {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error parsing Geojson file", e);
+        }
     }
 }
