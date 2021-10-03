@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const HOST = 'http://localhost:8080/api';
+const HOST = 'http://localhost:8080/randistrictr';
 
 const defaultInstance = {
   baseURL: HOST,
