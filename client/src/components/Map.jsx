@@ -85,7 +85,8 @@ const Map = () => {
         // weight: 2,
         // color: '#DF1995',
         dashArray: '',
-        fillOpacity: 0.3,
+        fillOpacity: 0.2,
+        borderWidth: 0.5,
       });
       // if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
       //   layer.bringToFront();
@@ -164,7 +165,7 @@ const Map = () => {
           {activeGeoJSON ? (
             <GeoJSON
               data={activeGeoJSON}
-              style={{ color: 'green', fillOpacity: 0.2 }}
+              style={{ color: 'green', fillOpacity: 0.2, weight: 3 }}
             />
           ) : null}
         </Pane>
@@ -172,7 +173,7 @@ const Map = () => {
           {votingGeoJSON ? (
             <GeoJSON
               data={votingGeoJSON}
-              style={{ color: '#3388ff', fillOpacity: 0.2 }}
+              style={{ color: '#3388ff', fillOpacity: 0.2, weight: 1 }}
             />
           ) : null}
         </Pane>
@@ -189,11 +190,16 @@ const Map = () => {
   }, [map, selectedState, activeGeoJSON, votingGeoJSON]);
 
   const handleSelect = async (redistrictNumber) => {
-    const res = await apiCaller.get('/redistricting', {
-      params: { stateName: selectedState, redistrictNumber },
-    });
-    setActiveGeoJSON(res.data);
-    setRightSidebarExpanded(true);
+    try {
+      const res = await apiCaller.get('/redistricting', {
+        params: { stateName: selectedState, redistrictNumber },
+      });
+      setActiveGeoJSON(res.data);
+      setRightSidebarExpanded(true);
+    } catch (e) {
+      console.log(e);
+    }
+
     // console.log(res.data);
     // switch (selectedState) {
     //   case 'Maryland': {
