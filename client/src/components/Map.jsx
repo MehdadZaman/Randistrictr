@@ -199,30 +199,6 @@ const Map = () => {
     } catch (e) {
       console.log(e);
     }
-
-    // console.log(res.data);
-    // switch (selectedState) {
-    //   case 'Maryland': {
-    //     setActiveGeoJSON(MarylandCongressionalDistricts);
-    //     setRightSidebarExpanded(true);
-    //     break;
-    //   }
-    //   case 'Michigan': {
-    //     setActiveGeoJSON(MichiganCongressionalDistricts);
-    //     setRightSidebarExpanded(true);
-    //     break;
-    //   }
-    //   case 'Utah': {
-    //     setActiveGeoJSON(UtahCongressionalDistricts);
-    //     setRightSidebarExpanded(true);
-    //     break;
-    //   }
-    //   default: {
-    //     setActiveGeoJSON(null);
-    //     setRightSidebarExpanded(false);
-    //     break;
-    //   }
-    // }
   };
 
   const handleReset = () => {
