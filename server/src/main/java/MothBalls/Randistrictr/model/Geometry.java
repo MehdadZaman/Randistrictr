@@ -23,7 +23,7 @@ public class Geometry implements Serializable {
         return perimeter;
     }
 
-    public List<double[]> getCoordinates() {
+    public List<double[]> getBoundaries() {
         return coordinates;
     }
 
@@ -35,4 +35,19 @@ public class Geometry implements Serializable {
         return perimeter;
     }
 
+    public List<double[]> getCoordinates() {
+        return coordinates;
+    }
+
+    public void setCoordinates(List<double[]> coordinates) {
+        this.coordinates = coordinates;
+    }
+
+    public void setArea(double area) {
+        this.area = area;
+    }
+
+    public void setPerimeter(double perimeter) {
+        this.perimeter = perimeter;
+    }
 }

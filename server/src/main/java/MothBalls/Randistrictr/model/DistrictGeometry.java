@@ -11,15 +11,25 @@ public class DistrictGeometry extends Geometry{
         super(coordinates);
     }
 
-    private void addGeometry(Geometry cbGeometry) {
-        return;
+    public void addGeometry(List<double[]> cbGeometry) {
+        List<double[]> coordinates = getCoordinates();
+        coordinates.addAll(cbGeometry);
+        setCoordinates(coordinates);
     }
 
-    public void deleteGeometry(Geometry cbGeometry) {
-        return;
+    public void removeGeometry(List<double[]> cbGeometry) {
+        List<double[]> coordinates = new ArrayList<>(getCoordinates());
+        for (double[] coordinate1 : cbGeometry) {
+            for (double[] coordinate2 : getCoordinates()) {
+                if (coordinate1[0] == coordinate2[0] && coordinate1[1] == coordinate2[1]) {
+                    coordinates.remove(coordinate2);
+                }
+            }
+        }
+        setCoordinates(coordinates);
     }
 
-    private double computePerimeter() {
+    public double computePerimeter() {
         return 0;
     }
 
