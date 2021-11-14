@@ -23,7 +23,7 @@ public class Geometry implements Serializable {
         return perimeter;
     }
 
-    public List<double[]> getCoordinates() {
+    public List<double[]> getBoundaries() {
         return coordinates;
     }
 

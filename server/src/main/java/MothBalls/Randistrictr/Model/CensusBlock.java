@@ -1,6 +1,7 @@
 package MothBalls.Randistrictr.Model;
 
 import java.io.Serializable;
+import java.util.List;
 
 public class CensusBlock implements Serializable {
     private Geometry geometry;
@@ -13,8 +14,8 @@ public class CensusBlock implements Serializable {
         this.id = id;
     }
 
-    public double[] getGeometries() {
-        return null;
+    public List<double[]> getGeometries() {
+        return geometry.getBoundaries();
     }
 
     public void setGeometry(Geometry geometry) {

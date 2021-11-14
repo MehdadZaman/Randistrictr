@@ -62,6 +62,7 @@ public class District implements Serializable {
     }
 
     public void addCensusBlock(CensusBlock censusBlock) {
+        Population population = censusBlock.getPopulation();
         censusBlocks.add(censusBlock);
     }
 
@@ -70,7 +71,7 @@ public class District implements Serializable {
     }
 
     public void appendToDistrictCoordinateList(List<double[]> coordinates) {
-        List<double[]> geometryCoordinates = geometry.getCoordinates();
+        List<double[]> geometryCoordinates = geometry.getBoundaries();
         geometryCoordinates.addAll(coordinates);
     }
 }
