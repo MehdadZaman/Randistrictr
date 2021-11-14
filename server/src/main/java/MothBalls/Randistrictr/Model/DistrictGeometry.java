@@ -11,15 +11,19 @@ public class DistrictGeometry extends Geometry{
         super(coordinates);
     }
 
-    private void addGeometry(Geometry cbGeometry) {
-        return;
+    public void addGeometry(List<double[]> cbGeometry) {
+        List<double[]> coordinates = getCoordinates();
+        coordinates.addAll(cbGeometry);
+        setCoordinates(coordinates);
     }
 
-    public void deleteGeometry(Geometry cbGeometry) {
-        return;
+    public void removeGeometry(List<double[]> cbGeometry) {
+        List<double[]> coordinates = getCoordinates();
+        coordinates.removeAll(cbGeometry);
+        setCoordinates(coordinates);
     }
 
-    private double computePerimeter() {
+    public double computePerimeter() {
         return 0;
     }
 

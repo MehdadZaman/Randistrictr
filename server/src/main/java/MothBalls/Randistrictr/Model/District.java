@@ -10,18 +10,18 @@ public class District implements Serializable {
     private Map<District, Set<CensusBlock>> movableCensusBlocks;
     private Population population;
     private int id;
-    private DistrictGeometry geometry;
+    private DistrictGeometry districtGeometry;
     private Random random;
 
     public District(Set<CensusBlock> censusBlocks, List<District> adjacentDistricts,
                     Map<District, Set<CensusBlock>> movableCensusBlocks,
-                    Population population, int id, DistrictGeometry geometry) {
+                    Population population, int id, DistrictGeometry districtGeometry) {
         this.censusBlocks = censusBlocks;
         this.adjacentDistricts = adjacentDistricts;
         this.movableCensusBlocks = movableCensusBlocks;
         this.population = population;
         this.id = id;
-        this.geometry = geometry;
+        this.districtGeometry = districtGeometry;
         this.random = new Random();
     }
 
@@ -63,15 +63,20 @@ public class District implements Serializable {
 
     public void addCensusBlock(CensusBlock censusBlock) {
         Population population = censusBlock.getPopulation();
+        this.population.addPopulation(population);
+        districtGeometry.addGeometry(censusBlock.getGeometries());
         censusBlocks.add(censusBlock);
     }
 
     public void removeCensusBlock(CensusBlock censusBlock) {
+        Population population = censusBlock.getPopulation();
+        this.population.removePopulation(population);
+        districtGeometry.removeGeometry(censusBlock.getGeometries());
         censusBlocks.remove(censusBlock);
     }
 
     public void appendToDistrictCoordinateList(List<double[]> coordinates) {
-        List<double[]> geometryCoordinates = geometry.getBoundaries();
+        List<double[]> geometryCoordinates = districtGeometry.getBoundaries();
         geometryCoordinates.addAll(coordinates);
     }
 }
