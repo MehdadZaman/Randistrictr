@@ -1,17 +1,15 @@
-package MothBalls.Randistrictr.Model;
+package MothBalls.Randistrictr.model;
 
 import com.google.gson.Gson;
 import org.json.simple.JSONObject;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.List;
 import java.util.Random;
-import java.util.Set;
 
 public class DistrictingPlan implements Serializable {
 

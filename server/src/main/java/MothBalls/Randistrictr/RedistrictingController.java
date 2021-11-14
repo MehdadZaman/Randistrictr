@@ -1,7 +1,9 @@
 package MothBalls.Randistrictr;
 
+import MothBalls.Randistrictr.service.DistrictService;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
@@ -15,10 +17,12 @@ import java.util.Set;
 @RequestMapping("randistrictr")
 @RestController
 public class RedistrictingController {
-
+    @Autowired
+    DistrictService districtService;
     @GetMapping("/redistricting")
     public JSONObject getRedistricting(@RequestParam(value = "stateName") String stateName,
                                        @RequestParam(value = "redistrictNumber") String redistrictNumber) {
+        districtService.testDistrict();
         return parseGeoJSON(stateName);
     }
 

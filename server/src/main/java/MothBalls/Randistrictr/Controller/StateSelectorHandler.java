@@ -1,6 +1,6 @@
-package MothBalls.Randistrictr.Controller;
+package MothBalls.Randistrictr.controller;
 
-import MothBalls.Randistrictr.Model.*;
+import MothBalls.Randistrictr.model.*;
 
 import java.util.ArrayList;
 import java.util.List;
