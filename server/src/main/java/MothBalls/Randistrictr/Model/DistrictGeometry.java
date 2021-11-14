@@ -18,8 +18,14 @@ public class DistrictGeometry extends Geometry{
     }
 
     public void removeGeometry(List<double[]> cbGeometry) {
-        List<double[]> coordinates = getCoordinates();
-        coordinates.removeAll(cbGeometry);
+        List<double[]> coordinates = new ArrayList<>(getCoordinates());
+        for (double[] coordinate1 : cbGeometry) {
+            for (double[] coordinate2 : getCoordinates()) {
+                if (coordinate1[0] == coordinate2[0] && coordinate1[1] == coordinate2[1]) {
+                    coordinates.remove(coordinate2);
+                }
+            }
+        }
         setCoordinates(coordinates);
     }
 
