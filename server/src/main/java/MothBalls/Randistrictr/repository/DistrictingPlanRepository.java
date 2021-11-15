@@ -1,9 +1,9 @@
 package MothBalls.Randistrictr.repository;
 
-import MothBalls.Randistrictr.model.District;
+import MothBalls.Randistrictr.model.DistrictingPlan;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface DistrictRepository extends JpaRepository<District, Long> {
+public interface DistrictingPlanRepository extends JpaRepository<DistrictingPlan, Long>  {
 }

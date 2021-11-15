@@ -3,6 +3,7 @@ package MothBalls.Randistrictr.model;
 import com.google.gson.Gson;
 import org.json.simple.JSONObject;
 
+import javax.persistence.*;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.ObjectInputStream;
@@ -11,7 +12,8 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Random;
 
-public class DistrictingPlan implements Serializable {
+@Entity
+public class DistrictingPlan {
 
     private int redistrictNumber;
     private List<District> districts;
@@ -19,12 +21,13 @@ public class DistrictingPlan implements Serializable {
     private DistrictingPlanStatistics dps;
 
 
-    public DistrictingPlan(int redistrictNumber, List<District> districts) {
-        this.redistrictNumber = redistrictNumber;
-        this.districts = districts;
-        this.random = new Random();
-    }
+//    public DistrictingPlan(int redistrictNumber, List<District> districts) {
+//        this.redistrictNumber = redistrictNumber;
+//        this.districts = districts;
+//        this.random = new Random();
+//    }
 
+    @Transient
     public JSONObject getJSON() {
         Gson gson = new Gson();
         String jsonString = gson.toJson(this);
@@ -78,19 +81,33 @@ public class DistrictingPlan implements Serializable {
         return null;
     }
 
-    public void setDistrictingPlanStatistics(DistrictingPlanStatistics dps) {
-        this.dps = dps;
-    }
-
+    @OneToOne
     public DistrictingPlanStatistics getDistrictingPlanStatistics() {
         return dps;
     }
 
+    public void setDistrictingPlanStatistics(DistrictingPlanStatistics dps) {
+        this.dps = dps;
+    }
+
+
+    @Id
     public int getRedistrictNumber() {
         return redistrictNumber;
     }
 
+    public void setRedistrictNumber(int redistrictNumber) {
+        this.redistrictNumber = redistrictNumber;
+    }
+
+    @OneToMany
     public List<District> getDistricts() {
         return districts;
     }
+
+    public void setDistricts(List<District> districts) {
+        this.districts = districts;
+    }
+
+
 }

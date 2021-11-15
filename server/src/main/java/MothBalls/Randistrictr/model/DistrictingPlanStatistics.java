@@ -1,5 +1,8 @@
 package MothBalls.Randistrictr.model;
 
+import javax.persistence.*;
+
+@Entity
 public class DistrictingPlanStatistics {
 
     private int redistrictNumber;
@@ -13,21 +16,25 @@ public class DistrictingPlanStatistics {
     private double polsbyPopperScore;
     private double objectiveFunctionMeasure;
 
-    public DistrictingPlanStatistics(int redistrictNumber, Population population, String description, String previewImage,
-                                     int numOpportunities, double threshold, double absoluteDifferenceInPopulation,
-                                     double efficiencyGap, double polsbyPopperScore, double objectiveFunctionMeasure) {
-        this.redistrictNumber = redistrictNumber;
-        this.population = population;
-        this.description = description;
-        this.previewImage = previewImage;
-        this.numOpportunities = numOpportunities;
-        this.threshold = threshold;
-        this.absoluteDifferenceInPopulation = absoluteDifferenceInPopulation;
-        this.efficiencyGap = efficiencyGap;
-        this.polsbyPopperScore = polsbyPopperScore;
-        this.objectiveFunctionMeasure = objectiveFunctionMeasure;
-    }
+//    public DistrictingPlanStatistics(){
+//
+//    }
+//    public DistrictingPlanStatistics(int redistrictNumber, Population population, String description, String previewImage,
+//                                     int numOpportunities, double threshold, double absoluteDifferenceInPopulation,
+//                                     double efficiencyGap, double polsbyPopperScore, double objectiveFunctionMeasure) {
+//        this.redistrictNumber = redistrictNumber;
+//        this.population = population;
+//        this.description = description;
+//        this.previewImage = previewImage;
+//        this.numOpportunities = numOpportunities;
+//        this.threshold = threshold;
+//        this.absoluteDifferenceInPopulation = absoluteDifferenceInPopulation;
+//        this.efficiencyGap = efficiencyGap;
+//        this.polsbyPopperScore = polsbyPopperScore;
+//        this.objectiveFunctionMeasure = objectiveFunctionMeasure;
+//    }
 
+    @Id
     public int getRedistrictNumber() {
         return redistrictNumber;
     }
@@ -36,6 +43,7 @@ public class DistrictingPlanStatistics {
         this.redistrictNumber = redistrictNumber;
     }
 
+    @OneToOne
     public Population getPopulation() {
         return population;
     }

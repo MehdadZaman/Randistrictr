@@ -1,10 +1,13 @@
 package MothBalls.Randistrictr.model;
 
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Map;
 
-public class Population implements Serializable {
+@Entity
+public class Population {
 
+    private long id;
     private int numMinority;
     private int totalPopulation;
     private int vaPopulation;
@@ -34,6 +37,15 @@ public class Population implements Serializable {
         cvaPopulation -= population.getCvaPopulation();
         numDemocraticParty -= population.getNumDemocraticParty();
         numRepublicanParty -= population.getNumRepublicanParty();
+    }
+
+    @Id
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public double getSpecificPopulation(Race race) {
@@ -66,6 +78,30 @@ public class Population implements Serializable {
 
     public int getNumRepublicanParty() {
         return numRepublicanParty;
+    }
+
+    public void setNumMinority(int numMinority) {
+        this.numMinority = numMinority;
+    }
+
+    public void setTotalPopulation(int totalPopulation) {
+        this.totalPopulation = totalPopulation;
+    }
+
+    public void setVaPopulation(int vaPopulation) {
+        this.vaPopulation = vaPopulation;
+    }
+
+    public void setCvaPopulation(int cvaPopulation) {
+        this.cvaPopulation = cvaPopulation;
+    }
+
+    public void setNumDemocraticParty(int numDemocraticParty) {
+        this.numDemocraticParty = numDemocraticParty;
+    }
+
+    public void setNumRepublicanParty(int numRepublicanParty) {
+        this.numRepublicanParty = numRepublicanParty;
     }
 
     //    public boolean isEqual(ClientFilterParameters clientFilterParameters) {

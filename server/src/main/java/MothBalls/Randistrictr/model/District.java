@@ -51,6 +51,7 @@ public class District {
         this.movableCensusBlocks = movableCensusBlocks;
     }
 
+    @OneToOne
     public Population getPopulation() {
         return population;
     }

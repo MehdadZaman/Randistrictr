@@ -1,19 +1,23 @@
 package MothBalls.Randistrictr.model;
 
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
 
-public class CensusBlock implements Serializable {
+@Entity
+public class CensusBlock {
+
+    private long id;
     private Geometry geometry;
     private Population population;
-    private int id;
 
-    public CensusBlock(Geometry geometry, Population population, int id) {
-        this.geometry = geometry;
-        this.population = population;
-        this.id = id;
-    }
+//    public CensusBlock(Geometry geometry, Population population, int id) {
+//        this.geometry = geometry;
+//        this.population = population;
+//        this.id = id;
+//    }
 
+    @Transient
     public List<double[]> getGeometries() {
         return geometry.getBoundaries();
     }
@@ -22,6 +26,7 @@ public class CensusBlock implements Serializable {
         this.geometry = geometry;
     }
 
+    @OneToOne
     public Population getPopulation() {
         return population;
     }
@@ -30,11 +35,12 @@ public class CensusBlock implements Serializable {
         this.population = population;
     }
 
-    public int getId() {
+    @Id
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 }
