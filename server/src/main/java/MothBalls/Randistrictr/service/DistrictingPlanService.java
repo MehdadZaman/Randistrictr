@@ -1,7 +1,7 @@
 package MothBalls.Randistrictr.service;
 
-import MothBalls.Randistrictr.model.DistrictingPlan;
-import MothBalls.Randistrictr.model.DistrictingPlanStatistics;
+import MothBalls.Randistrictr.Model.DistrictingPlan;
+import MothBalls.Randistrictr.Model.DistrictingPlanStatistics;
 import MothBalls.Randistrictr.repository.DistrictingPlanRepository;
 import MothBalls.Randistrictr.repository.DistrictingPlanStatisticsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +26,7 @@ public class DistrictingPlanService {
         dps.setRedistrictNumber(5);
         dps.setNumOpportunities(10);
         dp.setRedistrictNumber(5);
-        dp.setDistrictingPlanStatistics(dps);
+        // dp.setDistrictingPlanStatistics(dps);
         districtingPlanStatisticsRepository.saveAndFlush(dps);
         districtingPlanRepository.saveAndFlush(dp);
         List<DistrictingPlan> districtingPlans = districtingPlanRepository.findAll();

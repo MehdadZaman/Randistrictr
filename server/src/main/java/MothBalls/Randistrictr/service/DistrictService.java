@@ -1,7 +1,6 @@
 package MothBalls.Randistrictr.service;
 
-import MothBalls.Randistrictr.model.CensusBlock;
-import MothBalls.Randistrictr.model.District;
+import MothBalls.Randistrictr.Model.District;
 import MothBalls.Randistrictr.repository.DistrictRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

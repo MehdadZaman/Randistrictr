@@ -1,4 +1,4 @@
-package MothBalls.Randistrictr.model;
+package MothBalls.Randistrictr.Model;
 
 import com.google.gson.Gson;
 import org.json.simple.JSONObject;
