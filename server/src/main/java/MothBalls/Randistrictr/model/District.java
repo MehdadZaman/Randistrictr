@@ -1,7 +1,6 @@
-package MothBalls.Randistrictr.Model;
+package MothBalls.Randistrictr.model;
 
 import javax.persistence.*;
-import java.io.Serializable;
 import java.util.*;
 
 @Entity

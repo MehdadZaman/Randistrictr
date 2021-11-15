@@ -1,6 +1,4 @@
-package MothBalls.Randistrictr.Model;
-
-import javax.persistence.*;
+package MothBalls.Randistrictr.model;
 
 public class Precinct {
     private long id;

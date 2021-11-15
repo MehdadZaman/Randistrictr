@@ -1,4 +1,4 @@
-package MothBalls.Randistrictr.Model;
+package MothBalls.Randistrictr.model;
 
 import java.util.List;
 

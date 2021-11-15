@@ -1,7 +1,7 @@
 package MothBalls.Randistrictr.service;
 
-import MothBalls.Randistrictr.Model.DistrictingPlan;
-import MothBalls.Randistrictr.Model.DistrictingPlanStatistics;
+import MothBalls.Randistrictr.model.DistrictingPlan;
+import MothBalls.Randistrictr.model.DistrictingPlanStatistics;
 import MothBalls.Randistrictr.repository.DistrictingPlanRepository;
 import MothBalls.Randistrictr.repository.DistrictingPlanStatisticsRepository;
 import org.springframework.beans.factory.annotation.Autowired;

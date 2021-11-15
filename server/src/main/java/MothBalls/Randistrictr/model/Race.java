@@ -1,4 +1,4 @@
-package MothBalls.Randistrictr.Model;
+package MothBalls.Randistrictr.model;
 
 public enum Race {
     WHITE,
