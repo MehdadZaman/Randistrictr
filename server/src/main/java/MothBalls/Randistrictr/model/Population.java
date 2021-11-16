@@ -5,58 +5,10 @@ import java.util.Map;
 
 @Entity
 public class Population {
-
-    private int numMinority;
-    private int totalPopulation;
-    private int vaPopulation;
-    private int cvaPopulation;
-    private int numDemocraticParty;
-    private int numRepublicanParty;
-
-
     //
     private String geoID20;
 
     private double totalTotalPopulation;
-    private double totalWhitePopulation;
-    private double totalBlackPopulation;
-    private double totalHispanicPopulation;
-
-    private double totalAmericanIndianPopulation;
-    private double totalAsianPopulation;
-    private double totalHawaiianPopulation;
-    private double totalOtherPopulation;
-
-    private double vAPTotalPopulation;
-    private double vAPWhitePopulation;
-    private double vAPBlackPopulation;
-    private double vAPHispanicPopulation;
-    private double vAPAmericanIndianPopulation;
-    private double vAPAsianPopulation;
-    private double vAPHawaiianPopulation;
-    private double vAPOtherPopulation;
-
-    private double cVAPTotalPopulation;
-    private double cVAPWhitePopulation;
-    private double cVAPBlackPopulation;
-    private double cVAPHispanicPopulation;
-    private double cVAPAmericanIndianPopulation;
-    private double cVAPAsianPopulation;
-    private double cVAPHawaiianPopulation;
-    private double cVAPOtherPopulation;
-
-    private double democratVoters;
-    private double republicanVoters;
-    private double otherVoters;
-    //
-
-    public String getGeoID20() {
-        return geoID20;
-    }
-
-    public void setGeoID20(String geoID20) {
-        this.geoID20 = geoID20;
-    }
 
     public double getTotalTotalPopulation() {
         return totalTotalPopulation;
@@ -122,132 +74,132 @@ public class Population {
         this.totalOtherPopulation = totalOtherPopulation;
     }
 
-    public double getvAPTotalPopulation() {
-        return vAPTotalPopulation;
+    public double getVapTotalPopulation() {
+        return vapTotalPopulation;
     }
 
-    public void setvAPTotalPopulation(double vAPTotalPopulation) {
-        this.vAPTotalPopulation = vAPTotalPopulation;
+    public void setVapTotalPopulation(double vapTotalPopulation) {
+        this.vapTotalPopulation = vapTotalPopulation;
     }
 
-    public double getvAPWhitePopulation() {
-        return vAPWhitePopulation;
+    public double getVapWhitePopulation() {
+        return vapWhitePopulation;
     }
 
-    public void setvAPWhitePopulation(double vAPWhitePopulation) {
-        this.vAPWhitePopulation = vAPWhitePopulation;
+    public void setVapWhitePopulation(double vapWhitePopulation) {
+        this.vapWhitePopulation = vapWhitePopulation;
     }
 
-    public double getvAPBlackPopulation() {
-        return vAPBlackPopulation;
+    public double getVapBlackPopulation() {
+        return vapBlackPopulation;
     }
 
-    public void setvAPBlackPopulation(double vAPBlackPopulation) {
-        this.vAPBlackPopulation = vAPBlackPopulation;
+    public void setVapBlackPopulation(double vapBlackPopulation) {
+        this.vapBlackPopulation = vapBlackPopulation;
     }
 
-    public double getvAPHispanicPopulation() {
-        return vAPHispanicPopulation;
+    public double getVapHispanicPopulation() {
+        return vapHispanicPopulation;
     }
 
-    public void setvAPHispanicPopulation(double vAPHispanicPopulation) {
-        this.vAPHispanicPopulation = vAPHispanicPopulation;
+    public void setVapHispanicPopulation(double vapHispanicPopulation) {
+        this.vapHispanicPopulation = vapHispanicPopulation;
     }
 
-    public double getvAPAmericanIndianPopulation() {
-        return vAPAmericanIndianPopulation;
+    public double getVapAmericanIndianPopulation() {
+        return vapAmericanIndianPopulation;
     }
 
-    public void setvAPAmericanIndianPopulation(double vAPAmericanIndianPopulation) {
-        this.vAPAmericanIndianPopulation = vAPAmericanIndianPopulation;
+    public void setVapAmericanIndianPopulation(double vapAmericanIndianPopulation) {
+        this.vapAmericanIndianPopulation = vapAmericanIndianPopulation;
     }
 
-    public double getvAPAsianPopulation() {
-        return vAPAsianPopulation;
+    public double getVapAsianPopulation() {
+        return vapAsianPopulation;
     }
 
-    public void setvAPAsianPopulation(double vAPAsianPopulation) {
-        this.vAPAsianPopulation = vAPAsianPopulation;
+    public void setVapAsianPopulation(double vapAsianPopulation) {
+        this.vapAsianPopulation = vapAsianPopulation;
     }
 
-    public double getvAPHawaiianPopulation() {
-        return vAPHawaiianPopulation;
+    public double getVapHawaiianPopulation() {
+        return vapHawaiianPopulation;
     }
 
-    public void setvAPHawaiianPopulation(double vAPHawaiianPopulation) {
-        this.vAPHawaiianPopulation = vAPHawaiianPopulation;
+    public void setVapHawaiianPopulation(double vapHawaiianPopulation) {
+        this.vapHawaiianPopulation = vapHawaiianPopulation;
     }
 
-    public double getvAPOtherPopulation() {
-        return vAPOtherPopulation;
+    public double getVapOtherPopulation() {
+        return vapOtherPopulation;
     }
 
-    public void setvAPOtherPopulation(double vAPOtherPopulation) {
-        this.vAPOtherPopulation = vAPOtherPopulation;
+    public void setVapOtherPopulation(double vapOtherPopulation) {
+        this.vapOtherPopulation = vapOtherPopulation;
     }
 
-    public double getcVAPTotalPopulation() {
-        return cVAPTotalPopulation;
+    public double getCvapTotalPopulation() {
+        return cvapTotalPopulation;
     }
 
-    public void setcVAPTotalPopulation(double cVAPTotalPopulation) {
-        this.cVAPTotalPopulation = cVAPTotalPopulation;
+    public void setCvapTotalPopulation(double cvapTotalPopulation) {
+        this.cvapTotalPopulation = cvapTotalPopulation;
     }
 
-    public double getcVAPWhitePopulation() {
-        return cVAPWhitePopulation;
+    public double getCvapWhitePopulation() {
+        return cvapWhitePopulation;
     }
 
-    public void setcVAPWhitePopulation(double cVAPWhitePopulation) {
-        this.cVAPWhitePopulation = cVAPWhitePopulation;
+    public void setCvapWhitePopulation(double cvapWhitePopulation) {
+        this.cvapWhitePopulation = cvapWhitePopulation;
     }
 
-    public double getcVAPBlackPopulation() {
-        return cVAPBlackPopulation;
+    public double getCvapBlackPopulation() {
+        return cvapBlackPopulation;
     }
 
-    public void setcVAPBlackPopulation(double cVAPBlackPopulation) {
-        this.cVAPBlackPopulation = cVAPBlackPopulation;
+    public void setCvapBlackPopulation(double cvapBlackPopulation) {
+        this.cvapBlackPopulation = cvapBlackPopulation;
     }
 
-    public double getcVAPHispanicPopulation() {
-        return cVAPHispanicPopulation;
+    public double getCvapHispanicPopulation() {
+        return cvapHispanicPopulation;
     }
 
-    public void setcVAPHispanicPopulation(double cVAPHispanicPopulation) {
-        this.cVAPHispanicPopulation = cVAPHispanicPopulation;
+    public void setCvapHispanicPopulation(double cvapHispanicPopulation) {
+        this.cvapHispanicPopulation = cvapHispanicPopulation;
     }
 
-    public double getcVAPAmericanIndianPopulation() {
-        return cVAPAmericanIndianPopulation;
+    public double getCvapAmericanIndianPopulation() {
+        return cvapAmericanIndianPopulation;
     }
 
-    public void setcVAPAmericanIndianPopulation(double cVAPAmericanIndianPopulation) {
-        this.cVAPAmericanIndianPopulation = cVAPAmericanIndianPopulation;
+    public void setCvapAmericanIndianPopulation(double cvapAmericanIndianPopulation) {
+        this.cvapAmericanIndianPopulation = cvapAmericanIndianPopulation;
     }
 
-    public double getcVAPAsianPopulation() {
-        return cVAPAsianPopulation;
+    public double getCvapAsianPopulation() {
+        return cvapAsianPopulation;
     }
 
-    public void setcVAPAsianPopulation(double cVAPAsianPopulation) {
-        this.cVAPAsianPopulation = cVAPAsianPopulation;
+    public void setCvapAsianPopulation(double cvapAsianPopulation) {
+        this.cvapAsianPopulation = cvapAsianPopulation;
     }
 
-    public double getcVAPHawaiianPopulation() {
-        return cVAPHawaiianPopulation;
+    public double getCvapHawaiianPopulation() {
+        return cvapHawaiianPopulation;
     }
 
-    public void setcVAPHawaiianPopulation(double cVAPHawaiianPopulation) {
-        this.cVAPHawaiianPopulation = cVAPHawaiianPopulation;
+    public void setCvapHawaiianPopulation(double cvapHawaiianPopulation) {
+        this.cvapHawaiianPopulation = cvapHawaiianPopulation;
     }
 
-    public double getcVAPOtherPopulation() {
-        return cVAPOtherPopulation;
+    public double getCvapOtherPopulation() {
+        return cvapOtherPopulation;
     }
 
-    public void setcVAPOtherPopulation(double cVAPOtherPopulation) {
-        this.cVAPOtherPopulation = cVAPOtherPopulation;
+    public void setCvapOtherPopulation(double cvapOtherPopulation) {
+        this.cvapOtherPopulation = cvapOtherPopulation;
     }
 
     public double getDemocratVoters() {
@@ -274,6 +226,46 @@ public class Population {
         this.otherVoters = otherVoters;
     }
 
+    private double totalWhitePopulation;
+    private double totalBlackPopulation;
+    private double totalHispanicPopulation;
+    private double totalAmericanIndianPopulation;
+    private double totalAsianPopulation;
+    private double totalHawaiianPopulation;
+    private double totalOtherPopulation;
+
+    private double vapTotalPopulation;
+    private double vapWhitePopulation;
+    private double vapBlackPopulation;
+    private double vapHispanicPopulation;
+    private double vapAmericanIndianPopulation;
+    private double vapAsianPopulation;
+    private double vapHawaiianPopulation;
+    private double vapOtherPopulation;
+
+    private double cvapTotalPopulation;
+    private double cvapWhitePopulation;
+    private double cvapBlackPopulation;
+    private double cvapHispanicPopulation;
+    private double cvapAmericanIndianPopulation;
+    private double cvapAsianPopulation;
+    private double cvapHawaiianPopulation;
+    private double cvapOtherPopulation;
+
+    private double democratVoters;
+    private double republicanVoters;
+    private double otherVoters;
+
+    @Id
+    public String getGeoID20() {
+        return geoID20;
+    }
+
+    public void setGeoID20(String geoID20) {
+        this.geoID20 = geoID20;
+    }
+
+
     Map<Race, Double> minorityPopulation;
     Map<Race, Double> minorityVotingAgePopulation;
 
@@ -282,86 +274,16 @@ public class Population {
     }
 
     public void addPopulation(Population population) {
-        numMinority += population.getNumMinority();
-        totalPopulation += population.getTotalPopulation();
-        vaPopulation += population.getVaPopulation();
-        cvaPopulation += population.getCvaPopulation();
-        numDemocraticParty += population.getNumDemocraticParty();
-        numRepublicanParty += population.getNumRepublicanParty();
+        totalTotalPopulation += population.getTotalTotalPopulation();
+        democratVoters += population.getDemocratVoters();
+        republicanVoters += population.getRepublicanVoters();
     }
 
     public void removePopulation(Population population) {
-        numMinority -= population.getNumMinority();
-        totalPopulation -= population.getTotalPopulation();
-        vaPopulation -= population.getVaPopulation();
-        cvaPopulation -= population.getCvaPopulation();
-        numDemocraticParty -= population.getNumDemocraticParty();
-        numRepublicanParty -= population.getNumRepublicanParty();
-    }
-
-    @Id
-    public String getId() {
-        return geoID20;
-    }
-
-    public void setId(String id) {
-        this.geoID20 = id;
-    }
-
-    public double getSpecificPopulation(Race race) {
-        return minorityPopulation.get(race);
-    }
-
-    public double getSpecificVotingAgePopulation(Race race) {
-        return minorityPopulation.get(race);
-    }
-
-    public int getNumMinority() {
-        return numMinority;
-    }
-
-    public int getTotalPopulation() {
-        return totalPopulation;
-    }
-
-    public int getVaPopulation() {
-        return vaPopulation;
-    }
-
-    public int getCvaPopulation() {
-        return cvaPopulation;
-    }
-
-    public int getNumDemocraticParty() {
-        return numDemocraticParty;
-    }
-
-    public int getNumRepublicanParty() {
-        return numRepublicanParty;
-    }
-
-    public void setNumMinority(int numMinority) {
-        this.numMinority = numMinority;
-    }
-
-    public void setTotalPopulation(int totalPopulation) {
-        this.totalPopulation = totalPopulation;
-    }
-
-    public void setVaPopulation(int vaPopulation) {
-        this.vaPopulation = vaPopulation;
-    }
-
-    public void setCvaPopulation(int cvaPopulation) {
-        this.cvaPopulation = cvaPopulation;
-    }
-
-    public void setNumDemocraticParty(int numDemocraticParty) {
-        this.numDemocraticParty = numDemocraticParty;
-    }
-
-    public void setNumRepublicanParty(int numRepublicanParty) {
-        this.numRepublicanParty = numRepublicanParty;
+        //numMinority -= population.getNumMinority();
+        totalTotalPopulation -= population.getTotalTotalPopulation();
+        democratVoters -= population.getDemocratVoters();
+        republicanVoters += population.getRepublicanVoters();
     }
 
     //    public boolean isEqual(ClientFilterParameters clientFilterParameters) {

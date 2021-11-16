@@ -12,7 +12,7 @@ public class CensusBlockService {
 
     public void testDistrict() {
         CensusBlock censusBlock = censusBlockRepository.getById((long)1);
-        System.out.println(censusBlock.getId());
+        System.out.println(censusBlock.getGeoID20());
     }
 
 }
