@@ -5,7 +5,8 @@ import java.util.Map;
 
 @Entity
 public class Population {
-    //
+
+    @Id
     private String geoID20;
 
     private double totalTotalPopulation;
@@ -256,7 +257,7 @@ public class Population {
     private double republicanVoters;
     private double otherVoters;
 
-    @Id
+
     public String getGeoID20() {
         return geoID20;
     }
@@ -266,8 +267,8 @@ public class Population {
     }
 
 
-    Map<Race, Double> minorityPopulation;
-    Map<Race, Double> minorityVotingAgePopulation;
+//    Map<Race, Double> minorityPopulation;
+//    Map<Race, Double> minorityVotingAgePopulation;
 
     public double calculatePopulationScore() {
         return 0;
@@ -286,8 +287,17 @@ public class Population {
         republicanVoters += population.getRepublicanVoters();
     }
 
+    @Override
+    public String toString() {
+        return String.format(
+                "Population[geoID=%s, cvapTotalPopulation='%.2f', totalTotalPopulation='%.2f', totalAsianPopulation='%.2f', totalWhitePopulation='%.2f']",
+                geoID20, cvapTotalPopulation, totalTotalPopulation, totalAsianPopulation, totalWhitePopulation);
+    }
+
+
     //    public boolean isEqual(ClientFilterParameters clientFilterParameters) {
 //        return isEqual;
 //    }
+
 
 }
