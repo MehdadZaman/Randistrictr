@@ -1,5 +1,6 @@
-package MothBalls.Randistrictr;
+package MothBalls.Randistrictr.controller;
 
+import MothBalls.Randistrictr.model.Population;
 import MothBalls.Randistrictr.service.DistrictService;
 import MothBalls.Randistrictr.service.DistrictingPlanService;
 import org.json.simple.JSONObject;
@@ -10,9 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.io.FileReader;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 @CrossOrigin("*")
 @RequestMapping("randistrictr")
@@ -43,6 +42,25 @@ public class RedistrictingController {
                                   @RequestParam(value = "numIterations") String iterations) {
         // TODO: Use parameters in algorithm and return appropriate geoJSON
         return parseGeoJSON(stateName);
+    }
+
+    @GetMapping("/popID")
+    public Population getPopulationJson(@RequestParam(value = "popID") String popID) {
+        // TODO: Use parameters in algorithm and return appropriate geoJSON
+        // System.out.println(districtService.getPopulation(popID));
+        return districtService.getPopulation(popID);
+    }
+
+    @GetMapping("/allPops")
+    public List<Population> getAllPops() {
+        // TODO: Use parameters in algorithm and return appropriate geoJSON
+        // System.out.println(districtService.getPopulation(popID));
+        List<Population> lst = districtService.getAllPopulations();
+        List<Population> ret = new ArrayList<>();
+        for(int i = 0; i < 100; i++) {
+            ret.add(lst.get(i));
+        }
+        return ret;
     }
 
     public JSONObject parseGeoJSON(String stateName) {
