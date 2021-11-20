@@ -2,7 +2,7 @@ package MothBalls.Randistrictr.controller;
 
 import MothBalls.Randistrictr.model.Population;
 import MothBalls.Randistrictr.service.DistrictService;
-import MothBalls.Randistrictr.service.DistrictingPlanService;
+import MothBalls.Randistrictr.service.DistrictingService;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +21,7 @@ public class RedistrictingController {
     DistrictService districtService;
 
     @Autowired
-    DistrictingPlanService districtingPlanService;
+    DistrictingService districtingPlanService;
 
     @GetMapping("/redistricting")
     public JSONObject getRedistricting(@RequestParam(value = "stateName") String stateName,
@@ -54,14 +54,17 @@ public class RedistrictingController {
     @GetMapping("/allPops")
     public List<Population> getAllPops() {
         // TODO: Use parameters in algorithm and return appropriate geoJSON
-        // System.out.println(districtService.getPopulation(popID));
-        List<Population> lst = districtService.getAllPopulations();
-        List<Population> ret = new ArrayList<>();
-        for(int i = 0; i < 100; i++) {
-            ret.add(lst.get(i));
-        }
-        return ret;
+//        // System.out.println(districtService.getPopulation(popID));
+//        List<Population> lst = districtService.getAllPopulations();
+//        List<Population> ret = new ArrayList<>();
+//        for(int i = 0; i < 100; i++) {
+//            ret.add(lst.get(i));
+//        }
+//        return ret;
+        return null;
     }
+
+    @GetMapping
 
     public JSONObject parseGeoJSON(String stateName) {
         Object obj;

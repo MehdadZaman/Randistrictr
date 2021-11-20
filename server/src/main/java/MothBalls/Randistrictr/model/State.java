@@ -1,48 +1,66 @@
 package MothBalls.Randistrictr.model;
 
+import javax.persistence.*;
+import java.io.Serializable;
 import java.util.List;
 
-public class State {
+@Entity
+public class State implements Serializable {
 
-    List<DistrictingPlan> districtingPlanList;
+    @Id
+    String state;
+    String stateNumber;
+
+    @OneToMany(fetch=FetchType.EAGER)
+    @JoinColumns({
+            @JoinColumn(name="state", referencedColumnName="stateNumber")
+    })
+    List<DistrictingPlan> districtingPlans;
+
+    @OneToOne
+    @PrimaryKeyJoinColumn
     Population population;
-    int numDistricts;
-    DistrictingPlan enactedDistricting;
-    String name;
-    // PopulationTye
 
-
-    public State(List<DistrictingPlan> districtingPlanList, Population population,
-                 int numDistricts, DistrictingPlan enactedDistricting, String name) {
-        this.districtingPlanList = districtingPlanList;
-        this.population = population;
-        this.numDistricts = numDistricts;
-        this.enactedDistricting = enactedDistricting;
-        this.name = name;
+    public String getState() {
+        return state;
     }
 
-    public void addDistricting(DistrictingPlan districtingPlan) {
-        districtingPlanList.add(districtingPlan);
+    public void setState(String state) {
+        this.state = state;
     }
 
-    public List<DistrictingPlan> getAllDistrictingPlans() {
-        return districtingPlanList;
+    public String getStateNumber() {
+        return stateNumber;
     }
 
-    public Population getStatePopulationInformation() {
+    public void setStateNumber(String stateNumber) {
+        this.stateNumber = stateNumber;
+    }
+
+    public List<DistrictingPlan> getDistrictingPlans() {
+        return districtingPlans;
+    }
+
+    public void setDistrictingPlans(List<DistrictingPlan> districtingPlans) {
+        this.districtingPlans = districtingPlans;
+    }
+
+    public Population getPopulation() {
         return population;
     }
 
-    public int getNumDistricts() {
-        return numDistricts;
+    public void setPopulation(Population population) {
+        this.population = population;
     }
 
-    public DistrictingPlan getDistrictingPlan() {
-        return enactedDistricting;
-    }
+    //    DistrictingPlan enactedDistricting;
 
-    public String getName() {
-        return name;
-    }
-
+//    public State(List<DistrictingPlan> districtingPlanList, Population population,
+//                 int numDistricts, DistrictingPlan enactedDistricting, String name) {
+//        this.districtingPlanList = districtingPlanList;
+//        this.population = population;
+//        this.numDistricts = numDistricts;
+//        this.enactedDistricting = enactedDistricting;
+//        this.name = name;
+//    }
 }

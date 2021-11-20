@@ -17,30 +17,31 @@ public class StateSelectorHandler {
 
     public List<DistrictingPlan> getFilteredDistricts(ClientFilterParameters clientFilterParameters) {
         setCurrentState(clientFilterParameters.getState());
-        List<DistrictingPlan> districtingPlanList = currentState.getAllDistrictingPlans();
+//        List<DistrictingPlan> districtingPlanList = currentState.getAllDistrictingPlans();
         List<DistrictingPlan> filteredDistrictingPlans = new ArrayList<>();
-        for (DistrictingPlan districtingPlan : districtingPlanList) {
-            if (isValid(clientFilterParameters, districtingPlan)) {
-                filteredDistrictingPlans.add(districtingPlan);
-            }
-
-        }
+//        for (DistrictingPlan districtingPlan : districtingPlanList) {
+//            if (isValid(clientFilterParameters, districtingPlan)) {
+//                filteredDistrictingPlans.add(districtingPlan);
+//            }
+//
+//        }
         return filteredDistrictingPlans;
     }
 
     private boolean isValid(ClientFilterParameters clientFilterParameters, DistrictingPlan districtingPlan) {
-        List<District> districts = districtingPlan.getDistricts();
-        int opportunityDistricts = 0;
-        for (District district : districts) {
-            if (district.isOpportunityDistrict()) {
-                opportunityDistricts++;
-            }
-        }
-        DistrictingPlanStatistics districtingPlanStatistics = districtingPlan.getDistrictingPlanStatistics();
-        return clientFilterParameters.getMinThreshold() <= districtingPlanStatistics.getThreshold()
-                && clientFilterParameters.getMinPopulationScore() <= districtingPlanStatistics.getPopulation().calculatePopulationScore()
-                && clientFilterParameters.getMinMinorityMajorityDistricts() <= opportunityDistricts
-                && clientFilterParameters.getMaxMinorityMajorityDistricts() >= opportunityDistricts;
+        // List<District> districts = districtingPlan.getDistricts();
+//        int opportunityDistricts = 0;
+//        for (District district : districts) {
+////            if (district.isOpportunityDistrict()) {
+////                opportunityDistricts++;
+////            }
+//        }
+//        DistrictingPlanStatistics districtingPlanStatistics = districtingPlan.getDistrictingPlanStatistics();
+//        return clientFilterParameters.getMinThreshold() <= districtingPlanStatistics.getThreshold()
+//                && clientFilterParameters.getMinPopulationScore() <= districtingPlanStatistics.getPopulation().calculatePopulationScore()
+//                && clientFilterParameters.getMinMinorityMajorityDistricts() <= opportunityDistricts
+//                && clientFilterParameters.getMaxMinorityMajorityDistricts() >= opportunityDistricts;
+        return false;
     }
 
 
@@ -52,7 +53,8 @@ public class StateSelectorHandler {
         if (currentState == null) {
             return null;
         }
-        return currentState.getAllDistrictingPlans();
+//        return currentState.getAllDistrictingPlans();
+        return null;
     }
 
     public DistrictingPlan getSelectedSampleDistricting(String stateName, int districtingPlanNumber) {
@@ -60,7 +62,8 @@ public class StateSelectorHandler {
         if (state == null) {
             return null;
         }
-        return state.getAllDistrictingPlans().get(districtingPlanNumber);
+//        return state.getAllDistrictingPlans().get(districtingPlanNumber);
+        return null;
     }
 
     public DistrictingPlan getAverageDistricting(State state) {
@@ -80,12 +83,12 @@ public class StateSelectorHandler {
     }
 
     public State setCurrentState(String stateName) {
-        for (State state : states) {
-            if (state.getName().equals(stateName)) {
-                currentState = state;
-                return currentState;
-            }
-        }
+//        for (State state : states) {
+//            if (state.getName().equals(stateName)) {
+//                currentState = state;
+//                return currentState;
+//            }
+//        }
         return null;
     }
 
@@ -97,16 +100,16 @@ public class StateSelectorHandler {
         this.currentDistrictingPlan = currentDistrictingPlan;
     }
 
-    public DistrictingPlanStatistics updateAlgoProgressDisplay() {
-        return currentDistrictingPlan.getDistrictingPlanStatistics();
-    }
+//    public DistrictingPlanStatistics updateAlgoProgressDisplay() {
+//        return currentDistrictingPlan.getDistrictingPlanStatistics();
+//    }
 
-    public Population getStatePopulationInformation() {
-        return currentState.getStatePopulationInformation();
-    }
-
-    public List<DistrictingPlan> getAllStateDistrictings() {
-        return currentState.getAllDistrictingPlans();
-    }
+//    public Population getStatePopulationInformation() {
+//        return currentState.getStatePopulationInformation();
+//    }
+//
+//    public List<DistrictingPlan> getAllStateDistrictings() {
+//        return currentState.getAllDistrictingPlans();
+//    }
 
 }

@@ -1,22 +1,22 @@
 package MothBalls.Randistrictr.model;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
-public class CensusBlock {
+public class CensusBlock implements Serializable {
     @Id
     private String geoID20;
 
     private String state;
     private String congressionalDistrict;
+    private int districtingPlan;
     private String precinctID;
 
     private String geometryType;
 
     @Lob
     private String geometry;
-
-    private int districtingPlan;
 
     public int getDistrictingPlan() {
         return districtingPlan;
@@ -27,7 +27,7 @@ public class CensusBlock {
     }
 
     // private Population class
-    @OneToOne
+    @OneToOne(fetch=FetchType.EAGER)
     @PrimaryKeyJoinColumn
     private Population population;
 

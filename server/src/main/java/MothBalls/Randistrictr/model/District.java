@@ -1,29 +1,82 @@
 package MothBalls.Randistrictr.model;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.*;
 
 @Entity
-public class District {
-
-    private long id;
-    private List<District> adjacentDistricts;
-    private Set<CensusBlock>  censusBlocks;
-    private Map<District, Set<CensusBlock>> movableCensusBlocks;
-    private Population population;
-    private DistrictGeometry geometry;
-    private Random random;
+public class District implements Serializable {
 
     @Id
-    public long getId() {
-        return id;
+    private String geoID20;
+
+    private String state;
+    private String congressionalDistrict;
+    private int districtingPlan;
+
+    private String adjacentDistrictsString;
+
+    @OneToOne(fetch=FetchType.EAGER)
+    @PrimaryKeyJoinColumn
+    private Population population;
+
+    @OneToMany(fetch=FetchType.LAZY)
+    @JoinColumns({
+            @JoinColumn(name="state", referencedColumnName="state"),
+            @JoinColumn(name="districtingPlan", referencedColumnName="districtingPlan"),
+            @JoinColumn(name="congressionalDistrict", referencedColumnName="congressionalDistrict")
+    })
+    private Set<CensusBlock> censusBlocks;
+
+    @Transient
+    private List<District> adjacentDistricts;
+
+    @Transient
+    private Map<District, Set<CensusBlock>> movableCensusBlocks;
+
+    @Transient
+    private Random random;
+
+    public String getGeoID20() {
+        return geoID20;
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public void setGeoID20(String geoID20) {
+        this.geoID20 = geoID20;
     }
 
-    @OneToMany
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
+    }
+
+    public String getCongressionalDistrict() {
+        return congressionalDistrict;
+    }
+
+    public void setCongressionalDistrict(String congressionalDistrict) {
+        this.congressionalDistrict = congressionalDistrict;
+    }
+
+    public int getDistrictingPlan() {
+        return districtingPlan;
+    }
+
+    public void setDistrictingPlan(int districtingPlan) {
+        this.districtingPlan = districtingPlan;
+    }
+
+    public String getAdjacentDistrictsString() {
+        return adjacentDistrictsString;
+    }
+
+    public void setAdjacentDistrictsString(String adjacentDistrictsString) {
+        this.adjacentDistrictsString = adjacentDistrictsString;
+    }
+
     public List<District> getAdjacentDistricts() {
         return adjacentDistricts;
     }
@@ -32,7 +85,6 @@ public class District {
         this.adjacentDistricts = adjacentDistricts;
     }
 
-    @Transient
     public Set<CensusBlock> getCensusBlocks() {
         return censusBlocks;
     }
@@ -41,7 +93,6 @@ public class District {
         this.censusBlocks = censusBlocks;
     }
 
-    @Transient
     public Map<District, Set<CensusBlock>> getMovableCensusBlocks() {
         return movableCensusBlocks;
     }
@@ -50,7 +101,6 @@ public class District {
         this.movableCensusBlocks = movableCensusBlocks;
     }
 
-    @OneToOne
     public Population getPopulation() {
         return population;
     }
@@ -59,53 +109,12 @@ public class District {
         this.population = population;
     }
 
-    public DistrictGeometry getGeometry() {
-        return geometry;
-    }
-
-    public void setGeometry(DistrictGeometry geometry) {
-        this.geometry = geometry;
-    }
-
-    public Random getRandom() {
-        return random;
-    }
-
-    public void setRandom(Random random) {
-        this.random = random;
-    }
-
-    //    public District(Set<CensusBlock> censusBlocks, List<District> adjacentDistricts,
-//                    Map<District, Set<CensusBlock>> movableCensusBlocks,
-//                    Population population, int id, DistrictGeometry geometry) {
-//        this.censusBlocks = censusBlocks;
-//        this.adjacentDistricts = adjacentDistricts;
-//        this.movableCensusBlocks = movableCensusBlocks;
-//        this.population = population;
-//        this.id = id;
-//        this.geometry = geometry;
-//        this.random = new Random();
-//    }
-
+    @Transient
     public void modifyDistrict() {
         District neighborDistrict = getNeighboringDistrict();
         CensusBlock censusBlock = getCensusBlock();
         removeCensusBlock(censusBlock);
         neighborDistrict.addCensusBlock(censusBlock);
-    }
-
-    @Transient
-    public boolean isOpportunityDistrict() {
-        return false;
-    }
-
-    @Transient
-    public double getOpportunityPercentage() {
-        return 0;
-    }
-
-    public double calculateDistrictPopScore(int numDistricts) {
-        return 0;
     }
 
     @Transient
@@ -127,16 +136,27 @@ public class District {
         return null;
     }
 
+    @Transient
     public void addCensusBlock(CensusBlock censusBlock) {
         censusBlocks.add(censusBlock);
     }
 
+    @Transient
     public void removeCensusBlock(CensusBlock censusBlock) {
         censusBlocks.remove(censusBlock);
     }
 
-    public void appendToDistrictCoordinateList(List<double[]> coordinates) {
-        List<double[]> geometryCoordinates = geometry.getCoordinates();
-        geometryCoordinates.addAll(coordinates);
-    }
+    //    @Transient
+//    public boolean isOpportunityDistrict() {
+//        return false;
+//    }
+//
+//    @Transient
+//    public double getOpportunityPercentage() {
+//        return 0;
+//    }
+//
+//    public double calculateDistrictPopScore(int numDistricts) {
+//        return 0;
+//    }
 }
