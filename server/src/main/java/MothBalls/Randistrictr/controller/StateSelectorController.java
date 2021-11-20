@@ -38,7 +38,7 @@ public class StateSelectorController {
         JSONObject jsonObject = districtService.getEnactedDistricting();
         System.out.println(jsonObject.toJSONString());
         System.out.println("DONE");
-        return null;
+        return jsonObject;
     }
 
     @GetMapping("/state/districting")

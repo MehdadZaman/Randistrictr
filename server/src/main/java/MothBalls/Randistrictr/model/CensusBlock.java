@@ -27,7 +27,7 @@ public class CensusBlock implements Serializable {
     }
 
     // private Population class
-    @OneToOne(fetch=FetchType.EAGER)
+    @OneToOne
     @PrimaryKeyJoinColumn
     private Population population;
 

@@ -1,6 +1,7 @@
 package MothBalls.Randistrictr.service;
 
 import MothBalls.Randistrictr.model.*;
+import MothBalls.Randistrictr.repository.CensusBlockRepository;
 import MothBalls.Randistrictr.repository.DistrictRepository;
 import MothBalls.Randistrictr.repository.PopulationRepository;
 import MothBalls.Randistrictr.repository.StateRepository;
@@ -24,6 +25,9 @@ public class DistrictService {
 
     @Autowired
     StateRepository stateRepository;
+
+    @Autowired
+    CensusBlockRepository censusBlockRepository;
 
     private State currentState;
     private DistrictingPlan currentDistrictingPlan;
@@ -54,8 +58,12 @@ public class DistrictService {
         JSONArray censusBlockArray = new JSONArray();
 
         List<District> districts = districtingPlan.getDistricts();
+//        censusBlockRepository.findAll();
+        System.out.println(districts.size());
         for(District district : districts) {
+
             Set<CensusBlock> censusBlocks = district.getCensusBlocks();
+            System.out.println(censusBlocks.size());
             for(CensusBlock cB : censusBlocks) {
                 Population censusBlockPopulation = cB.getPopulation();
 

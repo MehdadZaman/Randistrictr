@@ -16,11 +16,11 @@ public class District implements Serializable {
 
     private String adjacentDistrictsString;
 
-    @OneToOne(fetch=FetchType.EAGER)
+    @OneToOne
     @PrimaryKeyJoinColumn
     private Population population;
 
-    @OneToMany(fetch=FetchType.LAZY)
+    @OneToMany(fetch=FetchType.EAGER)
     @JoinColumns({
             @JoinColumn(name="state", referencedColumnName="state"),
             @JoinColumn(name="districtingPlan", referencedColumnName="districtingPlan"),

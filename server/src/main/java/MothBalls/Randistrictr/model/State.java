@@ -11,7 +11,7 @@ public class State implements Serializable {
     String state;
     String stateNumber;
 
-    @OneToMany(fetch=FetchType.EAGER)
+    @OneToMany
     @JoinColumns({
             @JoinColumn(name="state", referencedColumnName="stateNumber")
     })

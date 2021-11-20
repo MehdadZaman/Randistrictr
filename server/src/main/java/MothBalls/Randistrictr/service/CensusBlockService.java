@@ -9,10 +9,10 @@ import org.springframework.stereotype.Service;
 public class CensusBlockService {
     @Autowired
     CensusBlockRepository censusBlockRepository;
-
-    public void testDistrict() {
-        CensusBlock censusBlock = censusBlockRepository.getById((long)1);
-        System.out.println(censusBlock.getGeoID20());
-    }
+//
+//    public void testDistrict() {
+//        CensusBlock censusBlock = censusBlockRepository.getById((long)1);
+//        System.out.println(censusBlock.getGeoID20());
+//    }
 
 }
