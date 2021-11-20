@@ -63,7 +63,6 @@ public class CensusBlock implements Serializable {
         this.precinctID = precinctID;
     }
 
-<<<<<<< Updated upstream
     public String getGeometryType() {
         return geometryType;
     }
@@ -71,24 +70,13 @@ public class CensusBlock implements Serializable {
     public void setGeometryType(String geometryType) {
         this.geometryType = geometryType;
     }
-=======
-//    public CensusBlock(Geometry geometry, Population population, int id) {
-//        this.geometry = geometry;
-//        this.population = population;
-//        this.id = id;
-//    }
->>>>>>> Stashed changes
 
     public String getGeometry() {
         return geometry;
     }
 
     public void setGeometry(String geometry) {
-<<<<<<< Updated upstream
         this.geometry = geometry;
-=======
-         this.geometry = geometry;
->>>>>>> Stashed changes
     }
 
     public Population getPopulation() {
