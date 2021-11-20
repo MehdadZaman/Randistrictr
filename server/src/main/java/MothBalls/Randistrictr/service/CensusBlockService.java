@@ -15,33 +15,19 @@ public class CensusBlockService {
     @Autowired
     CensusBlockRepository censusBlockRepository;
 
+    public void voodooGeometry(){
+    }
+    
+    public static Geometry stringToGeometry(String geoString) {
+        Gson gson = new Gson();
+        Polygon polygon = gson.fromJson(geoString, Polygon.class);
+        Geometry geometry = new Geometry("Polygon", polygon.coordinates);
+        return geometry;
+    }
 //
-//    public void voodooGeometry(){
-//
-//        Gson
-//    }
-//
-//    public static Geometry stringToGeometry(String rawGeometry) {
-//        Geometry geo = new Geometry();
-//
-//        Gson gson = new Gson();
-//
-//        ShapeType shape = gson.fromJson(rawGeometry, ShapeType.class);
-//        if (shape.type.equals("Polygon")) {
-//             gson.fromJson(rawGeometry, Polygon.class)
-//        } else if (shape.type.equals("MultiPolygon")) {
-//             gson.fromJson(rawGeometry, MultiPolygon.class);
-//        }
-//
-//
-//
-//        return geo;
-//    }
-//
-//    public static String geometryToString(Geometry geo) {
-//        Gson gson = new Gson();
-//
-//        return gson.toJson(geo);
-//    }
+    public static String geometryToString(Geometry geo) {
+        Gson gson = new Gson();
+        return gson.toJson(geo);
+    }
 
 }

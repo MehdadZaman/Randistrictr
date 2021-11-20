@@ -6,11 +6,12 @@ import java.util.*;
 public class Geometry implements Serializable {
 
     private String type;
-    private List<double[]> coordinates;
+    private List<List<double[]>> coordinates;
     private double area;
     private double perimeter;
 
-    public Geometry(List<double[]> coordinates) {
+    public Geometry(String type, List<List<double[]>> coordinates) {
+        this.type = type;
         this.coordinates = coordinates;
     }
 
@@ -24,7 +25,7 @@ public class Geometry implements Serializable {
         return perimeter;
     }
 
-    public List<double[]> getBoundaries() {
+    public List<List<double[]>> getBoundaries() {
         return coordinates;
     }
 
@@ -36,11 +37,11 @@ public class Geometry implements Serializable {
         return perimeter;
     }
 
-    public List<double[]> getCoordinates() {
+    public List<List<double[]>> getCoordinates() {
         return coordinates;
     }
 
-    public void setCoordinates(List<double[]> coordinates) {
+    public void setCoordinates(List<List<double[]>> coordinates) {
         this.coordinates = coordinates;
     }
 
