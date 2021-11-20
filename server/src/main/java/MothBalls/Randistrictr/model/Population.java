@@ -1,5 +1,7 @@
 package MothBalls.Randistrictr.model;
 
+import MothBalls.Randistrictr.object.Race;
+
 import javax.persistence.*;
 import java.util.Map;
 

@@ -1,8 +1,10 @@
 package MothBalls.Randistrictr.model;
 
+import MothBalls.Randistrictr.object.Geometry;
+
 import java.util.*;
 
-public class DistrictGeometry extends Geometry{
+public class DistrictGeometry extends Geometry {
 
     private String boundaryColor;
     private boolean isVisible;

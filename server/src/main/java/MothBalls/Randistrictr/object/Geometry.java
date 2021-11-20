@@ -1,10 +1,11 @@
-package MothBalls.Randistrictr.model;
+package MothBalls.Randistrictr.object;
 
 import java.io.Serializable;
 import java.util.*;
 
 public class Geometry implements Serializable {
 
+    private String type;
     private List<double[]> coordinates;
     private double area;
     private double perimeter;

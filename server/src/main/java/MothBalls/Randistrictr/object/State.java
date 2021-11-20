@@ -1,4 +1,7 @@
-package MothBalls.Randistrictr.model;
+package MothBalls.Randistrictr.object;
+
+import MothBalls.Randistrictr.model.DistrictingPlan;
+import MothBalls.Randistrictr.model.Population;
 
 import javax.persistence.*;
 import java.io.Serializable;
