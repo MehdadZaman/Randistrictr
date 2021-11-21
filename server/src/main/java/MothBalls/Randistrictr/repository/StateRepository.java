@@ -1,6 +1,6 @@
-package MothBalls.Randistrictr.repository;
+package mothballs.randistrictr.repository;
 
-import MothBalls.Randistrictr.model.State;
+import mothballs.randistrictr.model.State;
 import org.springframework.data.repository.CrudRepository;
 
 public interface StateRepository extends CrudRepository<State, String> {

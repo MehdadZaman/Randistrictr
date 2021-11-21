@@ -1,4 +1,4 @@
-package MothBalls.Randistrictr.model;
+package mothballs.randistrictr.model;
 
 public class Precinct {
     private long id;

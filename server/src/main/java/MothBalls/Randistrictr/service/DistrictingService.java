@@ -1,13 +1,10 @@
-package MothBalls.Randistrictr.service;
+package mothballs.randistrictr.service;
 
-import MothBalls.Randistrictr.model.DistrictingPlan;
-import MothBalls.Randistrictr.model.DistrictingPlanStatistics;
-import MothBalls.Randistrictr.repository.DistrictingPlanRepository;
-import MothBalls.Randistrictr.repository.DistrictingPlanStatisticsRepository;
+import mothballs.randistrictr.model.DistrictingPlan;
+import mothballs.randistrictr.repository.DistrictingPlanRepository;
+import mothballs.randistrictr.repository.DistrictingPlanStatisticsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class DistrictingService {

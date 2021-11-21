@@ -1,24 +1,19 @@
-package MothBalls.Randistrictr.service;
+package mothballs.randistrictr.service;
 
-import MothBalls.Randistrictr.model.CensusBlock;
-import MothBalls.Randistrictr.model.District;
-import MothBalls.Randistrictr.model.DistrictingPlan;
-import MothBalls.Randistrictr.model.Population;
-import MothBalls.Randistrictr.object.Geometry;
-import MothBalls.Randistrictr.object.MultiPolygon;
-import MothBalls.Randistrictr.object.Polygon;
-import MothBalls.Randistrictr.object.ShapeType;
-import MothBalls.Randistrictr.repository.CensusBlockRepository;
+import mothballs.randistrictr.model.CensusBlock;
+import mothballs.randistrictr.model.District;
+import mothballs.randistrictr.model.DistrictingPlan;
+import mothballs.randistrictr.model.Population;
+import mothballs.randistrictr.object.Geometry;
+import mothballs.randistrictr.object.Polygon;
+import mothballs.randistrictr.repository.CensusBlockRepository;
 import com.google.gson.Gson;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.InputStreamReader;
 import java.util.List;
 import java.util.Set;

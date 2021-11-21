@@ -1,4 +1,4 @@
-package MothBalls.Randistrictr.model;
+package mothballs.randistrictr.model;
 
 import javax.persistence.*;
 import java.io.Serializable;

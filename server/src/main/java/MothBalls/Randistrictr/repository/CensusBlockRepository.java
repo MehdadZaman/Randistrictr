@@ -1,10 +1,8 @@
-package MothBalls.Randistrictr.repository;
+package mothballs.randistrictr.repository;
 
-import MothBalls.Randistrictr.model.CensusBlock;
+import mothballs.randistrictr.model.CensusBlock;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-
-import java.util.Set;
 
 @Repository
 public interface CensusBlockRepository extends JpaRepository<CensusBlock, String> {

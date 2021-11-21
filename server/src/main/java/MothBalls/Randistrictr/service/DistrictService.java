@@ -1,10 +1,10 @@
-package MothBalls.Randistrictr.service;
+package mothballs.randistrictr.service;
 
-import MothBalls.Randistrictr.model.*;
-import MothBalls.Randistrictr.repository.CensusBlockRepository;
-import MothBalls.Randistrictr.repository.DistrictRepository;
-import MothBalls.Randistrictr.repository.PopulationRepository;
-import MothBalls.Randistrictr.repository.StateRepository;
+import mothballs.randistrictr.model.*;
+import mothballs.randistrictr.repository.CensusBlockRepository;
+import mothballs.randistrictr.repository.DistrictRepository;
+import mothballs.randistrictr.repository.PopulationRepository;
+import mothballs.randistrictr.repository.StateRepository;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

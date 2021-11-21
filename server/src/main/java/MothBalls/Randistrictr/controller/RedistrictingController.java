@@ -1,8 +1,8 @@
-package MothBalls.Randistrictr.controller;
+package mothballs.randistrictr.controller;
 
-import MothBalls.Randistrictr.model.Population;
-import MothBalls.Randistrictr.service.DistrictService;
-import MothBalls.Randistrictr.service.DistrictingService;
+import mothballs.randistrictr.model.Population;
+import mothballs.randistrictr.service.DistrictService;
+import mothballs.randistrictr.service.DistrictingService;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,9 +1,6 @@
-package MothBalls.Randistrictr.model;
-
-import MothBalls.Randistrictr.object.Race;
+package mothballs.randistrictr.model;
 
 import javax.persistence.*;
-import java.util.Map;
 
 @Entity
 public class Population {

@@ -1,12 +1,8 @@
-package MothBalls.Randistrictr.model;
-
-import com.google.gson.Gson;
-import org.json.simple.JSONObject;
+package mothballs.randistrictr.model;
 
 import javax.persistence.*;
 import java.io.*;
 import java.util.List;
-import java.util.Random;
 
 @Entity
 public class DistrictingPlan implements Serializable {

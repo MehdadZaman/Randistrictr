@@ -1,6 +1,6 @@
-package MothBalls.Randistrictr.repository;
+package mothballs.randistrictr.repository;
 
-import MothBalls.Randistrictr.model.DistrictingPlanStatistics;
+import mothballs.randistrictr.model.DistrictingPlanStatistics;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

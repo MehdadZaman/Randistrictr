@@ -1,6 +1,6 @@
-package MothBalls.Randistrictr.repository;
+package mothballs.randistrictr.repository;
 
-import MothBalls.Randistrictr.model.Population;
+import mothballs.randistrictr.model.Population;
 import org.springframework.data.repository.CrudRepository;
 
 import java.util.List;

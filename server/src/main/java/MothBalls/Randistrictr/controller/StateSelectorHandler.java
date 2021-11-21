@@ -1,8 +1,8 @@
-package MothBalls.Randistrictr.controller;
+package mothballs.randistrictr.controller;
 
-import MothBalls.Randistrictr.model.*;
-import MothBalls.Randistrictr.object.ClientFilterParameters;
-import MothBalls.Randistrictr.model.State;
+import mothballs.randistrictr.model.*;
+import mothballs.randistrictr.object.ClientFilterParameters;
+import mothballs.randistrictr.model.State;
 
 import java.util.ArrayList;
 import java.util.List;

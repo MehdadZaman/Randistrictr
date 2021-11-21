@@ -1,6 +1,4 @@
-package MothBalls.Randistrictr.model;
-
-import MothBalls.Randistrictr.object.Geometry;
+package mothballs.randistrictr.model;
 
 import java.util.*;
 
