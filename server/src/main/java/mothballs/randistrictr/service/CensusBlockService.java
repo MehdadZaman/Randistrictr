@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.BufferedReader;
+import java.io.FileWriter;
 import java.io.InputStreamReader;
 import java.util.List;
 import java.util.Set;
@@ -59,7 +60,7 @@ public class CensusBlockService {
         return null;
     }
 
-    public JSONObject writeDistrictingJSON(DistrictingPlan districtingPlan) {
+    public void writeDistrictingJSON(DistrictingPlan districtingPlan) {
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("type", "FeatureCollection");
 
@@ -130,14 +131,14 @@ public class CensusBlockService {
 
         jsonObject.put("features", censusBlockArray);
 
-//        try {
-//            FileWriter file = new FileWriter("preprocessedPrecincts.json");
-//            file.write(jsonObject.toJSONString());
-//            file.close();
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-        return jsonObject;
+        try {
+            FileWriter file = new FileWriter("preprocessedPrecincts.json");
+            file.write(jsonObject.toJSONString());
+            file.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+//        return jsonObject;
     }
 
     public void dissolveCensusBlocks() {

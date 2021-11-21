@@ -72,7 +72,7 @@ public class RedistrictingController {
         Set<String> states = new HashSet<>(Arrays.asList("maryland", "michigan", "utah"));
         try {
             if (states.contains(stateName.toLowerCase())) {
-               obj = parser.parse(new FileReader("src/main/java/MothBalls/Randistrictr/constants/" + stateName.toLowerCase() + "_congressional_districts.json"));
+               obj = parser.parse(new FileReader("src/main/java/mothballs/randistrictr/constants/" + stateName.toLowerCase() + "_congressional_districts.json"));
             } else {
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The state selected is not one of the three available states");
             }
