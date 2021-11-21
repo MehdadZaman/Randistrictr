@@ -2,7 +2,7 @@ package MothBalls.Randistrictr.controller;
 
 import MothBalls.Randistrictr.model.*;
 import MothBalls.Randistrictr.object.ClientFilterParameters;
-import MothBalls.Randistrictr.object.State;
+import MothBalls.Randistrictr.model.State;
 
 import java.util.ArrayList;
 import java.util.List;

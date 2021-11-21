@@ -15,6 +15,8 @@ public class CensusBlock implements Serializable {
 
     private String geometryType;
 
+    String congressionalDistrictID;
+
     @Lob
     private String geometry;
 

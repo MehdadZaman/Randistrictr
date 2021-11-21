@@ -1,4 +1,4 @@
-package MothBalls.Randistrictr.object;
+package MothBalls.Randistrictr.model;
 
 import MothBalls.Randistrictr.model.DistrictingPlan;
 import MothBalls.Randistrictr.model.Population;

@@ -26,7 +26,7 @@ public class RedistrictingController {
     @GetMapping("/redistricting")
     public JSONObject getRedistricting(@RequestParam(value = "stateName") String stateName,
                                        @RequestParam(value = "redistrictNumber") String redistrictNumber) {
-        districtService.testDistrict();
+//        districtService.testDistrict();
         districtingPlanService.addDistrictingPlan();
         return parseGeoJSON(stateName);
     }

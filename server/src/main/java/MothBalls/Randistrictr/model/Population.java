@@ -12,6 +12,35 @@ public class Population {
     private String geoID20;
 
     private double totalTotalPopulation;
+    private double totalWhitePopulation;
+    private double totalBlackPopulation;
+    private double totalHispanicPopulation;
+    private double totalAmericanIndianPopulation;
+    private double totalAsianPopulation;
+    private double totalHawaiianPopulation;
+    private double totalOtherPopulation;
+
+    private double vapTotalPopulation;
+    private double vapWhitePopulation;
+    private double vapBlackPopulation;
+    private double vapHispanicPopulation;
+    private double vapAmericanIndianPopulation;
+    private double vapAsianPopulation;
+    private double vapHawaiianPopulation;
+    private double vapOtherPopulation;
+
+    private double cvapTotalPopulation;
+    private double cvapWhitePopulation;
+    private double cvapBlackPopulation;
+    private double cvapHispanicPopulation;
+    private double cvapAmericanIndianPopulation;
+    private double cvapAsianPopulation;
+    private double cvapHawaiianPopulation;
+    private double cvapOtherPopulation;
+
+    private double democratVoters;
+    private double republicanVoters;
+    private double otherVoters;
 
     public double getTotalTotalPopulation() {
         return totalTotalPopulation;
@@ -229,37 +258,6 @@ public class Population {
         this.otherVoters = otherVoters;
     }
 
-    private double totalWhitePopulation;
-    private double totalBlackPopulation;
-    private double totalHispanicPopulation;
-    private double totalAmericanIndianPopulation;
-    private double totalAsianPopulation;
-    private double totalHawaiianPopulation;
-    private double totalOtherPopulation;
-
-    private double vapTotalPopulation;
-    private double vapWhitePopulation;
-    private double vapBlackPopulation;
-    private double vapHispanicPopulation;
-    private double vapAmericanIndianPopulation;
-    private double vapAsianPopulation;
-    private double vapHawaiianPopulation;
-    private double vapOtherPopulation;
-
-    private double cvapTotalPopulation;
-    private double cvapWhitePopulation;
-    private double cvapBlackPopulation;
-    private double cvapHispanicPopulation;
-    private double cvapAmericanIndianPopulation;
-    private double cvapAsianPopulation;
-    private double cvapHawaiianPopulation;
-    private double cvapOtherPopulation;
-
-    private double democratVoters;
-    private double republicanVoters;
-    private double otherVoters;
-
-
     public String getGeoID20() {
         return geoID20;
     }
@@ -300,6 +298,4 @@ public class Population {
     //    public boolean isEqual(ClientFilterParameters clientFilterParameters) {
 //        return isEqual;
 //    }
-
-
 }

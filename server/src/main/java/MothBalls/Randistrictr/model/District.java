@@ -22,9 +22,7 @@ public class District implements Serializable {
 
     @OneToMany(fetch=FetchType.EAGER)
     @JoinColumns({
-            @JoinColumn(name="state", referencedColumnName="state"),
-            @JoinColumn(name="districtingPlan", referencedColumnName="districtingPlan"),
-            @JoinColumn(name="congressionalDistrict", referencedColumnName="congressionalDistrict")
+            @JoinColumn(name="congressionalDistrictID", referencedColumnName="geoID20")
     })
     private Set<CensusBlock> censusBlocks;
 

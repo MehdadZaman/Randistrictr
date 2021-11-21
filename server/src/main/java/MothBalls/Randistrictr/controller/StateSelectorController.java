@@ -1,18 +1,10 @@
 package MothBalls.Randistrictr.controller;
 
 import MothBalls.Randistrictr.model.Population;
-import MothBalls.Randistrictr.model.State;
 import MothBalls.Randistrictr.service.DistrictService;
-import MothBalls.Randistrictr.service.DistrictingService;
 import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
-
-import java.io.FileReader;
-import java.util.*;
 
 @CrossOrigin("*")
 @RequestMapping("randistrictr/select")
@@ -36,7 +28,6 @@ public class StateSelectorController {
         // TODO: Use parameters in algorithm and return appropriate geoJSON
         System.out.println("PINGED");
         JSONObject jsonObject = districtService.getEnactedDistricting();
-        System.out.println(jsonObject.toJSONString());
         System.out.println("DONE");
         return jsonObject;
     }
