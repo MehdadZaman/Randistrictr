@@ -17,6 +17,12 @@ public class State implements Serializable {
     })
     List<DistrictingPlan> districtingPlans;
 
+    @OneToMany
+    @JoinColumns({
+            @JoinColumn(name="state", referencedColumnName="stateNumber")
+    })
+    List<BoxAndWhisker> boxAndWhiskerPlots;
+
     @OneToOne
     @PrimaryKeyJoinColumn
     Population population;

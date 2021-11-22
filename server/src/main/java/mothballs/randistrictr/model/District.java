@@ -14,13 +14,14 @@ public class District implements Serializable {
     private String congressionalDistrict;
     private int districtingPlan;
 
-    private String adjacentDistrictsString;
+    @ElementCollection
+    private List<String> adjacentDistrictIDs;
 
     @OneToOne
     @PrimaryKeyJoinColumn
     private Population population;
 
-    @OneToMany(fetch=FetchType.EAGER)
+    @OneToMany //(fetch=FetchType.EAGER)
     @JoinColumns({
             @JoinColumn(name="congressionalDistrictID", referencedColumnName="geoID20")
     })
@@ -65,14 +66,6 @@ public class District implements Serializable {
 
     public void setDistrictingPlan(int districtingPlan) {
         this.districtingPlan = districtingPlan;
-    }
-
-    public String getAdjacentDistrictsString() {
-        return adjacentDistrictsString;
-    }
-
-    public void setAdjacentDistrictsString(String adjacentDistrictsString) {
-        this.adjacentDistrictsString = adjacentDistrictsString;
     }
 
     public List<District> getAdjacentDistricts() {
@@ -144,7 +137,14 @@ public class District implements Serializable {
         censusBlocks.remove(censusBlock);
     }
 
-    //    @Transient
+    public List<String> getAdjacentDistrictIDs() {
+        return adjacentDistrictIDs;
+    }
+
+    public void setAdjacentDistrictIDs(List<String> adjacentDistrictIDs) {
+        this.adjacentDistrictIDs = adjacentDistrictIDs;
+    }
+//    @Transient
 //    public boolean isOpportunityDistrict() {
 //        return false;
 //    }

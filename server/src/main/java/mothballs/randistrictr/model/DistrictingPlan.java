@@ -20,6 +20,10 @@ public class DistrictingPlan implements Serializable {
     })
     private List<District> districts;
 
+    @OneToOne
+    @JoinColumn(name="id", referencedColumnName="id")
+    private DistrictingPlanStatistics districtingPlanStatistics;
+
 //    private Random random;
 //    private DistrictingPlanStatistics dps;
 
@@ -56,7 +60,15 @@ public class DistrictingPlan implements Serializable {
         this.districts = districts;
     }
 
-//    public DistrictingPlan(int redistrictNumber, List<District> districts) {
+    public DistrictingPlanStatistics getDistrictingPlanStatistics() {
+        return districtingPlanStatistics;
+    }
+
+    public void setDistrictingPlanStatistics(DistrictingPlanStatistics districtingPlanStatistics) {
+        this.districtingPlanStatistics = districtingPlanStatistics;
+    }
+
+    //    public DistrictingPlan(int redistrictNumber, List<District> districts) {
 //        this.redistrictNumber = redistrictNumber;
 //        this.districts = districts;
 //        this.random = new Random();

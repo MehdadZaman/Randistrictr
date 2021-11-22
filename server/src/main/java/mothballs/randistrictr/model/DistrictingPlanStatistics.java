@@ -5,16 +5,19 @@ import javax.persistence.*;
 @Entity
 public class DistrictingPlanStatistics {
 
+    @Id
+    private String id;
+
+    private String state;
     private int redistrictNumber;
-    private Population population;
+    // private Population population;
     private String description;
-    private String previewImage;
-    private int numOpportunities;
-    private double threshold;
-    private double absoluteDifferenceInPopulation;
+    // private String previewImage;
+    private int numOpportunityDistricts;
+    // private double absoluteDifferenceInPopulation;
     private double efficiencyGap;
-    private double polsbyPopperScore;
-    private double objectiveFunctionMeasure;
+    private double populationScore;
+    private double objectiveFunctionScore;
 
 //    public DistrictingPlanStatistics(){
 //
@@ -34,22 +37,29 @@ public class DistrictingPlanStatistics {
 //        this.objectiveFunctionMeasure = objectiveFunctionMeasure;
 //    }
 
-    @Id
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
+    }
+
     public int getRedistrictNumber() {
         return redistrictNumber;
     }
 
     public void setRedistrictNumber(int redistrictNumber) {
         this.redistrictNumber = redistrictNumber;
-    }
-
-    @OneToOne
-    public Population getPopulation() {
-        return population;
-    }
-
-    public void setPopulation(Population population) {
-        this.population = population;
     }
 
     public String getDescription() {
@@ -60,37 +70,21 @@ public class DistrictingPlanStatistics {
         this.description = description;
     }
 
-    public String getPreviewImage() {
-        return previewImage;
+    public int getNumOpportunityDistricts() {
+        return numOpportunityDistricts;
     }
 
-    public void setPreviewImage(String previewImage) {
-        this.previewImage = previewImage;
+    public void setNumOpportunityDistricts(int numOpportunityDistricts) {
+        this.numOpportunityDistricts = numOpportunityDistricts;
     }
 
-    public int getNumOpportunities() {
-        return numOpportunities;
-    }
-
-    public void setNumOpportunities(int numOpportunities) {
-        this.numOpportunities = numOpportunities;
-    }
-
-    public double getThreshold() {
-        return threshold;
-    }
-
-    public void setThreshold(double threshold) {
-        this.threshold = threshold;
-    }
-
-    public double getAbsoluteDifferenceInPopulation() {
-        return absoluteDifferenceInPopulation;
-    }
-
-    public void setAbsoluteDifferenceInPopulation(double absoluteDifferenceInPopulation) {
-        this.absoluteDifferenceInPopulation = absoluteDifferenceInPopulation;
-    }
+//    public double getAbsoluteDifferenceInPopulation() {
+//        return absoluteDifferenceInPopulation;
+//    }
+//
+//    public void setAbsoluteDifferenceInPopulation(double absoluteDifferenceInPopulation) {
+//        this.absoluteDifferenceInPopulation = absoluteDifferenceInPopulation;
+//    }
 
     public double getEfficiencyGap() {
         return efficiencyGap;
@@ -100,19 +94,19 @@ public class DistrictingPlanStatistics {
         this.efficiencyGap = efficiencyGap;
     }
 
-    public double getPolsbyPopperScore() {
-        return polsbyPopperScore;
+    public double getPopulationScore() {
+        return populationScore;
     }
 
-    public void setPolsbyPopperScore(double polsbyPopperScore) {
-        this.polsbyPopperScore = polsbyPopperScore;
+    public void setPopulationScore(double populationScore) {
+        this.populationScore = populationScore;
     }
 
-    public double getObjectiveFunctionMeasure() {
-        return objectiveFunctionMeasure;
+    public double getObjectiveFunctionScore() {
+        return objectiveFunctionScore;
     }
 
-    public void setObjectiveFunctionMeasure(double objectiveFunctionMeasure) {
-        this.objectiveFunctionMeasure = objectiveFunctionMeasure;
+    public void setObjectiveFunctionScore(double objectiveFunctionScore) {
+        this.objectiveFunctionScore = objectiveFunctionScore;
     }
 }

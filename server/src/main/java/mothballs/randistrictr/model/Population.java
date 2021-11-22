@@ -1,6 +1,8 @@
 package mothballs.randistrictr.model;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class Population {
@@ -263,8 +265,7 @@ public class Population {
         this.geoID20 = geoID20;
     }
 
-
-//    Map<Race, Double> minorityPopulation;
+    //    Map<Race, Double> minorityPopulation;
 //    Map<Race, Double> minorityVotingAgePopulation;
 
     public double calculatePopulationScore() {

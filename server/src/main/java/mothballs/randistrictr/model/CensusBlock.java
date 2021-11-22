@@ -10,12 +10,15 @@ public class CensusBlock implements Serializable {
 
     private String state;
     private String congressionalDistrict;
+
+    private String adjacentCongressionalDistrict;
+
     private int districtingPlan;
     private String precinctID;
 
     private String geometryType;
 
-    String congressionalDistrictID;
+    private String congressionalDistrictID;
 
     @Lob
     private String geometry;
@@ -88,4 +91,21 @@ public class CensusBlock implements Serializable {
     public void setPopulation(Population population) {
         this.population = population;
     }
+
+    public String getAdjacentCongressionalDistrict() {
+        return adjacentCongressionalDistrict;
+    }
+
+    public void setAdjacentCongressionalDistrict(String adjacentCongressionalDistrict) {
+        this.adjacentCongressionalDistrict = adjacentCongressionalDistrict;
+    }
+
+    public String getCongressionalDistrictID() {
+        return congressionalDistrictID;
+    }
+
+    public void setCongressionalDistrictID(String congressionalDistrictID) {
+        this.congressionalDistrictID = congressionalDistrictID;
+    }
+
 }

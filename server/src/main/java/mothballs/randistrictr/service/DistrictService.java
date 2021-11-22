@@ -9,6 +9,9 @@ import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
 public class DistrictService {
     final int ENACTED_DISTRICTING_PLAN = 0;
@@ -43,5 +46,26 @@ public class DistrictService {
 
     public JSONObject getEnactedDistricting() {
         return censusBlockService.getDistrictingJSON(this.enactedDistrictingPlan);
+    }
+
+    public List<DistrictingPlanStatistics> getAllDistrictingPlanStatistics() {
+        List<DistrictingPlanStatistics> districtingPlanStatistics = new ArrayList<>();
+        for(DistrictingPlan districtingPlan : currentState.getDistrictingPlans()) {
+            districtingPlanStatistics.add(districtingPlan.getDistrictingPlanStatistics());
+        }
+        return districtingPlanStatistics;
+    }
+
+    public JSONObject getDistrictingPlan(int districtPlanNumber) {
+        this.currentDistrictingPlan = this.currentState.getDistrictingPlans().get(districtPlanNumber);
+        return censusBlockService.getDistrictingJSON(this.currentDistrictingPlan);
+    }
+
+    public DistrictingPlanStatistics getDistrictingPlanStatistics() {
+        return currentDistrictingPlan.getDistrictingPlanStatistics();
+    }
+
+    public DistrictingPlanStatistics getEnactedDistrictingPlanStatistics() {
+        return enactedDistrictingPlan.getDistrictingPlanStatistics();
     }
 }

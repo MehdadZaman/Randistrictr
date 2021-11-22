@@ -1,10 +1,13 @@
 package mothballs.randistrictr.controller;
 
+import mothballs.randistrictr.model.DistrictingPlanStatistics;
 import mothballs.randistrictr.model.Population;
 import mothballs.randistrictr.service.DistrictService;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @CrossOrigin("*")
 @RequestMapping("randistrictr/select")
@@ -15,7 +18,6 @@ public class StateSelectorController {
 
     @GetMapping("/state/population")
     public Population getStatePopulation(@RequestParam(value = "stateName") String stateName) {
-        // TODO: Use parameters in algorithm and return appropriate geoJSON
         System.out.println("PINGED");
         districtService.selectState(stateName);
         Population statePopulation = districtService.getPopulation(stateName);
@@ -25,22 +27,32 @@ public class StateSelectorController {
 
     @GetMapping("/state/enactedDistricting")
     public JSONObject getEnactedDistricting() {
-        // TODO: Use parameters in algorithm and return appropriate geoJSON
         System.out.println("PINGED");
         JSONObject jsonObject = districtService.getEnactedDistricting();
         System.out.println("DONE");
         return jsonObject;
     }
 
+    @GetMapping("/state/enactedDistrictingPlanStatistics")
+    public DistrictingPlanStatistics getEnactedDistrictPlanStatistics() {
+        return districtService.getEnactedDistrictingPlanStatistics();
+    }
+
+    @GetMapping("/state/allDistrictingPlanStatistics")
+    public List<DistrictingPlanStatistics> getAllDistrictingPlanStatistics() {
+        System.out.println("PINGED");
+        List<DistrictingPlanStatistics> allDistrictingPlanStatistics = districtService.getAllDistrictingPlanStatistics();
+        System.out.println("DONE");
+        return allDistrictingPlanStatistics;
+    }
+
     @GetMapping("/state/districting")
-    public String getStateRedistricting(@RequestParam(value = "stateName") String stateName,
-                                           @RequestParam(value = "redistrictNumber") int redistrictNumber) {
-        // TODO: Use parameters in algorithm and return appropriate geoJSON
-//        System.out.println("PINGED");
-//        State state = districtService.getDistricting(stateName, redistrictNumber);
-//        System.out.println(state.getStateNumber());
-//        System.out.println((state.getDistrictingPlans().get(0)).getDistricts());
-//        System.out.println("DONE");
-        return null;
+    public JSONObject getStateRedistricting(@RequestParam(value = "redistrictNumber") int redistrictNumber) {
+        return districtService.getDistrictingPlan(redistrictNumber);
+    }
+
+    @GetMapping("/districting/districtPlanStatistics")
+    public DistrictingPlanStatistics getDistrictPlanStatistics() {
+        return districtService.getDistrictingPlanStatistics();
     }
 }
