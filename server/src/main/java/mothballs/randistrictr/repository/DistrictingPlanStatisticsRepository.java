@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface DistrictingPlanStatisticsRepository extends JpaRepository<DistrictingPlanStatistics, Integer> {
+    public DistrictingPlanStatistics findById(String id);
 }
