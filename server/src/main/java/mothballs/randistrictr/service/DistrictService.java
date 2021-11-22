@@ -68,4 +68,16 @@ public class DistrictService {
     public DistrictingPlanStatistics getEnactedDistrictingPlanStatistics() {
         return enactedDistrictingPlan.getDistrictingPlanStatistics();
     }
+
+    public DistrictingPlan getCurrentDistrictingPlan() {
+        return currentDistrictingPlan;
+    }
+
+    public void setCurrentDistrictingPlan(DistrictingPlan currentDistrictingPlan) {
+        this.currentDistrictingPlan = currentDistrictingPlan;
+    }
+
+    public DistrictingPlan getEnactedDistrictingPlan() {
+        return enactedDistrictingPlan;
+    }
 }

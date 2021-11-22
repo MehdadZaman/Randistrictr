@@ -3,12 +3,17 @@ package mothballs.randistrictr.model;
 import javax.persistence.*;
 import java.io.*;
 import java.util.List;
+import java.util.Random;
 
 @Entity
 public class DistrictingPlan implements Serializable {
 
     @Id
     String id;
+
+    @OneToOne
+    @JoinColumn(name="id", referencedColumnName="id")
+    private DistrictingPlanStatistics districtingPlanStatistics;
 
     private String state;
     private int districtingPlan;
@@ -19,10 +24,6 @@ public class DistrictingPlan implements Serializable {
             @JoinColumn(name="districtingPlan", referencedColumnName="districtingPlan")
     })
     private List<District> districts;
-
-    @OneToOne
-    @JoinColumn(name="id", referencedColumnName="id")
-    private DistrictingPlanStatistics districtingPlanStatistics;
 
 //    private Random random;
 //    private DistrictingPlanStatistics dps;
@@ -81,36 +82,39 @@ public class DistrictingPlan implements Serializable {
 //        return gson.fromJson(jsonString, JSONObject.class);
 //    }
 
-//    public District selectDistrict() {
-//        int randomIndex = random.nextInt(districts.size());
-//        int i = 0;
-//        for (District district : districts) {
-//            if (randomIndex == i) {
-//                return district;
-//            }
-//            i++;
-//        }
-//        return null;
-//    }
+    @Transient
+    public District selectDistrict() {
+        Random random = new Random();
+        int randomIndex = random.nextInt(districts.size());
+        int i = 0;
+        for (District district : districts) {
+            if (randomIndex == i) {
+                return district;
+            }
+            i++;
+        }
+        return null;
+    }
 
-//    public void runSimulatedAnnealing() {
-//        District district = selectDistrict();
-//        district.modifyDistrict();
-//    }
+    @Transient
+    public DistrictingPlan deepClone() {
+        try {
+            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+            ObjectOutputStream objectOutputStream = new ObjectOutputStream(byteArrayOutputStream);
+            objectOutputStream.writeObject(this);
 
-//    public DistrictingPlan deepClone() {
-//        try {
-//            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-//            ObjectOutputStream objectOutputStream = new ObjectOutputStream(byteArrayOutputStream);
-//            objectOutputStream.writeObject(this);
-//
-//            ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(byteArrayOutputStream.toByteArray());
-//            ObjectInputStream objectInputStream = new ObjectInputStream(byteArrayInputStream);
-//            return (DistrictingPlan) objectInputStream.readObject();
-//        } catch (Exception e) {
-//            return null;
-//        }
-//    }
+            ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(byteArrayOutputStream.toByteArray());
+            ObjectInputStream objectInputStream = new ObjectInputStream(byteArrayInputStream);
+            return (DistrictingPlan) objectInputStream.readObject();
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    @Transient
+    public void recalculateMeasures() {
+
+    }
 
 //    public double calculateDistrictingPlanScore() {
 //        return 0;
