@@ -44,4 +44,16 @@ public class DistrictService {
     public JSONObject getEnactedDistricting() {
         return censusBlockService.getDistrictingJSON(this.enactedDistrictingPlan);
     }
+
+    public DistrictingPlan getCurrentDistrictingPlan() {
+        return currentDistrictingPlan;
+    }
+
+    public void setCurrentDistrictingPlan(DistrictingPlan currentDistrictingPlan) {
+        this.currentDistrictingPlan = currentDistrictingPlan;
+    }
+
+    public DistrictingPlan getEnactedDistrictingPlan() {
+        return enactedDistrictingPlan;
+    }
 }

@@ -31,18 +31,18 @@ public class RedistrictingController {
         return parseGeoJSON(stateName);
     }
 
-    @GetMapping("/run-algorithm")
-    public JSONObject returnStateJson(@RequestParam(value = "stateName") String stateName,
-                                  @RequestParam(value = "minOpportunity") String minOpportunity,
-                                  @RequestParam(value = "maxOpportunity") String maxOpportunity,
-                                  @RequestParam(value = "minThreshold") String minThreshold,
-                                  @RequestParam(value = "maxDiff") String maxDiff,
-                                  @RequestParam(value = "maxEffGap") String maxEffGap,
-                                  @RequestParam(value = "minPolsbyPopper") String minPolsbyPopper,
-                                  @RequestParam(value = "numIterations") String iterations) {
-        // TODO: Use parameters in algorithm and return appropriate geoJSON
-        return parseGeoJSON(stateName);
-    }
+//    @GetMapping("/run-algorithm")
+//    public JSONObject returnStateJson(@RequestParam(value = "stateName") String stateName,
+//                                  @RequestParam(value = "minOpportunity") String minOpportunity,
+//                                  @RequestParam(value = "maxOpportunity") String maxOpportunity,
+//                                  @RequestParam(value = "minThreshold") String minThreshold,
+//                                  @RequestParam(value = "maxDiff") String maxDiff,
+//                                  @RequestParam(value = "maxEffGap") String maxEffGap,
+//                                  @RequestParam(value = "minPolsbyPopper") String minPolsbyPopper,
+//                                  @RequestParam(value = "numIterations") String iterations) {
+//        // TODO: Use parameters in algorithm and return appropriate geoJSON
+//        return parseGeoJSON(stateName);
+//    }
 
     @GetMapping("/popID")
     public Population getPopulationJson(@RequestParam(value = "popID") String popID) {
