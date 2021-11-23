@@ -14,10 +14,12 @@ public class DistrictingPlanStatistics {
     private String description;
     // private String previewImage;
     private int numOpportunityDistricts;
-    // private double absoluteDifferenceInPopulation;
+    private double absoluteDifferenceInPopulation;
     private double efficiencyGap;
     private double populationScore;
     private double objectiveFunctionScore;
+
+    private int numCongressionalDistricts;
 
 //    public DistrictingPlanStatistics(){
 //
@@ -78,13 +80,13 @@ public class DistrictingPlanStatistics {
         this.numOpportunityDistricts = numOpportunityDistricts;
     }
 
-//    public double getAbsoluteDifferenceInPopulation() {
-//        return absoluteDifferenceInPopulation;
-//    }
-//
-//    public void setAbsoluteDifferenceInPopulation(double absoluteDifferenceInPopulation) {
-//        this.absoluteDifferenceInPopulation = absoluteDifferenceInPopulation;
-//    }
+    public double getAbsoluteDifferenceInPopulation() {
+        return absoluteDifferenceInPopulation;
+    }
+
+    public void setAbsoluteDifferenceInPopulation(double absoluteDifferenceInPopulation) {
+        this.absoluteDifferenceInPopulation = absoluteDifferenceInPopulation;
+    }
 
     public double getEfficiencyGap() {
         return efficiencyGap;
@@ -108,5 +110,13 @@ public class DistrictingPlanStatistics {
 
     public void setObjectiveFunctionScore(double objectiveFunctionScore) {
         this.objectiveFunctionScore = objectiveFunctionScore;
+    }
+
+    public int getNumCongressionalDistricts() {
+        return numCongressionalDistricts;
+    }
+
+    public void setNumCongressionalDistricts(int numCongressionalDistricts) {
+        this.numCongressionalDistricts = numCongressionalDistricts;
     }
 }

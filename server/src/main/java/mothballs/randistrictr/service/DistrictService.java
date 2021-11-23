@@ -7,12 +7,10 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 @Service
 public class DistrictService {
@@ -38,7 +36,6 @@ public class DistrictService {
 
     private State currentState;
     private DistrictingPlan currentDistrictingPlan;
-    // private DistrictingPlan enactedDistrictingPlan;
 
     public Population getPopulation(String id) {
         return populationRepository.findByGeoID20(id);
@@ -47,7 +44,6 @@ public class DistrictService {
     public void selectState(String state) {
         this.currentState = stateRepository.findStateByState(state);
         Hibernate.initialize(this.currentState.getDistrictingPlans());
-        // this.enactedDistrictingPlan = this.currentState.getDistrictingPlans().get(ENACTED_DISTRICTING_PLAN);
     }
 
     public JSONObject getEnactedDistricting() {
@@ -64,7 +60,6 @@ public class DistrictService {
 
     public JSONObject getDistrictingPlan(int districtPlanNumber) {
         this.currentDistrictingPlan = stateRepository.findStateByState(this.currentState.getState()).getDistrictingPlans().get(districtPlanNumber);
-//        this.currentDistrictingPlan = this.currentState.getDistrictingPlans().get(districtPlanNumber);
         return censusBlockService.getDistrictingJSON(this.currentDistrictingPlan);
     }
 
@@ -73,7 +68,6 @@ public class DistrictService {
     }
 
     public DistrictingPlanStatistics getEnactedDistrictingPlanStatistics() {
-        //return enactedDistrictingPlan.getDistrictingPlanStatistics();
         return districtingPlanStatisticsRepository.findById(currentState.getStateNumber() + ENACTED_DISTRICTING_PLAN);
     }
 
