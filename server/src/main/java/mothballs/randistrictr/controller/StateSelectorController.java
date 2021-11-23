@@ -48,7 +48,10 @@ public class StateSelectorController {
 
     @GetMapping("/state/districting")
     public JSONObject getStateRedistricting(@RequestParam(value = "redistrictNumber") int redistrictNumber) {
-        return districtService.getDistrictingPlan(redistrictNumber);
+        System.out.println("GETTING DISTRICTING");
+        JSONObject jsonObject = districtService.getDistrictingPlan(redistrictNumber);
+        System.out.println("FINISHED GETTING DISTRICTING");
+        return jsonObject;
     }
 
     @GetMapping("/districting/districtPlanStatistics")

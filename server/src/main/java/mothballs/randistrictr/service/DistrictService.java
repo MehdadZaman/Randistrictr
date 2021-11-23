@@ -36,6 +36,7 @@ public class DistrictService {
 
     private State currentState;
     private DistrictingPlan currentDistrictingPlan;
+    private boolean hasInitializedCensusBlocks;
 
     public Population getPopulation(String id) {
         return populationRepository.findByGeoID20(id);
@@ -59,7 +60,10 @@ public class DistrictService {
     }
 
     public JSONObject getDistrictingPlan(int districtPlanNumber) {
-        this.currentDistrictingPlan = stateRepository.findStateByState(this.currentState.getState()).getDistrictingPlans().get(districtPlanNumber);
+        if(!hasInitializedCensusBlocks){
+            this.currentDistrictingPlan = stateRepository.findStateByState(this.currentState.getState()).getDistrictingPlans().get(districtPlanNumber);
+            hasInitializedCensusBlocks = true;
+        }
         return censusBlockService.getDistrictingJSON(this.currentDistrictingPlan);
     }
 
