@@ -43,6 +43,7 @@ public class DistrictService {
     }
 
     public void selectState(String state) {
+        hasInitializedCensusBlocks = false;
         this.currentState = stateRepository.findStateByState(state);
         Hibernate.initialize(this.currentState.getDistrictingPlans());
     }
@@ -95,5 +96,11 @@ public class DistrictService {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public void resetState() {
+        this.hasInitializedCensusBlocks = false;
+        this.currentState = null;
+        this.currentDistrictingPlan = null;
     }
 }
