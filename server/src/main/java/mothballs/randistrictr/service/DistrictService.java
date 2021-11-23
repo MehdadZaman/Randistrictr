@@ -29,7 +29,7 @@ public class DistrictService {
     CensusBlockRepository censusBlockRepository;
 
     @Autowired
-    CensusBlockService censusBlockService;
+    DissolvingService dissolvingService;
 
     @Autowired
     DistrictingPlanStatisticsRepository districtingPlanStatisticsRepository;
@@ -64,7 +64,7 @@ public class DistrictService {
             this.currentDistrictingPlan = stateRepository.findStateByState(this.currentState.getState()).getDistrictingPlans().get(districtPlanNumber);
             hasInitializedCensusBlocks = true;
         }
-        return censusBlockService.getDistrictingJSON(this.currentDistrictingPlan);
+        return dissolvingService.getDistrictingJSON(this.currentDistrictingPlan);
     }
 
     public DistrictingPlanStatistics getDistrictingPlanStatistics() {

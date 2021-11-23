@@ -17,7 +17,7 @@ public class AlgorithmService {
     DistrictService districtService;
 
     @Autowired
-    CensusBlockService censusBlockService;
+    DissolvingService dissolvingService;
 
     private int currentIteration;
     private final int MAX_ITERATIONS = 100000;
@@ -25,7 +25,7 @@ public class AlgorithmService {
     public JSONObject getImprovedDistrictingPlan(double maxPopDiff, int minOpportunity, int maxOpportunity) {
         runAlgorithm(minOpportunity, maxOpportunity);
         DistrictingPlan improvedDistrictingPlan = districtService.getCurrentDistrictingPlan();
-        return censusBlockService.getDistrictingJSON(improvedDistrictingPlan);
+        return dissolvingService.getDistrictingJSON(improvedDistrictingPlan);
     }
 
     private void runAlgorithm(int minOpportunity, int maxOpportunity) {
@@ -68,7 +68,7 @@ public class AlgorithmService {
     }
 
     public JSONObject getCurrentDistrictingPlan() {
-        return censusBlockService.getDistrictingJSON(districtService.getCurrentDistrictingPlan());
+        return dissolvingService.getDistrictingJSON(districtService.getCurrentDistrictingPlan());
     }
 
     public DistrictingPlanStatistics getCurrentDistrictingStatistics() {
