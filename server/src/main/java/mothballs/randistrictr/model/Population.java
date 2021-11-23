@@ -265,52 +265,77 @@ public class Population {
         this.geoID20 = geoID20;
     }
 
-    //    Map<Race, Double> minorityPopulation;
-//    Map<Race, Double> minorityVotingAgePopulation;
-
-    public double calculatePopulationScore() {
-        return 0;
-    }
-
     public void addPopulation(Population population) {
         totalTotalPopulation += population.getTotalTotalPopulation();
         totalWhitePopulation += population.getTotalWhitePopulation();
-//        totalBlackPopulation += population.
-//        totalHispanicPopulation += population.
-//        totalAmericanIndianPopulation += population.
-//        totalAsianPopulation += population.
-//        totalHawaiianPopulation += population.
-//        totalOtherPopulation += population.
-//
-//        vapTotalPopulation += population.
-//        vapWhitePopulation += population.
-//        vapBlackPopulation += population.
-//        vapHispanicPopulation += population.
-//        vapAmericanIndianPopulation += population.
-//        vapAsianPopulation += population.
-//        vapHawaiianPopulation += population.
-//        vapOtherPopulation += population.
-//
-//        cvapTotalPopulation += population.
-//        cvapWhitePopulation += population.
-//        cvapBlackPopulation += population.
-//        cvapHispanicPopulation += population.
-//        cvapAmericanIndianPopulation += population.
-//        cvapAsianPopulation += population.
-//        cvapHawaiianPopulation += population.
-//        cvapOtherPopulation += population.
-//
-//        democratVoters += population.
-//        republicanVoters += population.
-//        otherVoters += population.
+        totalBlackPopulation += population.getTotalBlackPopulation();
+        totalHispanicPopulation += population.getTotalHispanicPopulation();
+        totalAmericanIndianPopulation += population.getTotalAmericanIndianPopulation();
+        totalAsianPopulation += population.getTotalAsianPopulation();
+        totalHawaiianPopulation += population.getTotalHawaiianPopulation();
+        totalOtherPopulation += population.getTotalOtherPopulation();
+
+        vapTotalPopulation += population.getVapTotalPopulation();
+        vapWhitePopulation += population.getVapWhitePopulation();
+        vapBlackPopulation += population.getVapBlackPopulation();
+        vapHispanicPopulation += population.getVapHispanicPopulation();
+        vapAmericanIndianPopulation += population.getVapAmericanIndianPopulation();
+        vapAsianPopulation += population.getVapAsianPopulation();
+        vapHawaiianPopulation += population.getVapHawaiianPopulation();
+        vapOtherPopulation += population.getVapOtherPopulation();
+
+        cvapTotalPopulation += population.getCvapTotalPopulation();
+        cvapWhitePopulation += population.getCvapWhitePopulation();
+        cvapBlackPopulation += population.getCvapBlackPopulation();
+        cvapHispanicPopulation += population.getCvapHispanicPopulation();
+        cvapAmericanIndianPopulation += population.getCvapAmericanIndianPopulation();
+        cvapAsianPopulation += population.getCvapAsianPopulation();
+        cvapHawaiianPopulation += population.getCvapHawaiianPopulation();
+        cvapOtherPopulation += population.getCvapOtherPopulation();
+
+        democratVoters += population.getDemocratVoters();
+        republicanVoters += population.getRepublicanVoters();
+        otherVoters += population.getOtherVoters();
 
     }
 
     public void removePopulation(Population population) {
-        //numMinority -= population.getNumMinority();
         totalTotalPopulation -= population.getTotalTotalPopulation();
+        totalWhitePopulation -= population.getTotalWhitePopulation();
+        totalBlackPopulation -= population.getTotalBlackPopulation();
+        totalHispanicPopulation -= population.getTotalHispanicPopulation();
+        totalAmericanIndianPopulation -= population.getTotalAmericanIndianPopulation();
+        totalAsianPopulation -= population.getTotalAsianPopulation();
+        totalHawaiianPopulation -= population.getTotalHawaiianPopulation();
+        totalOtherPopulation -= population.getTotalOtherPopulation();
+
+        vapTotalPopulation -= population.getVapTotalPopulation();
+        vapWhitePopulation -= population.getVapWhitePopulation();
+        vapBlackPopulation -= population.getVapBlackPopulation();
+        vapHispanicPopulation -= population.getVapHispanicPopulation();
+        vapAmericanIndianPopulation -= population.getVapAmericanIndianPopulation();
+        vapAsianPopulation -= population.getVapAsianPopulation();
+        vapHawaiianPopulation -= population.getVapHawaiianPopulation();
+        vapOtherPopulation -= population.getVapOtherPopulation();
+
+        cvapTotalPopulation -= population.getCvapTotalPopulation();
+        cvapWhitePopulation -= population.getCvapWhitePopulation();
+        cvapBlackPopulation -= population.getCvapBlackPopulation();
+        cvapHispanicPopulation -= population.getCvapHispanicPopulation();
+        cvapAmericanIndianPopulation -= population.getCvapAmericanIndianPopulation();
+        cvapAsianPopulation -= population.getCvapAsianPopulation();
+        cvapHawaiianPopulation -= population.getCvapHawaiianPopulation();
+        cvapOtherPopulation -= population.getCvapOtherPopulation();
+
         democratVoters -= population.getDemocratVoters();
-        republicanVoters += population.getRepublicanVoters();
+        republicanVoters -= population.getRepublicanVoters();
+        otherVoters -= population.getOtherVoters();
+    }
+
+    @Transient
+    public boolean areMinoritiesMajority() {
+        return (totalBlackPopulation + totalHispanicPopulation + totalAmericanIndianPopulation + totalAsianPopulation +
+                totalHawaiianPopulation + totalOtherPopulation) > totalWhitePopulation;
     }
 
     @Override
@@ -319,9 +344,4 @@ public class Population {
                 "Population[geoID=%s, cvapTotalPopulation='%.2f', totalTotalPopulation='%.2f', totalAsianPopulation='%.2f', totalWhitePopulation='%.2f']",
                 geoID20, cvapTotalPopulation, totalTotalPopulation, totalAsianPopulation, totalWhitePopulation);
     }
-
-
-    //    public boolean isEqual(ClientFilterParameters clientFilterParameters) {
-//        return isEqual;
-//    }
 }

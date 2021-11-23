@@ -8,6 +8,8 @@ import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class AlgorithmService {
 
@@ -26,11 +28,20 @@ public class AlgorithmService {
         return censusBlockService.getDistrictingJSON(improvedDistrictingPlan);
     }
 
-
     private void runAlgorithm(int minOpportunity, int maxOpportunity) {
         DistrictingPlan currentDistrictingPlan = districtService.getCurrentDistrictingPlan();
+
+        // Instantiating district data structures
+        List<District> districts = currentDistrictingPlan.getDistricts();
+        for(District district : districts) {
+            if(!district.dataStructuresInstantiated()) {
+                currentDistrictingPlan.instantiateDataStructures(district);
+            }
+        }
+
         for (currentIteration = 0; currentIteration < MAX_ITERATIONS; currentIteration++) {
             District selectedDistrict = currentDistrictingPlan.selectDistrict();
+
             CensusBlock censusBlockToMove = selectedDistrict.selectCensusBlock();
             currentDistrictingPlan.makeMove(censusBlockToMove);
 
@@ -50,5 +61,21 @@ public class AlgorithmService {
         }
 
         return (updatedDistrictingPlanStatistics.getAbsoluteDifferenceInPopulation() < originalDistrictingPlanStatistics.getAbsoluteDifferenceInPopulation());
+    }
+
+    public void stopAlgorithm() {
+        this.currentIteration = MAX_ITERATIONS;
+    }
+
+    public JSONObject getCurrentDistrictingPlan() {
+        return censusBlockService.getDistrictingJSON(districtService.getCurrentDistrictingPlan());
+    }
+
+    public DistrictingPlanStatistics getCurrentDistrictingStatistics() {
+        return districtService.getCurrentDistrictingPlan().getDistrictingPlanStatistics();
+    }
+
+    public int getCurrentNumberOfIterations() {
+        return currentIteration;
     }
 }

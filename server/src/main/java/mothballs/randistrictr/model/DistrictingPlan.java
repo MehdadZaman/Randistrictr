@@ -2,7 +2,7 @@ package mothballs.randistrictr.model;
 
 import javax.persistence.*;
 import java.io.*;
-import java.util.List;
+import java.util.*;
 
 @Entity
 public class DistrictingPlan implements Serializable {
@@ -93,7 +93,63 @@ public class DistrictingPlan implements Serializable {
 
     @Transient
     public void recalculateMeasures() {
+        this.districtingPlanStatistics.setAbsoluteDifferenceInPopulation(getAbsPopDiff());
+        int numOppDistricts = 0;
+        for(District district : districts) {
+            if(district.isOpportunityDistrict()) {
+                numOppDistricts++;
+            }
+        }
+        this.districtingPlanStatistics.setNumOpportunityDistricts(numOppDistricts);
+    }
 
+    @Transient
+    public double getAbsPopDiff() {
+        double maxPop = Double.MIN_VALUE;
+        double minPop = Double.MAX_VALUE;
+        double totalPop = 0;
+        for(District district : districts) {
+            maxPop = Math.max(maxPop, district.getPopulation().getTotalTotalPopulation());
+            minPop = Math.min(minPop, district.getPopulation().getTotalTotalPopulation());
+            totalPop += district.getPopulation().getTotalTotalPopulation();
+        }
+        return (maxPop - minPop) / totalPop;
+    }
+
+    @Transient
+    public void instantiateDataStructures(District district) {
+        List<String> adjacentDistrictIDs = district.getAdjacentDistrictIDs();
+        List<District> adjacentDistricts = new ArrayList<>();
+
+        HashMap<String, District> idMappings = new HashMap<>();
+
+        for(String adjID : adjacentDistrictIDs) {
+            for(District otherDistrict : districts) {
+                idMappings.put(district.getGeoID20(), otherDistrict);
+                if(otherDistrict.getGeoID20().equals(adjID)) {
+                    adjacentDistricts.add(otherDistrict);
+                }
+            }
+        }
+
+        Map<District, Set<CensusBlock>> movableCensusBlocks = new HashMap<>();
+        Set<CensusBlock> censusBlocks = district.getCensusBlocks();
+
+        for(CensusBlock censusBlock : censusBlocks) {
+            if((censusBlock.getAdjacentCongressionalDistrict() != null) && (!censusBlock.getAdjacentCongressionalDistrict().equals(censusBlock.getCongressionalDistrictID()))) {
+                if(movableCensusBlocks.containsKey(idMappings.get(censusBlock.getAdjacentCongressionalDistrict()))) {
+                    movableCensusBlocks.get(idMappings.get(censusBlock.getAdjacentCongressionalDistrict())).add(censusBlock);
+                }
+                else {
+                    movableCensusBlocks.put(idMappings.get(censusBlock.getAdjacentCongressionalDistrict()), new HashSet<>());
+                    movableCensusBlocks.get(idMappings.get(censusBlock.getAdjacentCongressionalDistrict())).add(censusBlock);
+                }
+            }
+
+        }
+
+        district.setAdjacentDistricts(adjacentDistricts);
+        district.setMovableCensusBlocks(movableCensusBlocks);
     }
 
 //    @Transient

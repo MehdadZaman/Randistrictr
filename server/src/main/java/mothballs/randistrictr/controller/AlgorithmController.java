@@ -1,6 +1,7 @@
 package mothballs.randistrictr.controller;
 
 import mothballs.randistrictr.model.DistrictingPlan;
+import mothballs.randistrictr.model.DistrictingPlanStatistics;
 import mothballs.randistrictr.service.AlgorithmService;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,5 +24,25 @@ public class AlgorithmController {
         JSONObject districtingPlanJSONObject = algorithmService.getImprovedDistrictingPlan(maxPopDiff, minOpportunity, maxOpportunity);
         System.out.println("DONE Run Algorithm");
         return districtingPlanJSONObject;
+    }
+
+    @GetMapping("/stop")
+    public void stopAlgorithm() {
+        algorithmService.stopAlgorithm();
+    }
+
+    @GetMapping("/getCurrentDistrictingPlan")
+    public JSONObject getCurrentDistrictingPlan() {
+        return algorithmService.getCurrentDistrictingPlan();
+    }
+
+    @GetMapping("/getCurrentDistrictingStatistics")
+    public DistrictingPlanStatistics getCurrentDistrictingStatistics() {
+        return algorithmService.getCurrentDistrictingStatistics();
+    }
+
+    @GetMapping("/getCurrentNumberOfIterations")
+    public int getCurrentNumberOfIterations() {
+        return algorithmService.getCurrentNumberOfIterations();
     }
 }
