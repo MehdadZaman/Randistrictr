@@ -274,35 +274,35 @@ public class Population {
 
     public void addPopulation(Population population) {
         totalTotalPopulation += population.getTotalTotalPopulation();
-        totalWhitePopulation += population.getTotalTotalPopulation();
-        totalBlackPopulation += population.getTotalTotalPopulation();
-        totalHispanicPopulation += population.getTotalTotalPopulation();
-        totalAmericanIndianPopulation += population.getTotalTotalPopulation();
-        totalAsianPopulation += population.getTotalTotalPopulation();
-        totalHawaiianPopulation += population.getTotalTotalPopulation();
-//        totalOtherPopulation
+        totalWhitePopulation += population.getTotalWhitePopulation();
+//        totalBlackPopulation += population.
+//        totalHispanicPopulation += population.
+//        totalAmericanIndianPopulation += population.
+//        totalAsianPopulation += population.
+//        totalHawaiianPopulation += population.
+//        totalOtherPopulation += population.
 //
-//        vapTotalPopulation;
-//        vapWhitePopulation;
-//        vapBlackPopulation;
-//        vapHispanicPopulation;
-//        vapAmericanIndianPopulation;
-//        vapAsianPopulation;
-//        vapHawaiianPopulation;
-//        vapOtherPopulation;
+//        vapTotalPopulation += population.
+//        vapWhitePopulation += population.
+//        vapBlackPopulation += population.
+//        vapHispanicPopulation += population.
+//        vapAmericanIndianPopulation += population.
+//        vapAsianPopulation += population.
+//        vapHawaiianPopulation += population.
+//        vapOtherPopulation += population.
 //
-//        cvapTotalPopulation;
-//        cvapWhitePopulation;
-//        cvapBlackPopulation;
-//        cvapHispanicPopulation;
-//        cvapAmericanIndianPopulation;
-//        cvapAsianPopulation;
-//        cvapHawaiianPopulation;
-//        cvapOtherPopulation;
+//        cvapTotalPopulation += population.
+//        cvapWhitePopulation += population.
+//        cvapBlackPopulation += population.
+//        cvapHispanicPopulation += population.
+//        cvapAmericanIndianPopulation += population.
+//        cvapAsianPopulation += population.
+//        cvapHawaiianPopulation += population.
+//        cvapOtherPopulation += population.
 //
-//        democratVoters;
-//        republicanVoters;
-//        otherVoters;
+//        democratVoters += population.
+//        republicanVoters += population.
+//        otherVoters += population.
 
     }
 

@@ -82,9 +82,9 @@ public class CensusBlockService {
                 properties.put("CVAP_ASIAN", censusBlockPopulation.getCvapAsianPopulation());
                 properties.put("CVAP_HAWAIIAN", censusBlockPopulation.getCvapHawaiianPopulation());
                 properties.put("CVAP_OTHER", censusBlockPopulation.getCvapOtherPopulation());
-                properties.put("DEMOCRAT", 0);
-                properties.put("REPUBLICAN", 0);
-                properties.put("OTHER", 0);
+                properties.put("DEMOCRAT", censusBlockPopulation.getDemocratVoters());
+                properties.put("REPUBLICAN", censusBlockPopulation.getRepublicanVoters());
+                properties.put("OTHER", censusBlockPopulation.getOtherVoters());
                 cBJSON.put("properties", properties);
                 JSONObject geometry = new JSONObject();
                 geometry.put("type", cB.getGeometryType());
