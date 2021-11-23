@@ -101,41 +101,11 @@ public class District implements Serializable {
     }
 
     @Transient
-    public void modifyDistrict() {
-        District neighborDistrict = getNeighboringDistrict();
-        CensusBlock censusBlock = getCensusBlock();
-        removeCensusBlock(censusBlock);
-        neighborDistrict.addCensusBlock(censusBlock);
-    }
-
-    @Transient
     public District getNeighboringDistrict() {
         int randomIndex = random.nextInt(adjacentDistricts.size());
         return adjacentDistricts.get(randomIndex);
     }
 
-    @Transient
-    public CensusBlock getCensusBlock() {
-        int randomIndex = random.nextInt(censusBlocks.size());
-        int i = 0;
-        for (CensusBlock censusBlock : censusBlocks) {
-            if (i == randomIndex) {
-                return censusBlock;
-            }
-            i++;
-        }
-        return null;
-    }
-
-    @Transient
-    public void addCensusBlock(CensusBlock censusBlock) {
-        censusBlocks.add(censusBlock);
-    }
-
-    @Transient
-    public void removeCensusBlock(CensusBlock censusBlock) {
-        censusBlocks.remove(censusBlock);
-    }
 
     public List<String> getAdjacentDistrictIDs() {
         return adjacentDistrictIDs;
@@ -144,17 +114,39 @@ public class District implements Serializable {
     public void setAdjacentDistrictIDs(List<String> adjacentDistrictIDs) {
         this.adjacentDistrictIDs = adjacentDistrictIDs;
     }
+
+    @Transient
+    public CensusBlock selectCensusBlock() {
+        District randomNeighboringDistrict = adjacentDistricts.get((int)Math.random() * adjacentDistricts.size());
+        Set<CensusBlock> selectedCensusBlocks = movableCensusBlocks.get(randomNeighboringDistrict);
+        int randomIndex = (int)Math.random() * selectedCensusBlocks.size();
+        int iter = 0;
+        for(CensusBlock cB : selectedCensusBlocks) {
+            if(iter == randomIndex) {
+                return cB;
+            }
+            iter++;
+        }
+        return null;
+    }
+
+    @Transient
+    public void addCensusBlock(CensusBlock censusBlock, District neighboringDistrict) {
+        movableCensusBlocks.get(neighboringDistrict).remove(censusBlock);
+        censusBlocks.add(censusBlock);
+        population.addPopulation(censusBlock.getPopulation());
+    }
+
+    @Transient
+    public void removeCensusBlock(CensusBlock censusBlock, District neighboringDistrict) {
+        movableCensusBlocks.get(neighboringDistrict).add(censusBlock);
+        censusBlocks.remove(censusBlock);
+        population.removePopulation(censusBlock.getPopulation());
+    }
+
 //    @Transient
 //    public boolean isOpportunityDistrict() {
 //        return false;
 //    }
-//
-//    @Transient
-//    public double getOpportunityPercentage() {
-//        return 0;
-//    }
-//
-//    public double calculateDistrictPopScore(int numDistricts) {
-//        return 0;
-//    }
+
 }

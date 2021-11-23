@@ -10,9 +10,7 @@ public class DistrictingPlanStatistics {
 
     private String state;
     private int redistrictNumber;
-    // private Population population;
     private String description;
-    // private String previewImage;
     private int numOpportunityDistricts;
     private double absoluteDifferenceInPopulation;
     private double efficiencyGap;
@@ -21,23 +19,21 @@ public class DistrictingPlanStatistics {
 
     private int numCongressionalDistricts;
 
-//    public DistrictingPlanStatistics(){
-//
-//    }
-//    public DistrictingPlanStatistics(int redistrictNumber, Population population, String description, String previewImage,
-//                                     int numOpportunities, double threshold, double absoluteDifferenceInPopulation,
-//                                     double efficiencyGap, double polsbyPopperScore, double objectiveFunctionMeasure) {
-//        this.redistrictNumber = redistrictNumber;
-//        this.population = population;
-//        this.description = description;
-//        this.previewImage = previewImage;
-//        this.numOpportunities = numOpportunities;
-//        this.threshold = threshold;
-//        this.absoluteDifferenceInPopulation = absoluteDifferenceInPopulation;
-//        this.efficiencyGap = efficiencyGap;
-//        this.polsbyPopperScore = polsbyPopperScore;
-//        this.objectiveFunctionMeasure = objectiveFunctionMeasure;
-//    }
+    public DistrictingPlanStatistics(){}
+
+    public DistrictingPlanStatistics(String state, int redistrictNumber, String description, int numOpportunityDistricts,
+                                     double absoluteDifferenceInPopulation, double efficiencyGap, double populationScore,
+                                     double objectiveFunctionScore, int numCongressionalDistricts) {
+        this.state = state;
+        this.redistrictNumber = redistrictNumber;
+        this.description = description;
+        this.numOpportunityDistricts = numOpportunityDistricts;
+        this.absoluteDifferenceInPopulation = absoluteDifferenceInPopulation;
+        this.efficiencyGap = efficiencyGap;
+        this.populationScore = populationScore;
+        this.objectiveFunctionScore = objectiveFunctionScore;
+        this.numCongressionalDistricts = numCongressionalDistricts;
+    }
 
 
     public String getId() {
@@ -118,5 +114,12 @@ public class DistrictingPlanStatistics {
 
     public void setNumCongressionalDistricts(int numCongressionalDistricts) {
         this.numCongressionalDistricts = numCongressionalDistricts;
+    }
+
+    @Transient
+    public DistrictingPlanStatistics deepClone() {
+        return new DistrictingPlanStatistics(state, redistrictNumber, description, numOpportunityDistricts,
+                absoluteDifferenceInPopulation, efficiencyGap, populationScore, objectiveFunctionScore, numCongressionalDistricts);
+
     }
 }

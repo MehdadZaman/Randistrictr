@@ -30,33 +30,25 @@ public class AlgorithmService {
     private void runAlgorithm(int minOpportunity, int maxOpportunity) {
         DistrictingPlan currentDistrictingPlan = districtService.getCurrentDistrictingPlan();
         for (currentIteration = 0; currentIteration < MAX_ITERATIONS; currentIteration++) {
-            // DistrictingPlan clonedDistrictingPlan = currentDistrictingPlan.deepClone();
+            District selectedDistrict = currentDistrictingPlan.selectDistrict();
+            CensusBlock censusBlockToMove = selectedDistrict.selectCensusBlock();
+            currentDistrictingPlan.makeMove(censusBlockToMove);
 
-//            District selectDistrict = currentDistrictingPlan.selectDistrict();
-//            CensusBlock censusBlockToMove = district.selectCensusBlock();
-//            makeMove(censusBlockToMove);
-
-//            double currPopDiff
-
-            // update districting plan statistics
+            DistrictingPlanStatistics oldDistrictingPlanStatistics = currentDistrictingPlan.getDistrictingPlanStatistics().deepClone();
             currentDistrictingPlan.recalculateMeasures();
 
-//            if (isValidMove(clonedDistrictingPlan.getDistrictingPlanStatistics(),
-//                    currentDistrictingPlan.getDistrictingPlanStatistics(), minOpportunity, maxOpportunity)) {
-//                districtService.setCurrentDistrictingPlan(currentDistrictingPlan);
-//            } else {
-//                districtService.setCurrentDistrictingPlan(clonedDistrictingPlan);
-//            }
+            if (!isValidMove(oldDistrictingPlanStatistics, currentDistrictingPlan.getDistrictingPlanStatistics(), minOpportunity, maxOpportunity)) {
+                currentDistrictingPlan.makeMove(censusBlockToMove);
+                currentDistrictingPlan.setDistrictingPlanStatistics(oldDistrictingPlanStatistics);
+            }
         }
     }
 
-//    private boolean isImproved(DistrictingPlanStatistics originalDistrictingPlanStatistics,
-//                               DistrictingPlanStatistics updatedDistrictingPlanStatistics,
-//                               int minOpportunity, int maxOpportunity) {
-//        if(updatedDistrictingPlanStatistics.getNumOpportunityDistricts())
-//
-//        return false;
-//    }
+    private boolean isValidMove(DistrictingPlanStatistics originalDistrictingPlanStatistics, DistrictingPlanStatistics updatedDistrictingPlanStatistics, int minOpportunity, int maxOpportunity) {
+        if(updatedDistrictingPlanStatistics.getNumOpportunityDistricts() < minOpportunity || updatedDistrictingPlanStatistics.getNumOpportunityDistricts() > maxOpportunity) {
+            return false;
+        }
 
-
+        return (updatedDistrictingPlanStatistics.getAbsoluteDifferenceInPopulation() < originalDistrictingPlanStatistics.getAbsoluteDifferenceInPopulation());
+    }
 }

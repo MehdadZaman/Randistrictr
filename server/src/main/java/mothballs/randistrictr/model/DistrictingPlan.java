@@ -3,7 +3,6 @@ package mothballs.randistrictr.model;
 import javax.persistence.*;
 import java.io.*;
 import java.util.List;
-import java.util.Random;
 
 @Entity
 public class DistrictingPlan implements Serializable {
@@ -24,10 +23,6 @@ public class DistrictingPlan implements Serializable {
             @JoinColumn(name="districtingPlan", referencedColumnName="districtingPlan")
     })
     private List<District> districts;
-
-//    private Random random;
-//    private DistrictingPlanStatistics dps;
-
 
     public String getId() {
         return id;
@@ -69,46 +64,31 @@ public class DistrictingPlan implements Serializable {
         this.districtingPlanStatistics = districtingPlanStatistics;
     }
 
-    //    public DistrictingPlan(int redistrictNumber, List<District> districts) {
-//        this.redistrictNumber = redistrictNumber;
-//        this.districts = districts;
-//        this.random = new Random();
-//    }
-
-//    @Transient
-//    public JSONObject getJSON() {
-//        Gson gson = new Gson();
-//        String jsonString = gson.toJson(this);
-//        return gson.fromJson(jsonString, JSONObject.class);
-//    }
-
     @Transient
     public District selectDistrict() {
-        Random random = new Random();
-        int randomIndex = random.nextInt(districts.size());
-        int i = 0;
-        for (District district : districts) {
-            if (randomIndex == i) {
-                return district;
-            }
-            i++;
-        }
-        return null;
+        return districts.get((int)(Math.random() * districts.size()));
     }
 
     @Transient
-    public DistrictingPlan deepClone() {
-        try {
-            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-            ObjectOutputStream objectOutputStream = new ObjectOutputStream(byteArrayOutputStream);
-            objectOutputStream.writeObject(this);
+    public void makeMove(CensusBlock censusBlock) {
+        District removedFrom = null;
+        District addedTo = null;
 
-            ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(byteArrayOutputStream.toByteArray());
-            ObjectInputStream objectInputStream = new ObjectInputStream(byteArrayInputStream);
-            return (DistrictingPlan) objectInputStream.readObject();
-        } catch (Exception e) {
-            return null;
+        for(District district : districts) {
+            if(censusBlock.getCongressionalDistrict().equals(district.getCongressionalDistrict())) {
+                removedFrom = district;
+            }
+
+            if(censusBlock.getAdjacentCongressionalDistrict().equals(district.getCongressionalDistrict())) {
+                addedTo = district;
+            }
         }
+
+        removedFrom.removeCensusBlock(censusBlock, addedTo);
+        addedTo.addCensusBlock(censusBlock, removedFrom);
+
+        censusBlock.setDistrictingPlan(addedTo.getDistrictingPlan());
+        censusBlock.setAdjacentCongressionalDistrict(removedFrom.getCongressionalDistrict());
     }
 
     @Transient
@@ -116,28 +96,22 @@ public class DistrictingPlan implements Serializable {
 
     }
 
+//    @Transient
+//    public DistrictingPlan deepClone() {
+//        try {
+//            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+//            ObjectOutputStream objectOutputStream = new ObjectOutputStream(byteArrayOutputStream);
+//            objectOutputStream.writeObject(this);
+//
+//            ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(byteArrayOutputStream.toByteArray());
+//            ObjectInputStream objectInputStream = new ObjectInputStream(byteArrayInputStream);
+//            return (DistrictingPlan) objectInputStream.readObject();
+//        } catch (Exception e) {
+//            return null;
+//        }
+//    }
+
 //    public double calculateDistrictingPlanScore() {
 //        return 0;
-//    }
-//
-//    public void recalculateMeasures() {
-//        return;
-//    }
-//
-//    public List<double[]> getFilteredBoundaries(boolean isState, boolean isCong, boolean isCensusBlock) {
-//        return null;
-//    }
-//
-//    public List<double[]> appendToAggregateCoordinates(List<double[]> coordinates) {
-//        return null;
-//    }
-
-
-//    public DistrictingPlanStatistics getDistrictingPlanStatistics() {
-//        return dps;
-//    }
-//
-//    public void setDistrictingPlanStatistics(DistrictingPlanStatistics dps) {
-//        this.dps = dps;
 //    }
 }

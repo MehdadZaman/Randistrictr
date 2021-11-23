@@ -274,8 +274,36 @@ public class Population {
 
     public void addPopulation(Population population) {
         totalTotalPopulation += population.getTotalTotalPopulation();
-        democratVoters += population.getDemocratVoters();
-        republicanVoters += population.getRepublicanVoters();
+        totalWhitePopulation += population.getTotalTotalPopulation();
+        totalBlackPopulation += population.getTotalTotalPopulation();
+        totalHispanicPopulation += population.getTotalTotalPopulation();
+        totalAmericanIndianPopulation += population.getTotalTotalPopulation();
+        totalAsianPopulation += population.getTotalTotalPopulation();
+        totalHawaiianPopulation += population.getTotalTotalPopulation();
+//        totalOtherPopulation
+//
+//        vapTotalPopulation;
+//        vapWhitePopulation;
+//        vapBlackPopulation;
+//        vapHispanicPopulation;
+//        vapAmericanIndianPopulation;
+//        vapAsianPopulation;
+//        vapHawaiianPopulation;
+//        vapOtherPopulation;
+//
+//        cvapTotalPopulation;
+//        cvapWhitePopulation;
+//        cvapBlackPopulation;
+//        cvapHispanicPopulation;
+//        cvapAmericanIndianPopulation;
+//        cvapAsianPopulation;
+//        cvapHawaiianPopulation;
+//        cvapOtherPopulation;
+//
+//        democratVoters;
+//        republicanVoters;
+//        otherVoters;
+
     }
 
     public void removePopulation(Population population) {
