@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+
+#SBATCH --job-name=mothballs_gerrymandering
+#SBATCH --output=test.log
+#SBATCH --ntasks-per-node=28
+#SBATCH --nodes=12
+#SBATCH --time=03:59:59
+#SBATCH -p short-28core
+#SBATCH --mail-type=BEGIN,END
+#SBATCH --mail-user=kevin.chao@stonybrook.edu
+
+module load anaconda/3
+module load mpi4py/3.0.3
+
+cd files
+
+conda create -n gerry python=3.6 anaconda
+source activate gerry
+
+pip install -r requirements.txt
+pip install mpi4py
+mkdir output
+
+mpirun -np 336 python cli.py -g ./src/data/marylandGerrymandering.json -c 10000 -r 100
+conda deactivate
+
