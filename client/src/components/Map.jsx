@@ -59,10 +59,12 @@ function style(feature) {
 const Map = () => {
   const [map, setMap] = useState(null);
   const [selectedState, setSelectedState, selectedStateRef] = useStateRef();
+  const [districtings, setDistrictings] = useState([]);
   const [activeGeoJSON, setActiveGeoJSON] = useState(null);
   const [votingGeoJSON, setVotingGeoJSON] = useState();
   const [leftSidebarExpanded, setLeftSidebarExpanded] = useState(false);
   const [rightSidebarExpanded, setRightSidebarExpanded] = useState(false);
+  const [algorithmRunning, setAlgorithmRunning] = useState(false);
 
   const displayMap = useMemo(() => {
     let mapRef;
@@ -103,7 +105,8 @@ const Map = () => {
         setLeftSidebarExpanded(true);
         setRightSidebarExpanded(true);
         setActiveGeoJSON(null);
-        setSelectedState(NAME);
+        handleSelectState(NAME);
+        // setSelectedState(NAME);
       }
 
       map.fitBounds(e.target.getBounds());
@@ -189,10 +192,37 @@ const Map = () => {
     );
   }, [map, selectedState, activeGeoJSON, votingGeoJSON]);
 
+  const handleSelectState = async (stateName) => {
+    try {
+      const res = await apiCaller.get('/select/state/population', {
+        params: {
+          stateName,
+        },
+      });
+      const enactedDistrictingRes = await apiCaller.get(
+        '/select/state/enactedDistricting'
+      );
+      const enactedDistrictingPlanStatisticsRes = await apiCaller.get(
+        '/select/state/enactedDistrictingPlanStatistics'
+      );
+      const allDistrictingPlanStatisticsRes = await apiCaller.get(
+        '/select/state/allDistrictingPlanStatistics'
+      );
+      console.log(stateName);
+      console.log(allDistrictingPlanStatisticsRes.data);
+      setSelectedState(stateName);
+      setActiveGeoJSON(enactedDistrictingRes.data);
+      setDistrictings(allDistrictingPlanStatisticsRes.data);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
   const handleSelect = async (redistrictNumber) => {
     try {
-      const res = await apiCaller.get('/redistricting', {
-        params: { stateName: selectedState, redistrictNumber },
+      console.log(redistrictNumber);
+      const res = await apiCaller.get('/select/state/districting', {
+        params: { redistrictNumber },
       });
       setActiveGeoJSON(res.data);
       setRightSidebarExpanded(true);
@@ -218,20 +248,27 @@ const Map = () => {
     minPolsbyPopper,
     numIterations
   ) => {
-    const res = await apiCaller.get('/run-algorithm', {
-      params: {
-        stateName: selectedState,
-        minOpportunity,
-        maxOpportunity,
-        minThreshold,
-        maxDiff,
-        maxEffGap,
-        minPolsbyPopper,
-        numIterations,
-      },
-    });
-    setActiveGeoJSON(res.data);
-    console.log(res.data);
+    try {
+      setAlgorithmRunning(true);
+      const res = await apiCaller.get('/run-algorithm', {
+        params: {
+          stateName: selectedState,
+          minOpportunity,
+          maxOpportunity,
+          minThreshold,
+          maxDiff,
+          maxEffGap,
+          minPolsbyPopper,
+          numIterations,
+        },
+      });
+      setActiveGeoJSON(res.data);
+      console.log(res.data);
+    } catch (e) {
+      console.log(e);
+    } finally {
+      setAlgorithmRunning(false);
+    }
   };
   return (
     <>
@@ -248,8 +285,9 @@ const Map = () => {
               setLeftSidebarExpanded(false);
               setRightSidebarExpanded(false);
             }
-            setActiveGeoJSON(null);
-            setSelectedState(state);
+            handleSelectState(state);
+            // setActiveGeoJSON(null);
+            // setSelectedState(state);
           }}
         />
       ) : null}
@@ -262,9 +300,11 @@ const Map = () => {
           >
             {selectedState ? (
               <TabView
+                districtings={districtings}
                 selectedState={selectedState}
                 onSelect={handleSelect}
                 onRun={handleRunAlgorithm}
+                algorithmRunning={algorithmRunning}
                 isDistrictSelected={!!activeGeoJSON}
               />
             ) : (

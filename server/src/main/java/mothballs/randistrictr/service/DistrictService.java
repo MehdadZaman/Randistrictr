@@ -2,14 +2,17 @@ package mothballs.randistrictr.service;
 
 import mothballs.randistrictr.model.*;
 import mothballs.randistrictr.repository.*;
+import org.hibernate.Hibernate;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 @Service
 public class DistrictService {
@@ -43,6 +46,7 @@ public class DistrictService {
 
     public void selectState(String state) {
         this.currentState = stateRepository.findStateByState(state);
+        Hibernate.initialize(this.currentState.getDistrictingPlans());
         // this.enactedDistrictingPlan = this.currentState.getDistrictingPlans().get(ENACTED_DISTRICTING_PLAN);
     }
 
@@ -59,7 +63,8 @@ public class DistrictService {
     }
 
     public JSONObject getDistrictingPlan(int districtPlanNumber) {
-        this.currentDistrictingPlan = this.currentState.getDistrictingPlans().get(districtPlanNumber);
+        this.currentDistrictingPlan = stateRepository.findStateByState(this.currentState.getState()).getDistrictingPlans().get(districtPlanNumber);
+//        this.currentDistrictingPlan = this.currentState.getDistrictingPlans().get(districtPlanNumber);
         return censusBlockService.getDistrictingJSON(this.currentDistrictingPlan);
     }
 
@@ -84,7 +89,7 @@ public class DistrictService {
     public JSONObject readEnactedDistrictingPlan(String stateName) {
         try {
             JSONParser jsonParser = new JSONParser();
-            FileReader reader = new FileReader("src\\main\\java\\mothballs.randistrictr\\constants\\" + stateName + "_congressional_districts.json");
+            FileReader reader = new FileReader("src/main/java/mothballs/randistrictr/constants/" + stateName.toLowerCase() + "_congressional_districts.json");
             Object obj = jsonParser.parse(reader);
             JSONObject jsonObject = (JSONObject) obj;
             return jsonObject;

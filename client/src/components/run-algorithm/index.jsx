@@ -7,7 +7,6 @@ import {
   SliderFilledTrack,
   SliderThumb,
   Select,
-  Input,
   Button,
   NumberInput,
   NumberInputField,
@@ -17,38 +16,31 @@ import {
 } from '@chakra-ui/react';
 import ReactSlider from 'react-slider';
 
-const RunAlgorithm = ({ map, onRun }) => {
+const RunAlgorithm = ({ map, onRun, algorithmRunning }) => {
   const [[minOpportunity, maxOpportunity], setOpportunity] = useState([0, 3]);
-
   const [minThreshold, setMinThreshold] = useState(50);
   const [minPopulationScore, setMinPopulationScore] = useState(75);
-
   const [maxDiff, setMaxDiff] = useState();
-
   const [maxEffGap, setMaxEffGap] = useState(0.5);
   const [minPolsbyPopper, setMinPolsbyPopper] = useState(0.5);
   const [numIterations, setNumIterations] = useState(10);
-
   const [isLoading, setIsLoading] = useState(false);
+
   function handleRun() {
     // if (!efficiencyGapMeasure || !polsbyPopperScore) {
     //   console.log('Please fill in all filters');
     // } else {
     //   onFilter();
     // }
-    setIsLoading(true);
-    setTimeout(() => {
-      onRun(
-        minOpportunity,
-        maxOpportunity,
-        minThreshold,
-        maxDiff,
-        maxEffGap,
-        minPolsbyPopper,
-        numIterations
-      );
-      setIsLoading(false);
-    }, 3000);
+    onRun(
+      minOpportunity,
+      maxOpportunity,
+      minThreshold,
+      maxDiff,
+      maxEffGap,
+      minPolsbyPopper,
+      numIterations
+    );
   }
 
   return (
@@ -77,7 +69,7 @@ const RunAlgorithm = ({ map, onRun }) => {
           max={5}
         />
       </div>
-      <div style={{ margin: '2vh' }}>
+      {/* <div style={{ margin: '2vh' }}>
         <h1>
           <span style={{ color: 'gray' }}>
             Minimum Threshold for Majority-Minority Districts:
@@ -98,7 +90,7 @@ const RunAlgorithm = ({ map, onRun }) => {
           </SliderTrack>
           <SliderThumb />
         </Slider>
-      </div>
+      </div> */}
 
       <div style={{ margin: '2vh' }}>
         <h1>
@@ -124,7 +116,7 @@ const RunAlgorithm = ({ map, onRun }) => {
         </Select>
       </div>
 
-      <div style={{ margin: '2vh' }}>
+      {/* <div style={{ margin: '2vh' }}>
         <h1>
           <span style={{ color: 'gray' }}>Minimum Population Score: </span>
           <br />
@@ -213,10 +205,10 @@ const RunAlgorithm = ({ map, onRun }) => {
             <NumberDecrementStepper />
           </NumberInputStepper>
         </NumberInput>
-      </div>
+      </div> */}
       <div style={{ margin: '4vh', textAlign: 'center' }}>
         <Button
-          isLoading={isLoading}
+          isLoading={algorithmRunning}
           colorScheme='blue'
           size='lg'
           onClick={handleRun}

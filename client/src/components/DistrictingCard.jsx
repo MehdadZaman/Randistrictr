@@ -66,7 +66,7 @@ const DistrictingCard = ({ property, onSelect }) => {
           ml='1'
         >
           {property.congressionalDistricts} Congressional &bull;{' '}
-          {property.votingDistricts.toLocaleString()} Voting
+          {/* {property.votingDistricts.toLocaleString()} Voting */}
         </Box>
         <Box
           mt='1'
