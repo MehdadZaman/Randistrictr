@@ -140,13 +140,24 @@ public class DistrictService {
         }
 
         jsonObject.put("dataPoints", boxPlotArray);
+        System.out.println("YEET1");
+        System.out.println(jsonObject);
 
         // Overarching JSON object
         JSONObject componentObject = new JSONObject();
         componentObject.put("theme", "light2");
-        componentObject.put("title", new JSONObject().put("text", "Ensemble of " + boxAndWhisker.getBasis() + " Population"));
-        componentObject.put("axisY", new JSONObject().put("title",  "Population"));
-        componentObject.put("data", new JSONArray().add(jsonObject));
+
+        JSONObject titleObject = new JSONObject();
+        titleObject.put("text", "Ensemble of " + boxAndWhisker.getBasis() + " Population");
+        componentObject.put("title", titleObject);
+
+        JSONObject axisYObject = new JSONObject();
+        axisYObject.put("title",  "Population");
+        componentObject.put("axisY", axisYObject);
+
+        JSONArray dataArray = new JSONArray();
+        dataArray.add(jsonObject);
+        componentObject.put("data", dataArray);
 
         return componentObject;
     }

@@ -66,8 +66,8 @@ public class StateSelectorController {
     }
 
     @GetMapping("/getBoxAndWhisker")
-    public JSONObject getBoxAndWhisker(@RequestParam(value = "redistrictNumber") Basis basis) {
-        return districtService.getBoxAndWhisker(basis);
+    public JSONObject getBoxAndWhisker(@RequestParam(value = "basis") int basis) {
+        return districtService.getBoxAndWhisker(Basis.values()[basis]);
     }
 
     @PostMapping("/setPopulationMeasure")
