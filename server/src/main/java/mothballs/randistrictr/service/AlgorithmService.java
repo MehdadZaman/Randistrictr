@@ -4,6 +4,7 @@ import mothballs.randistrictr.model.CensusBlock;
 import mothballs.randistrictr.model.District;
 import mothballs.randistrictr.model.DistrictingPlan;
 import mothballs.randistrictr.model.DistrictingPlanStatistics;
+import mothballs.randistrictr.object.PopulationMeasure;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -56,11 +57,25 @@ public class AlgorithmService {
     }
 
     private boolean isValidMove(DistrictingPlanStatistics originalDistrictingPlanStatistics, DistrictingPlanStatistics updatedDistrictingPlanStatistics, int minOpportunity, int maxOpportunity) {
-//        if(updatedDistrictingPlanStatistics.getNumOpportunityDistricts() < minOpportunity || updatedDistrictingPlanStatistics.getNumOpportunityDistricts() > maxOpportunity) {
-//            return false;
-//        }
-//
-//        return (updatedDistrictingPlanStatistics.getAbsoluteDifferenceInPopulation() < originalDistrictingPlanStatistics.getAbsoluteDifferenceInPopulation());
+        if(districtService.getPopulationMeasure() == PopulationMeasure.TOTAL) {
+            if (updatedDistrictingPlanStatistics.getTotalNumOpportunityDistricts() < minOpportunity || updatedDistrictingPlanStatistics.getTotalNumOpportunityDistricts() > maxOpportunity) {
+                return false;
+            }
+            return (updatedDistrictingPlanStatistics.getTotalAbsoluteDifferenceInPopulation() < originalDistrictingPlanStatistics.getTotalAbsoluteDifferenceInPopulation());
+        }
+        else if(districtService.getPopulationMeasure() == PopulationMeasure.CVAP) {
+            if (updatedDistrictingPlanStatistics.getCvapNumOpportunityDistricts() < minOpportunity || updatedDistrictingPlanStatistics.getCvapNumOpportunityDistricts() > maxOpportunity) {
+                return false;
+            }
+            return (updatedDistrictingPlanStatistics.getCvapAbsoluteDifferenceInPopulation() < originalDistrictingPlanStatistics.getCvapAbsoluteDifferenceInPopulation());
+        }
+        else if(districtService.getPopulationMeasure() == PopulationMeasure.VAP) {
+            if (updatedDistrictingPlanStatistics.getVapNumOpportunityDistricts() < minOpportunity || updatedDistrictingPlanStatistics.getVapNumOpportunityDistricts() > maxOpportunity) {
+                return false;
+            }
+            return (updatedDistrictingPlanStatistics.getVapAbsoluteDifferenceInPopulation() < originalDistrictingPlanStatistics.getVapAbsoluteDifferenceInPopulation());
+        }
+
         return false;
     }
 

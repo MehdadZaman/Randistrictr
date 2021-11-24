@@ -121,15 +121,17 @@ public class DistrictService {
         List<BoxPlot> allBoxes = boxAndWhisker.getBoxes();
         Collections.sort(allBoxes, (a, b) -> a.getWhiskerPosition() - b.getWhiskerPosition());
 
+
         JSONObject jsonObject = new JSONObject();
-        jsonObject.put("type", "boxAndWhisker");
-        jsonObject.put("yValueFormatString", "#,##0.# \"People\"");
+        jsonObject.put("type", "boxPlot");
+        jsonObject.put("name", "box");
+        // jsonObject.put("yValueFormatString", "#,##0.# \"People\"");
 
         JSONArray boxPlotArray = new JSONArray();
 
         for(BoxPlot boxPlot : allBoxes) {
             JSONObject box = new JSONObject();
-            box.put("label", boxPlot.getWhiskerPosition());
+            box.put("x", boxPlot.getWhiskerPosition());
 
             JSONArray numbers = new JSONArray();
             numbers.add(boxPlot.getMinimum());
@@ -142,27 +144,32 @@ public class DistrictService {
             boxPlotArray.add(box);
         }
 
-        jsonObject.put("dataPoints", boxPlotArray);
-        System.out.println("YEET1");
-        System.out.println(jsonObject);
+        jsonObject.put("data", boxPlotArray);
+//        System.out.println("YEET1");
+//        System.out.println(jsonObject);
+//
+//        // Overarching JSON object
+//        JSONObject componentObject = new JSONObject();
+//        componentObject.put("theme", "light2");
+//
+//        JSONObject titleObject = new JSONObject();
+//        titleObject.put("text", "Ensemble of " + boxAndWhisker.getBasis() + " Population");
+//        componentObject.put("title", titleObject);
+//
+//        JSONObject axisYObject = new JSONObject();
+//        axisYObject.put("title",  "Population");
+//        componentObject.put("axisY", axisYObject);
+//
+//        JSONArray dataArray = new JSONArray();
+//        dataArray.add(jsonObject);
+//        componentObject.put("data", dataArray);
 
-        // Overarching JSON object
-        JSONObject componentObject = new JSONObject();
-        componentObject.put("theme", "light2");
+        JSONArray componentArray = new JSONArray();
+        componentArray.add(jsonObject);
+        JSONObject retJSONObject = new JSONObject();
+        retJSONObject.put("series", componentArray);
 
-        JSONObject titleObject = new JSONObject();
-        titleObject.put("text", "Ensemble of " + boxAndWhisker.getBasis() + " Population");
-        componentObject.put("title", titleObject);
-
-        JSONObject axisYObject = new JSONObject();
-        axisYObject.put("title",  "Population");
-        componentObject.put("axisY", axisYObject);
-
-        JSONArray dataArray = new JSONArray();
-        dataArray.add(jsonObject);
-        componentObject.put("data", dataArray);
-
-        return componentObject;
+        return retJSONObject;
     }
 
     public State getCurrentState() {
