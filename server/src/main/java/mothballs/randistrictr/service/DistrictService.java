@@ -1,16 +1,19 @@
 package mothballs.randistrictr.service;
 
 import mothballs.randistrictr.model.*;
+import mothballs.randistrictr.object.Basis;
+import mothballs.randistrictr.object.PopulationMeasure;
 import mothballs.randistrictr.repository.*;
 import org.hibernate.Hibernate;
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.io.FileReader;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class DistrictService {
@@ -34,9 +37,14 @@ public class DistrictService {
     @Autowired
     DistrictingPlanStatisticsRepository districtingPlanStatisticsRepository;
 
+    @Autowired
+    BoxAndWhiskerRepository boxAndWhiskerRepository;
+
     private State currentState;
     private DistrictingPlan currentDistrictingPlan;
     private boolean hasInitializedCensusBlocks;
+
+    PopulationMeasure populationMeasure = PopulationMeasure.TOTAL;
 
     public Population getPopulation(String id) {
         return populationRepository.findByGeoID20(id);
@@ -102,5 +110,74 @@ public class DistrictService {
         this.hasInitializedCensusBlocks = false;
         this.currentState = null;
         this.currentDistrictingPlan = null;
+    }
+
+    public JSONObject getBoxAndWhisker(Basis basis) {
+        return getBoxAndWhiskerJSONData(boxAndWhiskerRepository.findByBasisAndState(basis, currentState.getStateNumber()));
+    }
+
+    public JSONObject getBoxAndWhiskerJSONData(BoxAndWhisker boxAndWhisker) {
+
+        List<BoxPlot> allBoxes = boxAndWhisker.getBoxes();
+        Collections.sort(allBoxes, (a, b) -> a.getWhiskerPosition() - b.getWhiskerPosition());
+
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("type", "boxAndWhisker");
+        jsonObject.put("yValueFormatString", "#,##0.# \\\"People\\");
+
+        JSONArray boxPlotArray = new JSONArray();
+
+        for(BoxPlot boxPlot : allBoxes) {
+            JSONObject box = new JSONObject();
+            box.put("label", boxPlot.getWhiskerPosition());
+
+            JSONArray numbers = new JSONArray();
+            numbers.add(boxPlot.getMinimum());
+            numbers.add(boxPlot.getFirstQuartile());
+            numbers.add(boxPlot.getMedian());
+            numbers.add(boxPlot.getThirdQuartile());
+            numbers.add(boxPlot.getMaximum());
+            box.put("y", numbers);
+
+            boxPlotArray.add(box);
+        }
+
+        jsonObject.put("dataPoints", boxPlotArray);
+        System.out.println("YEET1");
+        System.out.println(jsonObject);
+
+        // Overarching JSON object
+        JSONObject componentObject = new JSONObject();
+        componentObject.put("theme", "light2");
+
+        JSONObject titleObject = new JSONObject();
+        titleObject.put("text", "Ensemble of " + boxAndWhisker.getBasis() + " Population");
+        componentObject.put("title", titleObject);
+
+        JSONObject axisYObject = new JSONObject();
+        axisYObject.put("title",  "Population");
+        componentObject.put("axisY", axisYObject);
+
+        JSONArray dataArray = new JSONArray();
+        dataArray.add(jsonObject);
+        componentObject.put("data", dataArray);
+
+        return componentObject;
+    }
+
+    public State getCurrentState() {
+        return currentState;
+    }
+
+    public void setCurrentState(State currentState) {
+        this.currentState = currentState;
+    }
+
+    public PopulationMeasure getPopulationMeasure() {
+        return populationMeasure;
+    }
+
+    public void setPopulationMeasure(PopulationMeasure populationMeasure) {
+        this.populationMeasure = populationMeasure;
     }
 }

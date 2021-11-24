@@ -1,6 +1,6 @@
 package mothballs.randistrictr.object;
 
-public enum Race {
+public enum Basis {
     TOTAL_TOTAL,
     TOTAL_WHITE,
     TOTAL_BLACK,

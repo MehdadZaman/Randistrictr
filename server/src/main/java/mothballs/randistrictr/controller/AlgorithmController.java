@@ -26,7 +26,7 @@ public class AlgorithmController {
         return districtingPlanJSONObject;
     }
 
-    @GetMapping("/stop")
+    @PostMapping("/stop")
     public void stopAlgorithm() {
         algorithmService.stopAlgorithm();
     }
