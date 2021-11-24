@@ -141,6 +141,13 @@ public class DistrictService {
 
         jsonObject.put("dataPoints", boxPlotArray);
 
-        return null;
+        // Overarching JSON object
+        JSONObject componentObject = new JSONObject();
+        componentObject.put("theme", "light2");
+        componentObject.put("title", new JSONObject().put("text", "Ensemble of " + boxAndWhisker.getBasis() + " Population"));
+        componentObject.put("axisY", new JSONObject().put("title",  "Population"));
+        componentObject.put("data", new JSONArray().add(jsonObject));
+
+        return componentObject;
     }
 }

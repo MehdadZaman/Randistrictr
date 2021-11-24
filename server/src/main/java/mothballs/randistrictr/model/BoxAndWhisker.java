@@ -10,7 +10,6 @@ import java.util.List;
 public class BoxAndWhisker implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     String id;
 
     private Basis basis;

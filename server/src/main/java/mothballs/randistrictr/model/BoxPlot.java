@@ -12,7 +12,6 @@ import java.io.Serializable;
 public class BoxPlot implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private String id;
 
     private int whiskerPosition;
