@@ -2,6 +2,7 @@ package mothballs.randistrictr.service;
 
 import mothballs.randistrictr.model.*;
 import mothballs.randistrictr.object.Basis;
+import mothballs.randistrictr.object.PopulationMeasure;
 import mothballs.randistrictr.repository.*;
 import org.hibernate.Hibernate;
 import org.json.simple.JSONArray;
@@ -42,6 +43,8 @@ public class DistrictService {
     private State currentState;
     private DistrictingPlan currentDistrictingPlan;
     private boolean hasInitializedCensusBlocks;
+
+    PopulationMeasure populationMeasure = PopulationMeasure.TOTAL;
 
     public Population getPopulation(String id) {
         return populationRepository.findByGeoID20(id);
@@ -160,5 +163,21 @@ public class DistrictService {
         componentObject.put("data", dataArray);
 
         return componentObject;
+    }
+
+    public State getCurrentState() {
+        return currentState;
+    }
+
+    public void setCurrentState(State currentState) {
+        this.currentState = currentState;
+    }
+
+    public PopulationMeasure getPopulationMeasure() {
+        return populationMeasure;
+    }
+
+    public void setPopulationMeasure(PopulationMeasure populationMeasure) {
+        this.populationMeasure = populationMeasure;
     }
 }
