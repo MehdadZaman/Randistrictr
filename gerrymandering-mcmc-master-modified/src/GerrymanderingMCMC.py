@@ -237,9 +237,11 @@ class GerrymanderingMCMC():
                 if (cond):
                     cuttable = True
                     self.__update_new_districts_with_cut(edge, mst_combined_subgraph, graph, d1_label, d2_label)
+                    self.g = graph
                     return graph
                 if (attempt_count == 1000):
                     print("WARNING: Failed to make a recom after > 1000 iterations") if self.verbose else None
+                    self.g = graph
                     return graph
                 else:
                     attempt_count += 1
@@ -316,7 +318,7 @@ class GerrymanderingMCMC():
         pop_score_normalized = (pop_score-1)/(0-1)
 
         # normalizing Efficiency Gap Measure to 0-1 scale:
-        #max/best = 0, min/worst = 0.5
+        # max/best = 0, min/worst = 0.5
         eg_normalized = (eg - 0.5) / (0 - 0.5)
 
         objective_score = pop_score_weight*pop_score_normalized + eg_weight*eg_normalized
@@ -375,9 +377,9 @@ class GerrymanderingMCMC():
         """
         minority_pop_district = []
         for district_label in self.all_districts:
-            minority_pop_district.append(sum([node[minority]] for node in graph.node \
+            minority_pop_district.append(sum(graph.nodes[node][minority] for node in graph.nodes
                                              if graph.nodes[node]['district'] == district_label))
-        min_list.append(minority_pop_district.sort())
+        min_list.append(sorted(minority_pop_district))
 
     def __update_box_lists(self, graph):
         # see __aggregate_min_pop
@@ -390,22 +392,17 @@ class GerrymanderingMCMC():
         self.__aggregate_min_pop(graph, "democrat_voting", self.district_democrat_pops)
         self.__aggregate_min_pop(graph, "republican_voting", self.district_republican_pops)
 
-    def __write_box_data_json(self, processNumber):
+    def __write_box_data_json(self, process_number):
         """
         Taking all the sorted minority population districts aggregated for each districting plan,
         add them to a dictionary, and write it out to JSON
         """
-        min_dict = {}
-        min_dict['black_pop'] = self.district_black_pops
-        min_dict['hispanic_pop'] = self.district_hispanic_pops
-        min_dict['american_indian_pop'] = self.district_american_indian_pops
-        min_dict['asian_pop'] = self.district_asian_pops
-        min_dict['hawaiian_pop'] = self.district_hawaiian_pops
-        min_dict['other_pop'] = self.district_other_pops
-        min_dict['democrat_voting'] = self.district_democrat_pops
-        min_dict['republican_voting'] = self.district_republican_pops
+        min_dict = {'black_pop': self.district_black_pops, 'hispanic_pop': self.district_hispanic_pops,
+                    'american_indian_pop': self.district_american_indian_pops, 'asian_pop': self.district_asian_pops,
+                    'hawaiian_pop': self.district_hawaiian_pops, 'other_pop': self.district_other_pops,
+                    'democrat_voting': self.district_democrat_pops, 'republican_voting': self.district_republican_pops}
 
-        name = "box_whisker" + "/recom" + "_" + str(processNumber) + ".json"
+        name = "box_whisker" + "/recom" + "_" + str(process_number) + ".json"
         with open(name, 'w', encoding="utf-8") as file:
             file.write(json.dumps(min_dict))
 
@@ -414,7 +411,8 @@ class GerrymanderingMCMC():
         # self.__drawGraph(self.g, "output/original")
         for i in range(0, self.cooling_period):
             print("Randomizing the seed plan", i ) if i % 25 == 0 and self.verbose else None
-            self.recombination_of_districts(i)
+            graph = self.recombination_of_districts(i)
+            self.__update_box_lists(graph)
 
         # Run `rounds`-many recombinations to build a distribution of a few key stats
         for i in range(0, rounds):
@@ -430,8 +428,9 @@ class GerrymanderingMCMC():
 
             # print out statistics for each new graph
             sname = outputPath + "/recom_statistics" + "_" + str(processNumber) + "_" + str(i) + ".json"
-            with open(sname, 'w', encoding="utf-8") as file:
-                file.write(json.dumps(self.data[-1]))
+            if self.data:
+                with open(sname, 'w', encoding="utf-8") as file:
+                    file.write(json.dumps(self.data[-1]))
 
             # save minority/political populations in each district to each class list
             self.__update_box_lists(graph)

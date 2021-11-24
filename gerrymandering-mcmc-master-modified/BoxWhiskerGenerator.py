@@ -6,7 +6,7 @@ NUM_DISTRICTS = 8  # Maryland: 8 districts, meaning 8 box plots
 
 class BoxWhiskerGenerator:
     def __init__(self):
-        self.path =r'box_whisker'
+        self.path = r'box_whisker'
 
         # These lists encompass all the districting plans
         # TODO: include VAP And CVAP data
@@ -54,11 +54,11 @@ class BoxWhiskerGenerator:
         # indexed by position in list i.e. 0th index represents 1st box plot in box whisker plot
         box_whisker_data = []
         for index in range(8):
-            box_plot_data = [box_whisker_dataframe[index].min(),
-                             box_whisker_dataframe[index].quantile(0.25),
-                             box_whisker_dataframe[index].quantile(0.5),
-                             box_whisker_dataframe[index].quantile(0.75),
-                             box_whisker_dataframe[index].max()]
+            box_plot_data = [int(box_whisker_dataframe[index].min()),
+                             int(box_whisker_dataframe[index].quantile(0.25)),
+                             int(box_whisker_dataframe[index].quantile(0.5)),
+                             int(box_whisker_dataframe[index].quantile(0.75)),
+                             int(box_whisker_dataframe[index].max())]
             box_whisker_data.append(box_plot_data)
 
         return box_whisker_data
@@ -73,22 +73,24 @@ class BoxWhiskerGenerator:
         Write it into a json, to be stored in the /output folder.
         """
         for file in os.listdir(self.path):
-            if file.endswith('.json'):
+            if file.endswith('.json') and file.startswith('recom_'):
                 file_path = f"{self.path}/{file}"
                 self.__aggregate_populations(file_path)
 
-        box_and_whisker_plots = {}
-        box_and_whisker_plots['black'] = self.__calculate_box_data(self.agg_black_pops)
-        box_and_whisker_plots['hispanic'] = self.__calculate_box_data(self.agg_hispanic_pops)
-        box_and_whisker_plots['american_indian'] = self.__calculate_box_data(self.agg_american_indian_pops)
-        box_and_whisker_plots['asian'] = self.__calculate_box_data(self.agg_asian_pops)
-        box_and_whisker_plots['hawaiian'] = self.__calculate_box_data(self.agg_hawaiian_pops)
-        box_and_whisker_plots['hispanic'] = self.__calculate_box_data(self.agg_hispanic_pops)
-        box_and_whisker_plots['other'] = self.__calculate_box_data(self.agg_other_pops)
-        box_and_whisker_plots['democrat'] = self.__calculate_box_data(self.agg_democrat_pops)
-        box_and_whisker_plots['republican'] = self.__calculate_box_data(self.agg_republican_pops)
-
+        box_and_whisker_plots = {'black': self.__calculate_box_data(self.agg_black_pops),
+                                 'hispanic': self.__calculate_box_data(self.agg_hispanic_pops),
+                                 'american_indian': self.__calculate_box_data(self.agg_american_indian_pops),
+                                 'asian': self.__calculate_box_data(self.agg_asian_pops),
+                                 'hawaiian': self.__calculate_box_data(self.agg_hawaiian_pops),
+                                 'other': self.__calculate_box_data(self.agg_other_pops),
+                                 'democrat': self.__calculate_box_data(self.agg_democrat_pops),
+                                 'republican': self.__calculate_box_data(self.agg_republican_pops)}
+        # for plot, values in box_and_whisker_plots.items():
+        #     print(f"{plot}: {values}")
         name = "box_whisker" + "/box_whisker_data.json"
-        with open(name, 'w', encoding="utf-8") as file:
-            file.write(json.dumps(box_and_whisker_plots))
+        with open(name, 'w', encoding='utf-8') as f:
+            json.dump(box_and_whisker_plots, f, ensure_ascii=False, indent=1)
 
+if __name__ == "__main__":
+    box_whisker_generator = BoxWhiskerGenerator()
+    box_whisker_generator.generate()

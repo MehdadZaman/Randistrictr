@@ -21,6 +21,8 @@ pip install -r requirements.txt
 pip install mpi4py
 mkdir output
 
-mpirun -np 336 python cli.py -g ./src/data/marylandGerrymandering.json -c 10000 -r 100
+# -np 336 -c 10000 -r 100
+mpirun -np 1 python cli.py -g ./src/data/marylandGerrymandering.json -c 1 -r 10
+python BoxWhiskerGenerator.py
 conda deactivate
 
