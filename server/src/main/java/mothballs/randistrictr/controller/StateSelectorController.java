@@ -2,6 +2,7 @@ package mothballs.randistrictr.controller;
 
 import mothballs.randistrictr.model.DistrictingPlanStatistics;
 import mothballs.randistrictr.model.Population;
+import mothballs.randistrictr.object.Basis;
 import mothballs.randistrictr.service.DistrictService;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,5 +63,15 @@ public class StateSelectorController {
     @GetMapping("/reset")
     public void resetState() {
         districtService.resetState();
+    }
+
+    @GetMapping("/getBoxAndWhisker")
+    public JSONObject getBoxAndWhisker(@RequestParam(value = "redistrictNumber") Basis basis) {
+        return districtService.getBoxAndWhisker(basis);
+    }
+
+    @PostMapping("/setPopulationMeasure")
+    public void setPopulationMeasure(@RequestParam(value = "redistrictNumber") Basis basis) {
+        // return districtService.getBoxAndWhisker(basis);
     }
 }
