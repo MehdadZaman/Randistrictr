@@ -56,11 +56,12 @@ public class AlgorithmService {
     }
 
     private boolean isValidMove(DistrictingPlanStatistics originalDistrictingPlanStatistics, DistrictingPlanStatistics updatedDistrictingPlanStatistics, int minOpportunity, int maxOpportunity) {
-        if(updatedDistrictingPlanStatistics.getNumOpportunityDistricts() < minOpportunity || updatedDistrictingPlanStatistics.getNumOpportunityDistricts() > maxOpportunity) {
-            return false;
-        }
-
-        return (updatedDistrictingPlanStatistics.getAbsoluteDifferenceInPopulation() < originalDistrictingPlanStatistics.getAbsoluteDifferenceInPopulation());
+//        if(updatedDistrictingPlanStatistics.getNumOpportunityDistricts() < minOpportunity || updatedDistrictingPlanStatistics.getNumOpportunityDistricts() > maxOpportunity) {
+//            return false;
+//        }
+//
+//        return (updatedDistrictingPlanStatistics.getAbsoluteDifferenceInPopulation() < originalDistrictingPlanStatistics.getAbsoluteDifferenceInPopulation());
+        return false;
     }
 
     public void stopAlgorithm() {

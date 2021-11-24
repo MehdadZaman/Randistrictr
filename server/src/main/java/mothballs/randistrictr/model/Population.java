@@ -1,5 +1,7 @@
 package mothballs.randistrictr.model;
 
+import mothballs.randistrictr.object.PopulationMeasure;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -333,9 +335,20 @@ public class Population {
     }
 
     @Transient
-    public boolean areMinoritiesMajority() {
-        return (totalBlackPopulation + totalHispanicPopulation + totalAmericanIndianPopulation + totalAsianPopulation +
-                totalHawaiianPopulation + totalOtherPopulation) > totalWhitePopulation;
+    public boolean areMinoritiesMajority(PopulationMeasure populationMeasure) {
+        if(populationMeasure == PopulationMeasure.TOTAL) {
+            return (totalBlackPopulation + totalHispanicPopulation + totalAmericanIndianPopulation + totalAsianPopulation +
+                    totalHawaiianPopulation + totalOtherPopulation) > totalWhitePopulation;
+        }
+        else if(populationMeasure == PopulationMeasure.CVAP) {
+            return (cvapBlackPopulation + cvapHispanicPopulation + cvapAmericanIndianPopulation + cvapAsianPopulation +
+                    cvapHawaiianPopulation + cvapOtherPopulation) > cvapWhitePopulation;
+        }
+        else if(populationMeasure == PopulationMeasure.VAP) {
+            return (vapBlackPopulation + vapHispanicPopulation + vapAmericanIndianPopulation + vapAsianPopulation +
+                    vapHawaiianPopulation + vapOtherPopulation) > vapWhitePopulation;
+        }
+        return false;
     }
 
     @Override

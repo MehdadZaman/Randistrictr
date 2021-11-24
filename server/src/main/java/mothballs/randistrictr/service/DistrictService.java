@@ -123,7 +123,7 @@ public class DistrictService {
 
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("type", "boxAndWhisker");
-        jsonObject.put("yValueFormatString", "#,##0.# \\\"People\\");
+        jsonObject.put("yValueFormatString", "#,##0.# \"People\"");
 
         JSONArray boxPlotArray = new JSONArray();
 
