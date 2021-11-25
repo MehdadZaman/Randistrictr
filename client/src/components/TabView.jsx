@@ -17,9 +17,12 @@ import RunAlgorithm from './run-algorithm';
 const TabView = ({
   districtings,
   selectedState,
+  popMeasure,
   isDistrictSelected,
   onSelect,
   onRun,
+  onStop,
+  algorithmStarted,
   algorithmRunning,
 }) => {
   const [tabIndex, setTabIndex] = useState(0);
@@ -65,7 +68,7 @@ const TabView = ({
     <Tabs index={tabIndex} onChange={(index) => setTabIndex(index)}>
       <TabList>
         {/* <Tab>Filter District</Tab> */}
-        <Tab>Select District</Tab>
+        <Tab>Select Districting Plan</Tab>
         <Tab isDisabled={!isDistrictSelected}>Run Algorithm</Tab>
       </TabList>
       <TabPanels style={{ overflowY: 'auto', height: '100%' }}>
@@ -82,10 +85,19 @@ const TabView = ({
           <Heading size='md'>
             {districtings.length} redistrictings generated
           </Heading>
-          <DistrictingPreview cards={districtings} onSelect={onSelect} />
+          <DistrictingPreview
+            cards={districtings}
+            popMeasure={popMeasure}
+            onSelect={onSelect}
+          />
         </TabPanel>
         <TabPanel>
-          <RunAlgorithm onRun={onRun} algorithmRunning={algorithmRunning} />
+          <RunAlgorithm
+            onRun={onRun}
+            onStop={onStop}
+            algorithmStarted={algorithmStarted}
+            algorithmRunning={algorithmRunning}
+          />
         </TabPanel>
       </TabPanels>
     </Tabs>

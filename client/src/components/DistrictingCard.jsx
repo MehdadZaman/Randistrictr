@@ -13,7 +13,7 @@ import {
   PopoverCloseButton,
 } from '@chakra-ui/react';
 
-const DistrictingCardPopover = ({ card, onSelect }) => {
+const DistrictingCardPopover = ({ card, popMeasure, onSelect }) => {
   const initialFocusRef = useRef();
 
   return (
@@ -22,10 +22,15 @@ const DistrictingCardPopover = ({ card, onSelect }) => {
       placement='right'
       offset={[5, 0]} //i hate styling
       trigger='hover'
+      isOpen={false}
     >
       <PopoverTrigger>
         <Box d='flex' justifyContent='center' w='95%'>
-          <DistrictingCard property={card} onSelect={onSelect} />
+          <DistrictingCard
+            property={card}
+            popMeasure={popMeasure}
+            onSelect={onSelect}
+          />
         </Box>
       </PopoverTrigger>
       <PopoverContent
@@ -38,24 +43,47 @@ const DistrictingCardPopover = ({ card, onSelect }) => {
         </PopoverHeader>
         <PopoverCloseButton />
         <PopoverBody fontSize='sm'>
-          <Text>
+          {/* <Text>
             {card.minorityMajorityDistrict} Majority Minority districts at{' '}
             {card.threshold}% threshold
           </Text>
-          <Text>Maximum Population Range: {card.maxPopulationRange}</Text>
+          <Text>Maximum Population Range: {card.maxPopulationRange}</Text> */}
           <Text>Mattingly Population Score: {card.populationScore}</Text>
-          <Text>Efficiency Gap Measure: {card.efficiencyGapMeasure}</Text>
-          <Text>Polsby Popper Score: {card.polsbyPopperScore}</Text>
+          <Text>Efficiency Gap Measure: {card.efficiencyGap}</Text>
+          {/* <Text>Polsby Popper Score: {card.polsbyPopperScore}</Text> */}
         </PopoverBody>
       </PopoverContent>
     </Popover>
   );
 };
 
-const DistrictingCard = ({ property, onSelect }) => {
+const DistrictingCard = ({ property, popMeasure, onSelect }) => {
+  const absoluteDifferenceInPopulation =
+    property[`${popMeasure.toLowerCase()}AbsoluteDifferenceInPopulation`];
+  const efficiencyGap = property[`${popMeasure.toLowerCase()}EfficiencyGap`];
+  const numOpportunityDistricts =
+    property[`${popMeasure.toLowerCase()}NumOpportunityDistricts`];
+  const objectiveFunctionScore =
+    property[`${popMeasure.toLowerCase()}ObjectiveFunctionScore`];
+  const populationScore =
+    property[`${popMeasure.toLowerCase()}PopulationScore`];
+
   return (
-    <Box shadow='md' borderWidth='1px' borderRadius='1g' overflow='hidden'>
+    <Box
+      shadow='md'
+      borderWidth='1px'
+      borderRadius='1g'
+      overflow='hidden'
+      w='100%'
+    >
       <Image src={property.imageUrl} alt={property.imageAlt}></Image>
+      <Text>
+        Absolute Difference in Population: {absoluteDifferenceInPopulation}
+      </Text>
+      <Text>Number of Opportunity Districts: {numOpportunityDistricts}</Text>
+      <Text>Mattingly Population Score: {populationScore}</Text>
+      <Text>Efficiency Gap Measure: {efficiencyGap}</Text>
+      <Text>Objective Function Score: {objectiveFunctionScore}</Text>
       <Box p={2}>
         <Box
           color='gray.500'
@@ -65,7 +93,7 @@ const DistrictingCard = ({ property, onSelect }) => {
           textTransform='uppercase'
           ml='1'
         >
-          {property.congressionalDistricts} Congressional &bull;{' '}
+          {property.numCongressionalDistricts} Congressional Districts &bull;{' '}
           {/* {property.votingDistricts.toLocaleString()} Voting */}
         </Box>
         <Box
@@ -75,7 +103,7 @@ const DistrictingCard = ({ property, onSelect }) => {
           lineHeight='tight'
           isTruncated='true'
         >
-          {property.title}
+          Districting {property.redistrictNumber}
         </Box>
         <Text size='sm'>{property.description}</Text>
         <Box
@@ -89,7 +117,7 @@ const DistrictingCard = ({ property, onSelect }) => {
           <ButtonGroup size='sm'>
             <Button
               colorScheme='green'
-              onClick={() => onSelect(property.number)}
+              onClick={() => onSelect(property.redistrictNumber)}
             >
               Use!
             </Button>

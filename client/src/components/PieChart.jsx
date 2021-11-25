@@ -3,7 +3,7 @@ import ReactTooltip from 'react-tooltip';
 import { PieChart as ReactMinimalPieChart } from 'react-minimal-pie-chart';
 
 function makeTooltipContent(entry) {
-  return `${entry.tooltip}: ${entry.value}%`;
+  return `${entry.tooltip}: ${entry.value}`;
 }
 
 function PieChart(props) {

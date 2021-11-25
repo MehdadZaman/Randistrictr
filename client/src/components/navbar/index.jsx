@@ -2,15 +2,22 @@ import {
   Box,
   Flex,
   Heading,
+  Select,
   Stack,
   Button,
   useColorModeValue,
   useBreakpointValue,
 } from '@chakra-ui/react';
-import Position from '../Position';
 import StateSelect from '../StatesSelect';
 
-const Navbar = ({ map, selectedState, onReset, onSelect }) => {
+const Navbar = ({
+  map,
+  selectedState,
+  popMeasure,
+  setPopMeasure,
+  onReset,
+  onSelect,
+}) => {
   return (
     <Box h='9vh'>
       <Flex
@@ -75,6 +82,14 @@ const Navbar = ({ map, selectedState, onReset, onSelect }) => {
           >
             Sign Up
           </Button> */}
+          <Select
+            defaultValue={popMeasure}
+            onChange={(e) => setPopMeasure(e.target.value)}
+          >
+            <option value='TOTAL'>Total</option>
+            <option value='VAP'>VAP</option>
+            <option value='CVAP'>CVAP</option>
+          </Select>
           <StateSelect
             map={map}
             selectedState={selectedState}
