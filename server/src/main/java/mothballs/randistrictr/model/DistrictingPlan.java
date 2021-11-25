@@ -66,12 +66,10 @@ public class DistrictingPlan implements Serializable {
         this.districtingPlanStatistics = districtingPlanStatistics;
     }
 
-    @Transient
     public District selectDistrict() {
         return districts.get((int)(Math.random() * districts.size()));
     }
 
-    @Transient
     public void makeMove(CensusBlock censusBlock) {
         District removedFrom = null;
         District addedTo = null;
@@ -91,7 +89,6 @@ public class DistrictingPlan implements Serializable {
         censusBlock.setAdjacentCongressionalDistrict(removedFrom.getCongressionalDistrict());
     }
 
-    @Transient
     public void recalculateMeasures() {
         this.districtingPlanStatistics.setTotalAbsoluteDifferenceInPopulation(getAbsPopDiff(PopulationMeasure.TOTAL));
         this.districtingPlanStatistics.setTotalAbsoluteDifferenceInPopulation(getAbsPopDiff(PopulationMeasure.CVAP));
@@ -116,7 +113,6 @@ public class DistrictingPlan implements Serializable {
         this.districtingPlanStatistics.setVapAbsoluteDifferenceInPopulation(vapNumOppDistricts);
     }
 
-    @Transient
     public double getAbsPopDiff(PopulationMeasure populationMeasure) {
         double maxPop = Double.MIN_VALUE;
         double minPop = Double.MAX_VALUE;
@@ -141,7 +137,6 @@ public class DistrictingPlan implements Serializable {
         return (maxPop - minPop) / totalPop;
     }
 
-    @Transient
     public void instantiateDataStructures(District district) {
         List<String> adjacentDistrictIDs = district.getAdjacentDistrictIDs();
         List<District> adjacentDistricts = new ArrayList<>();

@@ -25,7 +25,7 @@ public class District implements Serializable {
     })
     private Population population;
 
-    @OneToMany //(fetch=FetchType.EAGER)
+    @OneToMany
     @JoinColumns({
             @JoinColumn(name="congressionalDistrictID", referencedColumnName="geoID20")
     })
@@ -36,9 +36,6 @@ public class District implements Serializable {
 
     @Transient
     private Map<District, Set<CensusBlock>> movableCensusBlocks;
-
-    @Transient
-    private Random random;
 
     public String getGeoID20() {
         return geoID20;
@@ -104,13 +101,6 @@ public class District implements Serializable {
         this.population = population;
     }
 
-    @Transient
-    public District getNeighboringDistrict() {
-        int randomIndex = random.nextInt(adjacentDistricts.size());
-        return adjacentDistricts.get(randomIndex);
-    }
-
-
     public List<String> getAdjacentDistrictIDs() {
         return adjacentDistrictIDs;
     }
@@ -119,7 +109,6 @@ public class District implements Serializable {
         this.adjacentDistrictIDs = adjacentDistrictIDs;
     }
 
-    @Transient
     public CensusBlock selectCensusBlock() {
         District randomNeighboringDistrict = adjacentDistricts.get((int)Math.random() * adjacentDistricts.size());
         Set<CensusBlock> selectedCensusBlocks = movableCensusBlocks.get(randomNeighboringDistrict);
@@ -134,26 +123,22 @@ public class District implements Serializable {
         return null;
     }
 
-    @Transient
     public void addCensusBlock(CensusBlock censusBlock, District neighboringDistrict) {
         movableCensusBlocks.get(neighboringDistrict).remove(censusBlock);
         censusBlocks.add(censusBlock);
         population.addPopulation(censusBlock.getPopulation());
     }
 
-    @Transient
     public void removeCensusBlock(CensusBlock censusBlock, District neighboringDistrict) {
         movableCensusBlocks.get(neighboringDistrict).add(censusBlock);
         censusBlocks.remove(censusBlock);
         population.removePopulation(censusBlock.getPopulation());
     }
 
-    @Transient
     public boolean isOpportunityDistrict(PopulationMeasure populationMeasure) {
         return population.areMinoritiesMajority(populationMeasure);
     }
 
-    @Transient
     public boolean dataStructuresInstantiated() {
         return adjacentDistricts != null && movableCensusBlocks != null;
     }

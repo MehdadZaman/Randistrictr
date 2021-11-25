@@ -100,7 +100,6 @@ public class DistrictingPlanStatistics {
         this.numCongressionalDistricts = numCongressionalDistricts;
     }
 
-    @Transient
     public DistrictingPlanStatistics deepClone() {
         return new DistrictingPlanStatistics(id, state, redistrictNumber, description, totalNumOpportunityDistricts, totalAbsoluteDifferenceInPopulation,
         totalEfficiencyGap, totalPopulationScore, totalObjectiveFunctionScore, cvapNumOpportunityDistricts, cvapAbsoluteDifferenceInPopulation, cvapEfficiencyGap,

@@ -336,7 +336,6 @@ public class Population {
         otherVoters -= population.getOtherVoters();
     }
 
-    @Transient
     public boolean areMinoritiesMajority(PopulationMeasure populationMeasure) {
         if(populationMeasure == PopulationMeasure.TOTAL) {
             return (totalBlackPopulation + totalHispanicPopulation + totalAmericanIndianPopulation + totalAsianPopulation +
@@ -360,17 +359,14 @@ public class Population {
                 geoID20, cvapTotalPopulation, totalTotalPopulation, totalAsianPopulation, totalWhitePopulation);
     }
 
-    @Transient
     public double[] getAllPopulations() {
         return allPopulations;
     }
 
-    @Transient
     public void setAllPopulations(double[] allPopulations) {
         this.allPopulations = allPopulations;
     }
 
-    @Transient
     public double getPopulationByBasis(Basis basis) {
         if(allPopulations == null) {
             allPopulations = new double[]{totalTotalPopulation, totalWhitePopulation, totalBlackPopulation, totalHispanicPopulation,
