@@ -1,5 +1,7 @@
 package mothballs.randistrictr.model;
 
+import mothballs.randistrictr.object.PopulationMeasure;
+
 import javax.persistence.*;
 import java.io.*;
 import java.util.*;
@@ -93,25 +95,52 @@ public class DistrictingPlan implements Serializable {
 
     @Transient
     public void recalculateMeasures() {
-        this.districtingPlanStatistics.setAbsoluteDifferenceInPopulation(getAbsPopDiff());
-        int numOppDistricts = 0;
+        this.districtingPlanStatistics.setTotalAbsoluteDifferenceInPopulation(getAbsPopDiff(PopulationMeasure.TOTAL));
+        this.districtingPlanStatistics.setTotalAbsoluteDifferenceInPopulation(getAbsPopDiff(PopulationMeasure.CVAP));
+        this.districtingPlanStatistics.setTotalAbsoluteDifferenceInPopulation(getAbsPopDiff(PopulationMeasure.VAP));
+        int totalNumOppDistricts = 0;
+        int cvapNumOppDistricts = 0;
+        int vapNumOppDistricts = 0;
         for(District district : districts) {
-            if(district.isOpportunityDistrict()) {
-                numOppDistricts++;
+            if(district.isOpportunityDistrict(PopulationMeasure.TOTAL)) {
+                totalNumOppDistricts++;
+            }
+
+            if(district.isOpportunityDistrict(PopulationMeasure.CVAP)) {
+                cvapNumOppDistricts++;
+            }
+
+            if(district.isOpportunityDistrict(PopulationMeasure.VAP)) {
+                vapNumOppDistricts++;
             }
         }
-        this.districtingPlanStatistics.setNumOpportunityDistricts(numOppDistricts);
+
+        this.districtingPlanStatistics.setTotalNumOpportunityDistricts(totalNumOppDistricts);
+        this.districtingPlanStatistics.setCvapNumOpportunityDistricts(cvapNumOppDistricts);
+        this.districtingPlanStatistics.setVapAbsoluteDifferenceInPopulation(vapNumOppDistricts);
     }
 
     @Transient
-    public double getAbsPopDiff() {
+    public double getAbsPopDiff(PopulationMeasure populationMeasure) {
         double maxPop = Double.MIN_VALUE;
         double minPop = Double.MAX_VALUE;
         double totalPop = 0;
         for(District district : districts) {
-            maxPop = Math.max(maxPop, district.getPopulation().getTotalTotalPopulation());
-            minPop = Math.min(minPop, district.getPopulation().getTotalTotalPopulation());
-            totalPop += district.getPopulation().getTotalTotalPopulation();
+            if(populationMeasure == PopulationMeasure.TOTAL) {
+                maxPop = Math.max(maxPop, district.getPopulation().getTotalTotalPopulation());
+                minPop = Math.min(minPop, district.getPopulation().getTotalTotalPopulation());
+                totalPop += district.getPopulation().getTotalTotalPopulation();
+            }
+            else if(populationMeasure == PopulationMeasure.CVAP) {
+                maxPop = Math.max(maxPop, district.getPopulation().getCvapTotalPopulation());
+                minPop = Math.min(minPop, district.getPopulation().getCvapTotalPopulation());
+                totalPop += district.getPopulation().getCvapTotalPopulation();
+            }
+            else if(populationMeasure == PopulationMeasure.VAP) {
+                maxPop = Math.max(maxPop, district.getPopulation().getVapTotalPopulation());
+                minPop = Math.min(minPop, district.getPopulation().getVapTotalPopulation());
+                totalPop += district.getPopulation().getVapTotalPopulation();
+            }
         }
         return (maxPop - minPop) / totalPop;
     }
@@ -151,23 +180,4 @@ public class DistrictingPlan implements Serializable {
         district.setAdjacentDistricts(adjacentDistricts);
         district.setMovableCensusBlocks(movableCensusBlocks);
     }
-
-//    @Transient
-//    public DistrictingPlan deepClone() {
-//        try {
-//            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-//            ObjectOutputStream objectOutputStream = new ObjectOutputStream(byteArrayOutputStream);
-//            objectOutputStream.writeObject(this);
-//
-//            ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(byteArrayOutputStream.toByteArray());
-//            ObjectInputStream objectInputStream = new ObjectInputStream(byteArrayInputStream);
-//            return (DistrictingPlan) objectInputStream.readObject();
-//        } catch (Exception e) {
-//            return null;
-//        }
-//    }
-
-//    public double calculateDistrictingPlanScore() {
-//        return 0;
-//    }
 }

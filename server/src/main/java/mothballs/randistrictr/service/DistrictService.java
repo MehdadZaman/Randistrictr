@@ -44,6 +44,8 @@ public class DistrictService {
     private DistrictingPlan currentDistrictingPlan;
     private boolean hasInitializedCensusBlocks;
 
+    private JSONObject enactedDistrictPlan;
+
     PopulationMeasure populationMeasure = PopulationMeasure.TOTAL;
 
     public Population getPopulation(String id) {
@@ -99,6 +101,7 @@ public class DistrictService {
             FileReader reader = new FileReader("src/main/java/mothballs/randistrictr/constants/" + stateName.toLowerCase() + "_congressional_districts.json");
             Object obj = jsonParser.parse(reader);
             JSONObject jsonObject = (JSONObject) obj;
+            enactedDistrictPlan = jsonObject;
             return jsonObject;
         } catch (Exception e) {
             e.printStackTrace();
@@ -110,26 +113,30 @@ public class DistrictService {
         this.hasInitializedCensusBlocks = false;
         this.currentState = null;
         this.currentDistrictingPlan = null;
+        this.enactedDistrictPlan = null;
     }
 
     public JSONObject getBoxAndWhisker(Basis basis) {
-        return getBoxAndWhiskerJSONData(boxAndWhiskerRepository.findByBasisAndState(basis, currentState.getStateNumber()));
+        if(currentState == null) {
+            return null;
+        }
+        return getBoxAndWhiskerJSONData(boxAndWhiskerRepository.findByBasisAndState(basis, currentState.getStateNumber()), basis);
     }
 
-    public JSONObject getBoxAndWhiskerJSONData(BoxAndWhisker boxAndWhisker) {
+    public JSONObject getBoxAndWhiskerJSONData(BoxAndWhisker boxAndWhisker, Basis basis) {
 
         List<BoxPlot> allBoxes = boxAndWhisker.getBoxes();
         Collections.sort(allBoxes, (a, b) -> a.getWhiskerPosition() - b.getWhiskerPosition());
 
         JSONObject jsonObject = new JSONObject();
-        jsonObject.put("type", "boxAndWhisker");
-        jsonObject.put("yValueFormatString", "#,##0.# \\\"People\\");
+        jsonObject.put("type", "boxPlot");
+        jsonObject.put("name", "box");
 
         JSONArray boxPlotArray = new JSONArray();
 
         for(BoxPlot boxPlot : allBoxes) {
             JSONObject box = new JSONObject();
-            box.put("label", boxPlot.getWhiskerPosition());
+            box.put("x", boxPlot.getWhiskerPosition());
 
             JSONArray numbers = new JSONArray();
             numbers.add(boxPlot.getMinimum());
@@ -142,27 +149,22 @@ public class DistrictService {
             boxPlotArray.add(box);
         }
 
-        jsonObject.put("dataPoints", boxPlotArray);
-        System.out.println("YEET1");
-        System.out.println(jsonObject);
+        jsonObject.put("data", boxPlotArray);
 
-        // Overarching JSON object
-        JSONObject componentObject = new JSONObject();
-        componentObject.put("theme", "light2");
+        JSONArray componentArray = new JSONArray();
+        componentArray.add(jsonObject);
+        if(enactedDistrictPlan != null) {
+            componentArray.add(getEnactedDistrictingOverlay(basis));
+        }
 
-        JSONObject titleObject = new JSONObject();
-        titleObject.put("text", "Ensemble of " + boxAndWhisker.getBasis() + " Population");
-        componentObject.put("title", titleObject);
+        if(currentDistrictingPlan != null) {
+            componentArray.add(getCurrentDistrictingOverlay(basis));
+        }
 
-        JSONObject axisYObject = new JSONObject();
-        axisYObject.put("title",  "Population");
-        componentObject.put("axisY", axisYObject);
+        JSONObject retJSONObject = new JSONObject();
+        retJSONObject.put("series", componentArray);
 
-        JSONArray dataArray = new JSONArray();
-        dataArray.add(jsonObject);
-        componentObject.put("data", dataArray);
-
-        return componentObject;
+        return retJSONObject;
     }
 
     public State getCurrentState() {
@@ -179,5 +181,58 @@ public class DistrictService {
 
     public void setPopulationMeasure(PopulationMeasure populationMeasure) {
         this.populationMeasure = populationMeasure;
+    }
+
+    public JSONObject getCurrentDistrictingOverlay(Basis basis) {
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("type", "scatter");
+        jsonObject.put("name", "current districting plan");
+
+        JSONArray scatterArray = new JSONArray();
+
+        List<District> allDistricts = currentDistrictingPlan.getDistricts();
+        Collections.sort(allDistricts, (a, b) -> (int)(a.getPopulation().getPopulationByBasis(basis) - b.getPopulation().getPopulationByBasis(basis)));
+        int position = 1;
+        for(District district : allDistricts) {
+            JSONObject box = new JSONObject();
+            box.put("x", position);
+            box.put("y", district.getPopulation().getPopulationByBasis(basis));
+            position++;
+            scatterArray.add(box);
+        }
+
+        jsonObject.put("data", scatterArray);
+
+        return jsonObject;
+    }
+
+    public JSONObject getEnactedDistrictingOverlay(Basis basis) {
+        JSONArray districts = (JSONArray)enactedDistrictPlan.get("features");
+        List<Long> currPops = new ArrayList<>();
+        for(int i = 0; i < districts.size(); i++) {
+            JSONObject properties = (JSONObject)((JSONObject)(districts.get(i))).get("properties");
+            currPops.add((Long)(properties.get(basis.name())));
+        }
+        Collections.sort(currPops);
+
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("type", "scatter");
+        jsonObject.put("name", "enacted districting plan");
+
+        JSONArray scatterArray = new JSONArray();
+
+        int position = 1;
+        for(Long pop : currPops) {
+            JSONObject box = new JSONObject();
+
+            box.put("x", position);
+            box.put("y", pop);
+            position++;
+            scatterArray.add(box);
+        }
+
+        jsonObject.put("data", scatterArray);
+
+         return jsonObject;
     }
 }

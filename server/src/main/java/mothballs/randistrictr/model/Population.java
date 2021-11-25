@@ -1,5 +1,8 @@
 package mothballs.randistrictr.model;
 
+import mothballs.randistrictr.object.Basis;
+import mothballs.randistrictr.object.PopulationMeasure;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -40,6 +43,9 @@ public class Population {
     private double democratVoters;
     private double republicanVoters;
     private double otherVoters;
+
+    @Transient
+    private double[] allPopulations;
 
     public double getTotalTotalPopulation() {
         return totalTotalPopulation;
@@ -333,9 +339,20 @@ public class Population {
     }
 
     @Transient
-    public boolean areMinoritiesMajority() {
-        return (totalBlackPopulation + totalHispanicPopulation + totalAmericanIndianPopulation + totalAsianPopulation +
-                totalHawaiianPopulation + totalOtherPopulation) > totalWhitePopulation;
+    public boolean areMinoritiesMajority(PopulationMeasure populationMeasure) {
+        if(populationMeasure == PopulationMeasure.TOTAL) {
+            return (totalBlackPopulation + totalHispanicPopulation + totalAmericanIndianPopulation + totalAsianPopulation +
+                    totalHawaiianPopulation + totalOtherPopulation) > totalWhitePopulation;
+        }
+        else if(populationMeasure == PopulationMeasure.CVAP) {
+            return (cvapBlackPopulation + cvapHispanicPopulation + cvapAmericanIndianPopulation + cvapAsianPopulation +
+                    cvapHawaiianPopulation + cvapOtherPopulation) > cvapWhitePopulation;
+        }
+        else if(populationMeasure == PopulationMeasure.VAP) {
+            return (vapBlackPopulation + vapHispanicPopulation + vapAmericanIndianPopulation + vapAsianPopulation +
+                    vapHawaiianPopulation + vapOtherPopulation) > vapWhitePopulation;
+        }
+        return false;
     }
 
     @Override
@@ -343,5 +360,29 @@ public class Population {
         return String.format(
                 "Population[geoID=%s, cvapTotalPopulation='%.2f', totalTotalPopulation='%.2f', totalAsianPopulation='%.2f', totalWhitePopulation='%.2f']",
                 geoID20, cvapTotalPopulation, totalTotalPopulation, totalAsianPopulation, totalWhitePopulation);
+    }
+
+    @Transient
+    public double[] getAllPopulations() {
+        return allPopulations;
+    }
+
+    @Transient
+    public void setAllPopulations(double[] allPopulations) {
+        this.allPopulations = allPopulations;
+    }
+
+    @Transient
+    public double getPopulationByBasis(Basis basis) {
+        if(allPopulations == null) {
+            allPopulations = new double[]{totalTotalPopulation, totalWhitePopulation, totalBlackPopulation, totalHispanicPopulation,
+                    totalAmericanIndianPopulation, totalAsianPopulation, totalHawaiianPopulation, totalOtherPopulation, vapTotalPopulation,
+                    vapWhitePopulation, vapBlackPopulation, vapHispanicPopulation, vapAmericanIndianPopulation, vapAsianPopulation,
+                    vapHawaiianPopulation, vapOtherPopulation, cvapTotalPopulation, cvapWhitePopulation, cvapBlackPopulation,
+                    cvapHispanicPopulation, cvapAmericanIndianPopulation, cvapAsianPopulation, cvapHawaiianPopulation, cvapOtherPopulation,
+                    democratVoters, republicanVoters, otherVoters};
+        }
+
+        return allPopulations[basis.ordinal()];
     }
 }

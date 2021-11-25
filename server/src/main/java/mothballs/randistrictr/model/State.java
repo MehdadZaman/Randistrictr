@@ -58,15 +58,4 @@ public class State implements Serializable {
     public void setPopulation(Population population) {
         this.population = population;
     }
-
-    //    DistrictingPlan enactedDistricting;
-
-//    public State(List<DistrictingPlan> districtingPlanList, Population population,
-//                 int numDistricts, DistrictingPlan enactedDistricting, String name) {
-//        this.districtingPlanList = districtingPlanList;
-//        this.population = population;
-//        this.numDistricts = numDistricts;
-//        this.enactedDistricting = enactedDistricting;
-//        this.name = name;
-//    }
 }

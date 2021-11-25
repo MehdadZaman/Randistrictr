@@ -1,5 +1,7 @@
 package mothballs.randistrictr.model;
 
+import mothballs.randistrictr.object.PopulationMeasure;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.*;
@@ -145,8 +147,8 @@ public class District implements Serializable {
     }
 
     @Transient
-    public boolean isOpportunityDistrict() {
-        return population.areMinoritiesMajority();
+    public boolean isOpportunityDistrict(PopulationMeasure populationMeasure) {
+        return population.areMinoritiesMajority(populationMeasure);
     }
 
     @Transient
