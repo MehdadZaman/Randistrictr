@@ -20,7 +20,9 @@ public class District implements Serializable {
     private List<String> adjacentDistrictIDs;
 
     @OneToOne
-    @PrimaryKeyJoinColumn
+    @JoinColumns({
+            @JoinColumn(name="geoID20", referencedColumnName="geoID20")
+    })
     private Population population;
 
     @OneToMany //(fetch=FetchType.EAGER)
