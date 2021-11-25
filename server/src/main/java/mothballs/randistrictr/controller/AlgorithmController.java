@@ -17,7 +17,7 @@ public class AlgorithmController {
 
     // run simulated annealing algorithm
     @GetMapping("/run")
-    public JSONObject runAlgorithm(@RequestParam(value = "stateName") double maxPopDiff,
+    public JSONObject runAlgorithm(@RequestParam(value = "maxPopDiff") double maxPopDiff,
                                   @RequestParam(value = "minOpportunity") int minOpportunity,
                                   @RequestParam(value = "maxOpportunity") int maxOpportunity) {
         System.out.println("PINGED Run Algorithm");
