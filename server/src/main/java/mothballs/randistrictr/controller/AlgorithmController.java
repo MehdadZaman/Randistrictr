@@ -15,14 +15,11 @@ public class AlgorithmController {
     @Autowired
     AlgorithmService algorithmService;
 
-    // run simulated annealing algorithm
     @PostMapping("/run")
     public String runAlgorithm(@RequestParam(value = "maxPopDiff") double maxPopDiff,
                                   @RequestParam(value = "minOpportunity") int minOpportunity,
                                   @RequestParam(value = "maxOpportunity") int maxOpportunity) {
-        System.out.println("PINGED Run Algorithm");
         algorithmService.startImprovedDistrictingPlanAlgorithm(maxPopDiff, minOpportunity, maxOpportunity);
-        System.out.println("DONE Run Algorithm");
         return "Success";
     }
 

@@ -31,7 +31,6 @@ public class CensusBlock implements Serializable {
         this.districtingPlan = districtingPlan;
     }
 
-    // private Population class
     @OneToOne
     @PrimaryKeyJoinColumn
     private Population population;

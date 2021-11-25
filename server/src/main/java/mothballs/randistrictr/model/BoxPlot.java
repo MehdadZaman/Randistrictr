@@ -1,10 +1,8 @@
 package mothballs.randistrictr.model;
 
-import mothballs.randistrictr.object.Basis;
+import mothballs.randistrictr.enums.Basis;
 
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import java.io.Serializable;
 
@@ -17,7 +15,6 @@ public class BoxPlot implements Serializable {
     private int whiskerPosition;
     private Basis basis;
     private String state;
-
     private double minimum;
     private double firstQuartile;
     private double median;

@@ -1,15 +1,10 @@
 package mothballs.randistrictr.service;
 
-import com.sun.deploy.util.SystemUtils;
 import mothballs.randistrictr.model.CensusBlock;
 import mothballs.randistrictr.model.District;
 import mothballs.randistrictr.model.DistrictingPlan;
 import mothballs.randistrictr.model.Population;
-import mothballs.randistrictr.object.Geometry;
-import mothballs.randistrictr.object.Polygon;
 import mothballs.randistrictr.repository.CensusBlockRepository;
-import com.google.gson.Gson;
-import org.apache.tomcat.util.http.fileupload.FileUtils;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -139,5 +134,4 @@ public class DissolvingService {
             e.printStackTrace();
         }
     }
-
 }

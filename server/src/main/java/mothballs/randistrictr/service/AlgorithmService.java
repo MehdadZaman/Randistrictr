@@ -4,7 +4,7 @@ import mothballs.randistrictr.model.CensusBlock;
 import mothballs.randistrictr.model.District;
 import mothballs.randistrictr.model.DistrictingPlan;
 import mothballs.randistrictr.model.DistrictingPlanStatistics;
-import mothballs.randistrictr.object.PopulationMeasure;
+import mothballs.randistrictr.enums.PopulationMeasure;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
@@ -19,7 +19,6 @@ public class AlgorithmService {
 
     @Autowired
     DistrictService districtService;
-
     @Autowired
     DissolvingService dissolvingService;
 
@@ -44,13 +43,10 @@ public class AlgorithmService {
 
         for (currentIteration = 0; currentIteration < MAX_ITERATIONS; currentIteration++) {
             District selectedDistrict = currentDistrictingPlan.selectDistrict();
-
             CensusBlock censusBlockToMove = selectedDistrict.selectCensusBlock();
             currentDistrictingPlan.makeMove(censusBlockToMove);
-
             DistrictingPlanStatistics oldDistrictingPlanStatistics = currentDistrictingPlan.getDistrictingPlanStatistics().deepClone();
             currentDistrictingPlan.recalculateMeasures();
-
             if (!isValidMove(oldDistrictingPlanStatistics, currentDistrictingPlan.getDistrictingPlanStatistics(), minOpportunity, maxOpportunity)) {
                 currentDistrictingPlan.makeMove(censusBlockToMove);
                 currentDistrictingPlan.setDistrictingPlanStatistics(oldDistrictingPlanStatistics);

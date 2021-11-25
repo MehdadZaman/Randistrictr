@@ -7,29 +7,24 @@ public class DistrictingPlanStatistics {
 
     @Id
     private String id;
-
     private String state;
     private int redistrictNumber;
     private String description;
-
     private int totalNumOpportunityDistricts;
     private double totalAbsoluteDifferenceInPopulation;
     private double totalEfficiencyGap;
     private double totalPopulationScore;
     private double totalObjectiveFunctionScore;
-
     private int cvapNumOpportunityDistricts;
     private double cvapAbsoluteDifferenceInPopulation;
     private double cvapEfficiencyGap;
     private double cvapPopulationScore;
     private double cvapObjectiveFunctionScore;
-
     private int vapNumOpportunityDistricts;
     private double vapAbsoluteDifferenceInPopulation;
     private double vapEfficiencyGap;
     private double vapPopulationScore;
     private double vapObjectiveFunctionScore;
-
     private int numCongressionalDistricts;
 
     public DistrictingPlanStatistics(){}

@@ -1,13 +1,14 @@
 package mothballs.randistrictr.repository;
 
 import mothballs.randistrictr.model.Population;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-public interface PopulationRepository extends CrudRepository<Population, String> {
-
-//    List<Population> findByTotalTotalPopulation(double totalTotalPopulation);
+@Repository
+public interface PopulationRepository extends JpaRepository<Population, String> {
 
     Population findByGeoID20(String geoID20);
     List<Population> findAllByGeoID20Containing(String id);

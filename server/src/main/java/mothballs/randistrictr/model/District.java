@@ -1,6 +1,6 @@
 package mothballs.randistrictr.model;
 
-import mothballs.randistrictr.object.PopulationMeasure;
+import mothballs.randistrictr.enums.PopulationMeasure;
 
 import javax.persistence.*;
 import java.io.Serializable;

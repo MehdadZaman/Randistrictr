@@ -1,4 +1,4 @@
-package mothballs.randistrictr.object;
+package mothballs.randistrictr.enums;
 
 public enum PopulationMeasure {
     TOTAL,

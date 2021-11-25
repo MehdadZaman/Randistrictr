@@ -1,6 +1,6 @@
 package mothballs.randistrictr.model;
 
-import mothballs.randistrictr.object.Basis;
+import mothballs.randistrictr.enums.Basis;
 
 import javax.persistence.*;
 import java.io.Serializable;

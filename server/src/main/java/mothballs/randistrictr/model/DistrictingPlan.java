@@ -1,6 +1,6 @@
 package mothballs.randistrictr.model;
 
-import mothballs.randistrictr.object.PopulationMeasure;
+import mothballs.randistrictr.enums.PopulationMeasure;
 
 import javax.persistence.*;
 import java.io.*;
@@ -75,7 +75,6 @@ public class DistrictingPlan implements Serializable {
     public void makeMove(CensusBlock censusBlock) {
         District removedFrom = null;
         District addedTo = null;
-
         for(District district : districts) {
             if(censusBlock.getCongressionalDistrict().equals(district.getCongressionalDistrict())) {
                 removedFrom = district;
@@ -88,7 +87,6 @@ public class DistrictingPlan implements Serializable {
 
         removedFrom.removeCensusBlock(censusBlock, addedTo);
         addedTo.addCensusBlock(censusBlock, removedFrom);
-
         censusBlock.setDistrictingPlan(addedTo.getDistrictingPlan());
         censusBlock.setAdjacentCongressionalDistrict(removedFrom.getCongressionalDistrict());
     }
@@ -105,11 +103,9 @@ public class DistrictingPlan implements Serializable {
             if(district.isOpportunityDistrict(PopulationMeasure.TOTAL)) {
                 totalNumOppDistricts++;
             }
-
             if(district.isOpportunityDistrict(PopulationMeasure.CVAP)) {
                 cvapNumOppDistricts++;
             }
-
             if(district.isOpportunityDistrict(PopulationMeasure.VAP)) {
                 vapNumOppDistricts++;
             }
@@ -149,7 +145,6 @@ public class DistrictingPlan implements Serializable {
     public void instantiateDataStructures(District district) {
         List<String> adjacentDistrictIDs = district.getAdjacentDistrictIDs();
         List<District> adjacentDistricts = new ArrayList<>();
-
         HashMap<String, District> idMappings = new HashMap<>();
 
         for(String adjID : adjacentDistrictIDs) {
@@ -163,7 +158,6 @@ public class DistrictingPlan implements Serializable {
 
         Map<District, Set<CensusBlock>> movableCensusBlocks = new HashMap<>();
         Set<CensusBlock> censusBlocks = district.getCensusBlocks();
-
         for(CensusBlock censusBlock : censusBlocks) {
             if((censusBlock.getAdjacentCongressionalDistrict() != null) && (!censusBlock.getAdjacentCongressionalDistrict().equals(censusBlock.getCongressionalDistrictID()))) {
                 if(movableCensusBlocks.containsKey(idMappings.get(censusBlock.getAdjacentCongressionalDistrict()))) {

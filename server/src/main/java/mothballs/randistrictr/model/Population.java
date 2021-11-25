@@ -1,11 +1,9 @@
 package mothballs.randistrictr.model;
 
-import mothballs.randistrictr.object.Basis;
-import mothballs.randistrictr.object.PopulationMeasure;
+import mothballs.randistrictr.enums.Basis;
+import mothballs.randistrictr.enums.PopulationMeasure;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 public class Population {

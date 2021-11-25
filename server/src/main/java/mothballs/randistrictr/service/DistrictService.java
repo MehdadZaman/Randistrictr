@@ -1,8 +1,8 @@
 package mothballs.randistrictr.service;
 
 import mothballs.randistrictr.model.*;
-import mothballs.randistrictr.object.Basis;
-import mothballs.randistrictr.object.PopulationMeasure;
+import mothballs.randistrictr.enums.Basis;
+import mothballs.randistrictr.enums.PopulationMeasure;
 import mothballs.randistrictr.repository.*;
 import org.hibernate.Hibernate;
 import org.json.simple.JSONArray;
@@ -10,7 +10,6 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.io.FileReader;
 import java.util.*;
@@ -18,34 +17,25 @@ import java.util.*;
 @Service
 public class DistrictService {
     final String ENACTED_DISTRICTING_PLAN = "00";
-
     @Autowired
     DistrictRepository districtRepository;
-
     @Autowired
     PopulationRepository populationRepository;
-
     @Autowired
     StateRepository stateRepository;
-
     @Autowired
     CensusBlockRepository censusBlockRepository;
-
     @Autowired
     DissolvingService dissolvingService;
-
     @Autowired
     DistrictingPlanStatisticsRepository districtingPlanStatisticsRepository;
-
     @Autowired
     BoxAndWhiskerRepository boxAndWhiskerRepository;
 
     private State currentState;
     private DistrictingPlan currentDistrictingPlan;
     private boolean hasInitializedCensusBlocks;
-
     private JSONObject enactedDistrictPlan;
-
     PopulationMeasure populationMeasure = PopulationMeasure.TOTAL;
 
     public Population getPopulation(String id) {
@@ -127,17 +117,13 @@ public class DistrictService {
 
         List<BoxPlot> allBoxes = boxAndWhisker.getBoxes();
         Collections.sort(allBoxes, (a, b) -> a.getWhiskerPosition() - b.getWhiskerPosition());
-
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("type", "boxPlot");
         jsonObject.put("name", "box");
-
         JSONArray boxPlotArray = new JSONArray();
-
         for(BoxPlot boxPlot : allBoxes) {
             JSONObject box = new JSONObject();
             box.put("x", boxPlot.getWhiskerPosition());
-
             JSONArray numbers = new JSONArray();
             numbers.add(boxPlot.getMinimum());
             numbers.add(boxPlot.getFirstQuartile());
@@ -145,25 +131,20 @@ public class DistrictService {
             numbers.add(boxPlot.getThirdQuartile());
             numbers.add(boxPlot.getMaximum());
             box.put("y", numbers);
-
             boxPlotArray.add(box);
         }
 
         jsonObject.put("data", boxPlotArray);
-
         JSONArray componentArray = new JSONArray();
         componentArray.add(jsonObject);
         if(enactedDistrictPlan != null) {
             componentArray.add(getEnactedDistrictingOverlay(basis));
         }
-
         if(currentDistrictingPlan != null) {
             componentArray.add(getCurrentDistrictingOverlay(basis));
         }
-
         JSONObject retJSONObject = new JSONObject();
         retJSONObject.put("series", componentArray);
-
         return retJSONObject;
     }
 
@@ -187,9 +168,7 @@ public class DistrictService {
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("type", "scatter");
         jsonObject.put("name", "current districting plan");
-
         JSONArray scatterArray = new JSONArray();
-
         List<District> allDistricts = currentDistrictingPlan.getDistricts();
         Collections.sort(allDistricts, (a, b) -> (int)(a.getPopulation().getPopulationByBasis(basis) - b.getPopulation().getPopulationByBasis(basis)));
         int position = 1;
@@ -200,9 +179,7 @@ public class DistrictService {
             position++;
             scatterArray.add(box);
         }
-
         jsonObject.put("data", scatterArray);
-
         return jsonObject;
     }
 
@@ -214,25 +191,19 @@ public class DistrictService {
             currPops.add((Long)(properties.get(basis.name())));
         }
         Collections.sort(currPops);
-
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("type", "scatter");
         jsonObject.put("name", "enacted districting plan");
-
         JSONArray scatterArray = new JSONArray();
-
         int position = 1;
         for(Long pop : currPops) {
             JSONObject box = new JSONObject();
-
             box.put("x", position);
             box.put("y", pop);
             position++;
             scatterArray.add(box);
         }
-
         jsonObject.put("data", scatterArray);
-
-         return jsonObject;
+        return jsonObject;
     }
 }

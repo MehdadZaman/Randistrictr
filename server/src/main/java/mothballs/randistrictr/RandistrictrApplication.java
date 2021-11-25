@@ -13,15 +13,4 @@ public class RandistrictrApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(RandistrictrApplication.class, args);
 	}
-
-//	@Bean
-//	public CommandLineRunner demo(PopulationRepository repository) {
-//		return (args) -> {
-//			log.info("Customers found with findAll():");
-//			log.info("-------------------------------");
-//			Population population = repository.findByGeoID20("240010001001001");
-//			log.info(population.toString());
-//			log.info("");
-//		};
-//	}
 }
