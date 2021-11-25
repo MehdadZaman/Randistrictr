@@ -7,6 +7,7 @@ import mothballs.randistrictr.model.DistrictingPlanStatistics;
 import mothballs.randistrictr.object.PopulationMeasure;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -23,10 +24,9 @@ public class AlgorithmService {
     private int currentIteration;
     private final int MAX_ITERATIONS = 100000;
 
-    public JSONObject getImprovedDistrictingPlan(double maxPopDiff, int minOpportunity, int maxOpportunity) {
+    @Async
+    public void startImprovedDistrictingPlanAlgorithm(double maxPopDiff, int minOpportunity, int maxOpportunity) {
         runAlgorithm(minOpportunity, maxOpportunity);
-        DistrictingPlan improvedDistrictingPlan = districtService.getCurrentDistrictingPlan();
-        return dissolvingService.getDistrictingJSON(improvedDistrictingPlan);
     }
 
     private void runAlgorithm(int minOpportunity, int maxOpportunity) {
@@ -93,5 +93,12 @@ public class AlgorithmService {
 
     public int getCurrentNumberOfIterations() {
         return currentIteration;
+    }
+
+    public String checkAlgorithmStatus() {
+        if(currentIteration == MAX_ITERATIONS) {
+            return "Complete";
+        }
+        return "Incomplete";
     }
 }

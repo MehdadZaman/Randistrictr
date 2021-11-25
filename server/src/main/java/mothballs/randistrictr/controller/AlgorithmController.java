@@ -17,13 +17,13 @@ public class AlgorithmController {
 
     // run simulated annealing algorithm
     @GetMapping("/run")
-    public JSONObject runAlgorithm(@RequestParam(value = "maxPopDiff") double maxPopDiff,
+    public String runAlgorithm(@RequestParam(value = "maxPopDiff") double maxPopDiff,
                                   @RequestParam(value = "minOpportunity") int minOpportunity,
                                   @RequestParam(value = "maxOpportunity") int maxOpportunity) {
         System.out.println("PINGED Run Algorithm");
-        JSONObject districtingPlanJSONObject = algorithmService.getImprovedDistrictingPlan(maxPopDiff, minOpportunity, maxOpportunity);
+        algorithmService.startImprovedDistrictingPlanAlgorithm(maxPopDiff, minOpportunity, maxOpportunity);
         System.out.println("DONE Run Algorithm");
-        return districtingPlanJSONObject;
+        return "Success";
     }
 
     @PostMapping("/stop")
@@ -44,5 +44,10 @@ public class AlgorithmController {
     @GetMapping("/getCurrentNumberOfIterations")
     public int getCurrentNumberOfIterations() {
         return algorithmService.getCurrentNumberOfIterations();
+    }
+
+    @GetMapping("/getAlgorithmStatus")
+    public String checkAlgorithmStatus() {
+        return algorithmService.checkAlgorithmStatus();
     }
 }
