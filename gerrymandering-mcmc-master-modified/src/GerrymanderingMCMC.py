@@ -43,6 +43,18 @@ class GerrymanderingMCMC():
         self.district_asian_pops = []
         self.district_hawaiian_pops = []
         self.district_other_pops = []
+        self.district_vap_black_pops = []
+        self.district_vap_hispanic_pops = []
+        self.district_vap_american_indian_pops = []
+        self.district_vap_asian_pops = []
+        self.district_vap_hawaiian_pops = []
+        self.district_vap_other_pops = []
+        self.district_cvap_black_pops = []
+        self.district_cvap_hispanic_pops = []
+        self.district_cvap_american_indian_pops = []
+        self.district_cvap_asian_pops = []
+        self.district_cvap_hawaiian_pops = []
+        self.district_cvap_other_pops = []
         self.district_democrat_pops = []
         self.district_republican_pops = []
         #box and whisker plot data END
@@ -60,19 +72,37 @@ class GerrymanderingMCMC():
             g.add_node(node_label)
             for adj_node in node_data[node_label]["adjacent_nodes"]:
                 g.add_edge(node_label, adj_node)
+            # Recom required fields
             g.nodes[node_label]["population"] = node_data[node_label]["population"]
             g.nodes[node_label]["voting_history"] = node_data[node_label]["voting_history"]
             g.nodes[node_label]["district"] = node_data[node_label]["district"]
-
-            g.nodes[node_label]["minority_pop"] = node_data[node_label]["minority_pop"]
+            # Total Data
             g.nodes[node_label]["black_pop"] = node_data[node_label]["black_pop"]
             g.nodes[node_label]["hispanic_pop"] = node_data[node_label]["hispanic_pop"]
             g.nodes[node_label]["american_indian_pop"] = node_data[node_label]["american_indian_pop"]
             g.nodes[node_label]["asian_pop"] = node_data[node_label]["asian_pop"]
             g.nodes[node_label]["hawaiian_pop"] = node_data[node_label]["hawaiian_pop"]
             g.nodes[node_label]["other_pop"] = node_data[node_label]["other_pop"]
+            # VAP Data
+            g.nodes[node_label]["vap_black"] = node_data[node_label]["vap_black"]
+            g.nodes[node_label]["vap_hispanic"] = node_data[node_label]["vap_hispanic"]
+            g.nodes[node_label]["vap_american_indian"] = node_data[node_label]["vap_american_indian"]
+            g.nodes[node_label]["vap_asian"] = node_data[node_label]["vap_asian"]
+            g.nodes[node_label]["vap_hawaiian"] = node_data[node_label]["vap_hawaiian"]
+            g.nodes[node_label]["vap_other"] = node_data[node_label]["vap_other"]
+            # CVAP Data
+            g.nodes[node_label]["cvap_black"] = node_data[node_label]["cvap_black"]
+            g.nodes[node_label]["cvap_hispanic"] = node_data[node_label]["cvap_hispanic"]
+            g.nodes[node_label]["cvap_american_indian"] = node_data[node_label]["cvap_american_indian"]
+            g.nodes[node_label]["cvap_asian"] = node_data[node_label]["cvap_asian"]
+            g.nodes[node_label]["cvap_hawaiian"] = node_data[node_label]["cvap_hawaiian"]
+            g.nodes[node_label]["cvap_other"] = node_data[node_label]["cvap_other"]
+
+            # Election Data
             g.nodes[node_label]["democrat_voting"] = node_data[node_label]["democrat_voting"]
             g.nodes[node_label]["republican_voting"] = node_data[node_label]["republican_voting"]
+            # Summed Minority Population
+            g.nodes[node_label]["minority_pop"] = node_data[node_label]["minority_pop"]
 
             self.all_districts.add(node_data[node_label]["district"])
         # fname = "output/original"
@@ -271,6 +301,7 @@ class GerrymanderingMCMC():
             eg : efficiency gap measure
             pop_score : equal population measure
             obj_score : objective function score
+            num_opportunity : number of opportunity districts in districting plan
             r_districts : number of districts that voted republican
             d_districts : number of districts that voted democrat
         """
@@ -278,6 +309,7 @@ class GerrymanderingMCMC():
         data_obj["eg"] = self.__efficiency_gap(graph)
         data_obj["pop_score"] = self.__population_score(graph)
         data_obj["obj_score"] = self.__objective_score(data_obj["pop_score"], data_obj["eg"])
+        data_obj["num_opportunity"] = self.__num_opportunity_districts(graph)
         data_obj["d_districts"] = self.__count_votes(graph, "D")
         data_obj["r_districts"] = self.__count_votes(graph, "R")
         if is_original_plan: 
@@ -285,8 +317,25 @@ class GerrymanderingMCMC():
         else: 
             self.data.append(data_obj)
 
+    def __num_opportunity_districts(self, graph):
+        # TODO: Add VAP and CVAP calculations for opportunity districts
+        num_opportunity_districts = 0
+        # aggregate district total and minority populations
+        district_mapping = {}
+        for district_label in self.all_districts:
+            district_mapping[district_label] = [0, 0]  # index 0: population, index 1: minority population
+        for precinct_label in graph.nodes:
+            precinct = graph.nodes[precinct_label]
+            district_mapping[precinct['district']][0] += precinct['population']
+            district_mapping[precinct['district']][1] += precinct['minority_pop']
+        for districtPop in district_mapping.values():
+            if districtPop[1] >= (districtPop[0] // 2):  # if minority population makes up 50% or more of total
+                num_opportunity_districts += 1
+        return num_opportunity_districts
+
+
     def __population_score(self, graph):
-        #generate district populations
+        # aggregate district populations
         district_mapping = {}
         for district_label in self.all_districts:
             district_mapping[district_label] = 0
@@ -294,10 +343,10 @@ class GerrymanderingMCMC():
             precinct = graph.nodes[precinct_label]
             district_mapping[precinct['district']] += precinct['population']
 
-        #calculate ideal population
+        # calculate ideal population
         ideal_pop = sum(district_mapping.values()) // len(self.all_districts)
 
-        #calculate population score
+        # calculate population score
         pop_score = 0
         for districtPop in district_mapping.values():
             pop_score += ((districtPop / ideal_pop) - 1) ** 2
@@ -383,12 +432,28 @@ class GerrymanderingMCMC():
 
     def __update_box_lists(self, graph):
         # see __aggregate_min_pop
+        # total
         self.__aggregate_min_pop(graph, "black_pop", self.district_black_pops)
         self.__aggregate_min_pop(graph, "hispanic_pop", self.district_hispanic_pops)
         self.__aggregate_min_pop(graph, "american_indian_pop", self.district_american_indian_pops)
         self.__aggregate_min_pop(graph, "asian_pop", self.district_asian_pops)
         self.__aggregate_min_pop(graph, "hawaiian_pop", self.district_hawaiian_pops)
         self.__aggregate_min_pop(graph, "other_pop", self.district_other_pops)
+        # vap
+        self.__aggregate_min_pop(graph, "vap_black", self.district_vap_black_pops)
+        self.__aggregate_min_pop(graph, "vap_hispanic", self.district_vap_hispanic_pops)
+        self.__aggregate_min_pop(graph, "vap_american_indian", self.district_vap_american_indian_pops)
+        self.__aggregate_min_pop(graph, "vap_asian", self.district_vap_asian_pops)
+        self.__aggregate_min_pop(graph, "vap_hawaiian", self.district_vap_hawaiian_pops)
+        self.__aggregate_min_pop(graph, "vap_other", self.district_vap_other_pops)
+        # cvap
+        self.__aggregate_min_pop(graph, "cvap_black", self.district_cvap_black_pops)
+        self.__aggregate_min_pop(graph, "cvap_hispanic", self.district_cvap_hispanic_pops)
+        self.__aggregate_min_pop(graph, "cvap_american_indian", self.district_cvap_american_indian_pops)
+        self.__aggregate_min_pop(graph, "cvap_asian", self.district_cvap_asian_pops)
+        self.__aggregate_min_pop(graph, "cvap_hawaiian", self.district_cvap_hawaiian_pops)
+        self.__aggregate_min_pop(graph, "cvap_other", self.district_cvap_other_pops)
+        # Election Data
         self.__aggregate_min_pop(graph, "democrat_voting", self.district_democrat_pops)
         self.__aggregate_min_pop(graph, "republican_voting", self.district_republican_pops)
 
@@ -400,6 +465,14 @@ class GerrymanderingMCMC():
         min_dict = {'black_pop': self.district_black_pops, 'hispanic_pop': self.district_hispanic_pops,
                     'american_indian_pop': self.district_american_indian_pops, 'asian_pop': self.district_asian_pops,
                     'hawaiian_pop': self.district_hawaiian_pops, 'other_pop': self.district_other_pops,
+                    'vap_black': self.district_vap_black_pops, 'vap_hispanic': self.district_vap_hispanic_pops,
+                    'vap_american_indian': self.district_vap_american_indian_pops,
+                    'vap_asian': self.district_vap_asian_pops,
+                    'vap_hawaiian': self.district_vap_hawaiian_pops, 'vap_other': self.district_vap_other_pops,
+                    'cvap_black': self.district_cvap_black_pops, 'cvap_hispanic': self.district_cvap_hispanic_pops,
+                    'cvap_american_indian': self.district_cvap_american_indian_pops,
+                    'cvap_asian': self.district_cvap_asian_pops,
+                    'cvap_hawaiian': self.district_cvap_hawaiian_pops, 'cvap_other': self.district_cvap_other_pops,
                     'democrat_voting': self.district_democrat_pops, 'republican_voting': self.district_republican_pops}
 
         name = "box_whisker" + "/recom" + "_" + str(process_number) + ".json"
@@ -424,13 +497,12 @@ class GerrymanderingMCMC():
             with open(fname, 'w', encoding="utf-8") as file:
                 file.write(json.dumps(json_graph.adjacency_data(graph)))
 
-            self.__record_key_stats(graph, rounds)
+            self.__record_key_stats(graph)
 
-            # print out statistics for each new graph
+            # print out statistics for each graph
             sname = outputPath + "/recom_statistics" + "_" + str(processNumber) + "_" + str(i) + ".json"
-            if self.data:
-                with open(sname, 'w', encoding="utf-8") as file:
-                    file.write(json.dumps(self.data[-1]))
+            with open(sname, 'w', encoding="utf-8") as file:
+                file.write(json.dumps(self.data[-1]))
 
             # save minority/political populations in each district to each class list
             self.__update_box_lists(graph)
