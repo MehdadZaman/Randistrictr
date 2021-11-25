@@ -8,10 +8,12 @@ import mothballs.randistrictr.object.PopulationMeasure;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@EnableAsync
 @Service
 public class AlgorithmService {
 
