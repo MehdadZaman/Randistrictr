@@ -44,6 +44,8 @@ public class DistrictService {
     private DistrictingPlan currentDistrictingPlan;
     private boolean hasInitializedCensusBlocks;
 
+    private JSONObject enactedDistrictPlan;
+
     PopulationMeasure populationMeasure = PopulationMeasure.TOTAL;
 
     public Population getPopulation(String id) {
@@ -99,6 +101,7 @@ public class DistrictService {
             FileReader reader = new FileReader("src/main/java/mothballs/randistrictr/constants/" + stateName.toLowerCase() + "_congressional_districts.json");
             Object obj = jsonParser.parse(reader);
             JSONObject jsonObject = (JSONObject) obj;
+            enactedDistrictPlan = jsonObject;
             return jsonObject;
         } catch (Exception e) {
             e.printStackTrace();
@@ -110,6 +113,7 @@ public class DistrictService {
         this.hasInitializedCensusBlocks = false;
         this.currentState = null;
         this.currentDistrictingPlan = null;
+        this.enactedDistrictPlan = null;
     }
 
     public JSONObject getBoxAndWhisker(Basis basis) {
@@ -149,8 +153,14 @@ public class DistrictService {
 
         JSONArray componentArray = new JSONArray();
         componentArray.add(jsonObject);
-        // componentArray.add(getEnactedDistrictingOverlay());
-        componentArray.add(getCurrentDistrictingOverlay(basis));
+        if(enactedDistrictPlan != null) {
+            componentArray.add(getEnactedDistrictingOverlay(basis));
+        }
+
+        if(currentDistrictingPlan != null) {
+            componentArray.add(getCurrentDistrictingOverlay(basis));
+        }
+
         JSONObject retJSONObject = new JSONObject();
         retJSONObject.put("series", componentArray);
 
@@ -176,7 +186,7 @@ public class DistrictService {
     public JSONObject getCurrentDistrictingOverlay(Basis basis) {
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("type", "scatter");
-        jsonObject.put("name", "enacted districting plan");
+        jsonObject.put("name", "current districting plan");
 
         JSONArray scatterArray = new JSONArray();
 
@@ -197,6 +207,32 @@ public class DistrictService {
     }
 
     public JSONObject getEnactedDistrictingOverlay(Basis basis) {
-        return null;
+        JSONArray districts = (JSONArray)enactedDistrictPlan.get("features");
+        List<Long> currPops = new ArrayList<>();
+        for(int i = 0; i < districts.size(); i++) {
+            JSONObject properties = (JSONObject)((JSONObject)(districts.get(i))).get("properties");
+            currPops.add((Long)(properties.get(basis.name())));
+        }
+        Collections.sort(currPops);
+
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("type", "scatter");
+        jsonObject.put("name", "enacted districting plan");
+
+        JSONArray scatterArray = new JSONArray();
+
+        int position = 1;
+        for(Long pop : currPops) {
+            JSONObject box = new JSONObject();
+
+            box.put("x", position);
+            box.put("y", pop);
+            position++;
+            scatterArray.add(box);
+        }
+
+        jsonObject.put("data", scatterArray);
+
+         return jsonObject;
     }
 }
