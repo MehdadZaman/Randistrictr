@@ -9,13 +9,27 @@ class BoxWhiskerGenerator:
         self.path = r'box_whisker'
 
         # These lists encompass all the districting plans
-        # TODO: include VAP And CVAP data
         self.agg_black_pops = []
         self.agg_hispanic_pops = []
         self.agg_american_indian_pops = []
         self.agg_asian_pops = []
         self.agg_hawaiian_pops = []
         self.agg_other_pops = []
+
+        self.agg_vap_black_pops = []
+        self.agg_vap_hispanic_pops = []
+        self.agg_vap_american_indian_pops = []
+        self.agg_vap_asian_pops = []
+        self.agg_vap_hawaiian_pops = []
+        self.agg_vap_other_pops = []
+
+        self.agg_cvap_black_pops = []
+        self.agg_cvap_hispanic_pops = []
+        self.agg_cvap_american_indian_pops = []
+        self.agg_cvap_asian_pops = []
+        self.agg_cvap_hawaiian_pops = []
+        self.agg_cvap_other_pops = []
+
         self.agg_democrat_pops = []
         self.agg_republican_pops = []
 
@@ -31,6 +45,21 @@ class BoxWhiskerGenerator:
         self.agg_asian_pops += minority_dict['asian_pop']
         self.agg_hawaiian_pops += minority_dict['hawaiian_pop']
         self.agg_other_pops += minority_dict['other_pop']
+
+        self.agg_vap_black_pops += minority_dict['vap_black']
+        self.agg_vap_hispanic_pops += minority_dict['vap_hispanic']
+        self.agg_vap_american_indian_pops += minority_dict['vap_american_indian']
+        self.agg_vap_asian_pops += minority_dict['vap_asian']
+        self.agg_vap_hawaiian_pops += minority_dict['vap_hawaiian']
+        self.agg_vap_other_pops += minority_dict['vap_other']
+
+        self.agg_cvap_black_pops += minority_dict['cvap_black']
+        self.agg_cvap_hispanic_pops += minority_dict['cvap_hispanic']
+        self.agg_cvap_american_indian_pops += minority_dict['cvap_american_indian']
+        self.agg_cvap_asian_pops += minority_dict['cvap_asian']
+        self.agg_cvap_hawaiian_pops += minority_dict['cvap_hawaiian']
+        self.agg_cvap_other_pops += minority_dict['cvap_other']
+
         self.agg_democrat_pops += minority_dict['democrat_voting']
         self.agg_republican_pops += minority_dict['republican_voting']
 
@@ -78,11 +107,23 @@ class BoxWhiskerGenerator:
                 self.__aggregate_populations(file_path)
 
         box_and_whisker_plots = {'black': self.__calculate_box_data(self.agg_black_pops),
+                                 'vap_black': self.__calculate_box_data(self.agg_vap_black_pops),
+                                 'cvap_black': self.__calculate_box_data(self.agg_cvap_black_pops),
                                  'hispanic': self.__calculate_box_data(self.agg_hispanic_pops),
+                                 'vap_hispanic': self.__calculate_box_data(self.agg_vap_hispanic_pops),
+                                 'cvap_hispanic': self.__calculate_box_data(self.agg_cvap_hispanic_pops),
                                  'american_indian': self.__calculate_box_data(self.agg_american_indian_pops),
+                                 'vap_american_indian': self.__calculate_box_data(self.agg_vap_american_indian_pops),
+                                 'cvap_american_indian': self.__calculate_box_data(self.agg_cvap_american_indian_pops),
                                  'asian': self.__calculate_box_data(self.agg_asian_pops),
+                                 'vap_asian': self.__calculate_box_data(self.agg_vap_asian_pops),
+                                 'cvap_asian': self.__calculate_box_data(self.agg_cvap_asian_pops),
                                  'hawaiian': self.__calculate_box_data(self.agg_hawaiian_pops),
+                                 'vap_hawaiian': self.__calculate_box_data(self.agg_vap_hawaiian_pops),
+                                 'cvap_hawaiian': self.__calculate_box_data(self.agg_cvap_hawaiian_pops),
                                  'other': self.__calculate_box_data(self.agg_other_pops),
+                                 'vap_other': self.__calculate_box_data(self.agg_vap_other_pops),
+                                 'cvap_other': self.__calculate_box_data(self.agg_cvap_other_pops),
                                  'democrat': self.__calculate_box_data(self.agg_democrat_pops),
                                  'republican': self.__calculate_box_data(self.agg_republican_pops)}
         # for plot, values in box_and_whisker_plots.items():
