@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import {
   MapContainer,
   TileLayer,
@@ -7,6 +7,16 @@ import {
   useMapEvents,
   Pane,
 } from 'react-leaflet';
+import {
+  Select,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalFooter,
+  ModalBody,
+  ModalCloseButton,
+} from '@chakra-ui/react';
 import { center, zoom, bounds } from '../constants/map';
 // Components
 import Navbar from './navbar';
@@ -24,6 +34,7 @@ import MichiganVotingDistricts from '../json/voting districts/michigan_voting_si
 import UtahVotingDistricts from '../json/voting districts/utah_voting_simplified.json';
 import useStateRef from '../hooks/useStateRef';
 import apiCaller from '../utils/apiCaller';
+import BoxAndWhiskerPlot from './BoxAndWhiskerPlot';
 
 const COLOR_0 = '#F06E45';
 const COLOR_1 = '#C9A83E';
@@ -59,12 +70,27 @@ function style(feature) {
 const Map = () => {
   const [map, setMap] = useState(null);
   const [selectedState, setSelectedState, selectedStateRef] = useStateRef();
+  const [popMeasure, setPopMeasure] = useState('TOTAL');
   const [districtings, setDistrictings] = useState([]);
+  const [
+    enactedDistrictingPlanStatistics,
+    setEnactedDistrictingPlanStatistics,
+  ] = useState(null);
+  const [districtingPlanStatistics, setDistrictingPlanStatistics] =
+    useState(null);
   const [activeGeoJSON, setActiveGeoJSON] = useState(null);
   const [votingGeoJSON, setVotingGeoJSON] = useState();
   const [leftSidebarExpanded, setLeftSidebarExpanded] = useState(false);
   const [rightSidebarExpanded, setRightSidebarExpanded] = useState(false);
+  const [algorithmStarted, setAlgorithmStarted] = useState(false);
   const [algorithmRunning, setAlgorithmRunning] = useState(false);
+  const [boxAndWhiskerPlotOpen, setBoxAndWhiskerPlotOpen] = useState(false);
+  const [boxAndWhiskerData, setBoxAndWhiskerData] = useState(null);
+  const [boxAndWhiskerPlotOption, setBoxAndWhiskerPlotOption] = useState(0);
+
+  useEffect(() => {
+    fetchBoxAndWhiskerData();
+  }, [boxAndWhiskerPlotOption]);
 
   const displayMap = useMemo(() => {
     let mapRef;
@@ -211,8 +237,11 @@ const Map = () => {
       console.log(stateName);
       console.log(allDistrictingPlanStatisticsRes.data);
       setSelectedState(stateName);
-      setActiveGeoJSON(enactedDistrictingRes.data);
-      setDistrictings(allDistrictingPlanStatisticsRes.data);
+      setEnactedDistrictingPlanStatistics(
+        enactedDistrictingPlanStatisticsRes.data
+      );
+      // setActiveGeoJSON(enactedDistrictingRes.data);
+      setDistrictingPlans(allDistrictingPlanStatisticsRes.data);
     } catch (e) {
       console.log(e);
     }
@@ -223,7 +252,12 @@ const Map = () => {
       console.log(redistrictNumber);
       const res = await apiCaller.get('/select/state/districting', {
         params: { redistrictNumber },
+        timeout: 600000,
       });
+      const districtPlanStatsRes = await apiCaller.get(
+        '/select/districting/districtPlanStatistics'
+      );
+      setDistrictingPlanStatistics(districtPlanStatsRes.data);
       setActiveGeoJSON(res.data);
       setRightSidebarExpanded(true);
     } catch (e) {
@@ -249,7 +283,9 @@ const Map = () => {
     numIterations
   ) => {
     try {
+      setAlgorithmStarted(true);
       setAlgorithmRunning(true);
+      await new Promise((res) => setTimeout(res, 5000));
       const res = await apiCaller.get('/run-algorithm', {
         params: {
           stateName: selectedState,
@@ -270,12 +306,87 @@ const Map = () => {
       setAlgorithmRunning(false);
     }
   };
+
+  const handleStopAlgorithm = async () => {
+    try {
+      setAlgorithmRunning(false);
+      await apiCaller.get('/stop-algorithm');
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  const handlePopMeasureChange = async (popMeasure) => {
+    setPopMeasure(popMeasure);
+    const res = await apiCaller.post('/select/setPopulationMeasure', {
+      populationMeasure: popMeasure,
+    });
+  };
+
+  const handleShowBoxAndWhiskerPlot = async () => {
+    fetchBoxAndWhiskerData();
+    setBoxAndWhiskerPlotOpen(true);
+  };
+
+  const fetchBoxAndWhiskerData = async () => {
+    const res = await apiCaller.get('/select/getBoxAndWhisker', {
+      params: { basis: boxAndWhiskerPlotOption },
+    });
+    setBoxAndWhiskerData(res.data);
+  };
+
+  const setDistrictingPlans = (districtingPlanStatistics) => {
+    if (districtingPlanStatistics.length > 0) {
+      let districtings = [];
+      for (let i = 0; i < 30; i++) {
+        const districtingPlan = {
+          ...districtingPlanStatistics[0],
+          redistrictNumber: i,
+        };
+        districtings.push(JSON.parse(JSON.stringify(districtingPlan)));
+      }
+      setDistrictings(districtings);
+    }
+  };
+
+  const boxAndWhiskerPlotOptions = [
+    'TOTAL_TOTAL',
+    'TOTAL_WHITE',
+    'TOTAL_BLACK',
+    'TOTAL_HISPANIC',
+    'TOTAL_AMERICANINDIAN',
+    'TOTAL_ASIAN',
+    'TOTAL_HAWAIIAN',
+    'TOTAL_OTHER',
+    'VAP_TOTAL',
+    'VAP_WHITE',
+    'VAP_BLACK',
+    'VAP_HISPANIC',
+    'VAP_AMERICANINDIAN',
+    'VAP_ASIAN',
+    'VAP_HAWAIIAN',
+    'VAP_OTHER',
+    'CVAP_TOTAL',
+    'CVAP_AMERICANINDIAN',
+    'CVAP_ASIAN',
+    'CVAP_BLACK',
+    'CVAP_HAIWAIIAN',
+    'CVAP_WHITE',
+    'CVAP_HISPANIC',
+    'CVAP_OTHER',
+    'DEMOCRAT',
+    'REPUBLICAN',
+    'OTHER',
+  ];
+
   return (
     <>
       {map ? (
         <Navbar
           map={map}
           selectedState={selectedState}
+          popMeasure={popMeasure}
+          setPopMeasure={handlePopMeasureChange}
           onReset={handleReset}
           onSelect={(state) => {
             if (state) {
@@ -302,8 +413,11 @@ const Map = () => {
               <TabView
                 districtings={districtings}
                 selectedState={selectedState}
+                popMeasure={popMeasure}
                 onSelect={handleSelect}
                 onRun={handleRunAlgorithm}
+                onStop={handleStopAlgorithm}
+                algorithmStarted={algorithmStarted}
                 algorithmRunning={algorithmRunning}
                 isDistrictSelected={!!activeGeoJSON}
               />
@@ -316,6 +430,30 @@ const Map = () => {
         ) : null}
 
         {displayMap}
+        <Modal
+          isOpen={boxAndWhiskerPlotOpen}
+          onClose={() => setBoxAndWhiskerPlotOpen(false)}
+          closeOnOverlayClick={false}
+          isCentered
+          size='md'
+          useInert={false}
+          trapFocus={false}
+        >
+          <ModalContent style={{ right: 3 }}>
+            <ModalCloseButton />
+            <ModalHeader>Box and Whisker Plot</ModalHeader>
+            <ModalBody>
+              <Select
+                onChange={(e) => setBoxAndWhiskerPlotOption(e.target.value)}
+              >
+                {boxAndWhiskerPlotOptions.map((option, i) => (
+                  <option value={i}>{option}</option>
+                ))}
+              </Select>
+              <BoxAndWhiskerPlot data={boxAndWhiskerData} />
+            </ModalBody>
+          </ModalContent>
+        </Modal>
         {map ? (
           <Sidebar
             expanded={rightSidebarExpanded}
@@ -325,8 +463,15 @@ const Map = () => {
             width={450}
           >
             <DistrictingDetails
+              data={activeGeoJSON}
+              enactedDistrictingPlanStatistics={
+                enactedDistrictingPlanStatistics
+              }
+              districtingPlanStatistics={districtingPlanStatistics}
               selectedState={selectedState}
+              popMeasure={popMeasure}
               isDistrictSelected={!!activeGeoJSON}
+              showBoxAndWhiskerPlot={handleShowBoxAndWhiskerPlot}
             />
           </Sidebar>
         ) : null}

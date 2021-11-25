@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import './index.css';
 
 import {
@@ -13,10 +13,17 @@ import {
   NumberInputStepper,
   NumberIncrementStepper,
   NumberDecrementStepper,
+  Progress,
 } from '@chakra-ui/react';
 import ReactSlider from 'react-slider';
 
-const RunAlgorithm = ({ map, onRun, algorithmRunning }) => {
+const RunAlgorithm = ({
+  map,
+  onRun,
+  onStop,
+  algorithmStarted,
+  algorithmRunning,
+}) => {
   const [[minOpportunity, maxOpportunity], setOpportunity] = useState([0, 3]);
   const [minThreshold, setMinThreshold] = useState(50);
   const [minPopulationScore, setMinPopulationScore] = useState(75);
@@ -25,6 +32,22 @@ const RunAlgorithm = ({ map, onRun, algorithmRunning }) => {
   const [minPolsbyPopper, setMinPolsbyPopper] = useState(0.5);
   const [numIterations, setNumIterations] = useState(10);
   const [isLoading, setIsLoading] = useState(false);
+  const [timeRunning, setTimeRunning] = useState(0);
+
+  useEffect(() => {
+    let interval = null;
+
+    if (algorithmRunning) {
+      interval = setInterval(() => {
+        setTimeRunning((time) => time + 10);
+      }, 10);
+    } else {
+      clearInterval(interval);
+    }
+    return () => {
+      clearInterval(interval);
+    };
+  }, [algorithmRunning]);
 
   function handleRun() {
     // if (!efficiencyGapMeasure || !polsbyPopperScore) {
@@ -42,6 +65,23 @@ const RunAlgorithm = ({ map, onRun, algorithmRunning }) => {
       numIterations
     );
   }
+
+  const Timer = ({ time }) => {
+    return (
+      <div className='timer'>
+        <span>Time Running: </span>
+        <span className='digits'>
+          {('0' + Math.floor((time / 60000) % 60)).slice(-2)}:
+        </span>
+        <span className='digits'>
+          {('0' + Math.floor((time / 1000) % 60)).slice(-2)}.
+        </span>
+        <span className='digits mili-sec'>
+          {('0' + ((time / 10) % 100)).slice(-2)}
+        </span>
+      </div>
+    );
+  };
 
   return (
     <>
@@ -207,15 +247,27 @@ const RunAlgorithm = ({ map, onRun, algorithmRunning }) => {
         </NumberInput>
       </div> */}
       <div style={{ margin: '4vh', textAlign: 'center' }}>
-        <Button
-          isLoading={algorithmRunning}
-          colorScheme='blue'
-          size='lg'
-          onClick={handleRun}
-        >
-          Run Algorithm
-        </Button>
+        {!algorithmRunning ? (
+          <Button
+            isLoading={algorithmRunning}
+            colorScheme='blue'
+            size='lg'
+            onClick={handleRun}
+          >
+            Run Algorithm
+          </Button>
+        ) : (
+          <Button colorScheme='red' size='lg' onClick={onStop}>
+            Stop Algorithm
+          </Button>
+        )}
       </div>
+      {algorithmStarted ? (
+        <div>
+          <Timer time={timeRunning} />
+          <Progress size='xs' isIndeterminate={algorithmRunning} />
+        </div>
+      ) : null}
     </>
   );
 };
