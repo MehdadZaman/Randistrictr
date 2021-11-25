@@ -180,23 +180,4 @@ public class DistrictingPlan implements Serializable {
         district.setAdjacentDistricts(adjacentDistricts);
         district.setMovableCensusBlocks(movableCensusBlocks);
     }
-
-//    @Transient
-//    public DistrictingPlan deepClone() {
-//        try {
-//            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-//            ObjectOutputStream objectOutputStream = new ObjectOutputStream(byteArrayOutputStream);
-//            objectOutputStream.writeObject(this);
-//
-//            ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(byteArrayOutputStream.toByteArray());
-//            ObjectInputStream objectInputStream = new ObjectInputStream(byteArrayInputStream);
-//            return (DistrictingPlan) objectInputStream.readObject();
-//        } catch (Exception e) {
-//            return null;
-//        }
-//    }
-
-//    public double calculateDistrictingPlanScore() {
-//        return 0;
-//    }
 }
