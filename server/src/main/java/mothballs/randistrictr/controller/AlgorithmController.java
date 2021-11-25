@@ -16,7 +16,7 @@ public class AlgorithmController {
     AlgorithmService algorithmService;
 
     // run simulated annealing algorithm
-    @GetMapping("/run")
+    @PostMapping("/run")
     public String runAlgorithm(@RequestParam(value = "maxPopDiff") double maxPopDiff,
                                   @RequestParam(value = "minOpportunity") int minOpportunity,
                                   @RequestParam(value = "maxOpportunity") int maxOpportunity) {
