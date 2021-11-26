@@ -37,6 +37,7 @@ const RunAlgorithm = ({
   const [timeRunning, setTimeRunning] = useState(0);
 
   useEffect(() => {
+    setTimeRunning(0);
     let interval = null;
     let checkInterval = null;
     if (algorithmRunning) {

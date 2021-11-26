@@ -2,7 +2,7 @@ import React from 'react';
 import { Heading, Stack } from '@chakra-ui/react';
 import DistrictingCard from './DistrictingCard';
 
-function DistrictingCardList({ cards, popMeasure, onSelect }) {
+function DistrictingCardList({ cards, popMeasure, onSelect, loading }) {
   return (
     <Stack spacing={8}>
       {cards.map((card) => (
@@ -11,6 +11,7 @@ function DistrictingCardList({ cards, popMeasure, onSelect }) {
           popMeasure={popMeasure}
           card={card}
           onSelect={onSelect}
+          loading={loading}
         />
       ))}
     </Stack>

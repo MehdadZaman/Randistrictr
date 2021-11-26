@@ -26,6 +26,7 @@ const TabView = ({
   algorithmRunning,
   algorithmSummary,
   checkStatus,
+  loading,
 }) => {
   const [tabIndex, setTabIndex] = useState(0);
 
@@ -91,6 +92,7 @@ const TabView = ({
             cards={districtings}
             popMeasure={popMeasure}
             onSelect={onSelect}
+            loading={loading}
           />
         </TabPanel>
         <TabPanel>

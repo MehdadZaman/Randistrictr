@@ -13,7 +13,7 @@ import {
   PopoverCloseButton,
 } from '@chakra-ui/react';
 
-const DistrictingCardPopover = ({ card, popMeasure, onSelect }) => {
+const DistrictingCardPopover = ({ card, popMeasure, onSelect, loading }) => {
   const initialFocusRef = useRef();
 
   return (
@@ -30,6 +30,7 @@ const DistrictingCardPopover = ({ card, popMeasure, onSelect }) => {
             property={card}
             popMeasure={popMeasure}
             onSelect={onSelect}
+            loading={loading}
           />
         </Box>
       </PopoverTrigger>
@@ -57,7 +58,7 @@ const DistrictingCardPopover = ({ card, popMeasure, onSelect }) => {
   );
 };
 
-const DistrictingCard = ({ property, popMeasure, onSelect }) => {
+const DistrictingCard = ({ property, popMeasure, onSelect, loading }) => {
   const absoluteDifferenceInPopulation =
     property[`${popMeasure.toLowerCase()}AbsoluteDifferenceInPopulation`];
   const efficiencyGap = property[`${popMeasure.toLowerCase()}EfficiencyGap`];
@@ -118,6 +119,7 @@ const DistrictingCard = ({ property, popMeasure, onSelect }) => {
             <Button
               colorScheme='green'
               onClick={() => onSelect(property.redistrictNumber)}
+              isLoading={loading}
             >
               Use!
             </Button>

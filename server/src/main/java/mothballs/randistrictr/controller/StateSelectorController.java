@@ -12,37 +12,41 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @CrossOrigin("*")
-@RequestMapping("randistrictr/select")
+@RequestMapping("randistrictr/state")
 @RestController
 public class StateSelectorController {
     @Autowired
     DistrictService districtService;
 
-    @GetMapping("/state/population")
-    public Population getStatePopulation(@RequestParam(value = "stateName") String stateName) {
+    @PostMapping("/select")
+    public void setState(@RequestParam(value = "stateName") String stateName) {
         districtService.selectState(stateName);
+    }
+
+    @GetMapping("/population")
+    public Population getStatePopulation(@RequestParam(value = "stateName") String stateName) {
         Population statePopulation = districtService.getPopulation(stateName);
         return statePopulation;
     }
 
-    @GetMapping("/state/enactedDistricting")
+    @GetMapping("/enactedDistricting")
     public JSONObject getEnactedDistricting() {
         JSONObject jsonObject = districtService.getEnactedDistricting();
         return jsonObject;
     }
 
-    @GetMapping("/state/enactedDistrictingPlanStatistics")
+    @GetMapping("/enactedDistrictingPlanStatistics")
     public DistrictingPlanStatistics getEnactedDistrictPlanStatistics() {
         return districtService.getEnactedDistrictingPlanStatistics();
     }
 
-    @GetMapping("/state/allDistrictingPlanStatistics")
+    @GetMapping("/allDistrictingPlanStatistics")
     public List<DistrictingPlanStatistics> getAllDistrictingPlanStatistics() {
         List<DistrictingPlanStatistics> allDistrictingPlanStatistics = districtService.getAllDistrictingPlanStatistics();
         return allDistrictingPlanStatistics;
     }
 
-    @GetMapping("/state/districting")
+    @GetMapping("/districting")
     public JSONObject getStateRedistricting(@RequestParam(value = "redistrictNumber") int redistrictNumber) {
         JSONObject jsonObject = districtService.getDistrictingPlan(redistrictNumber);
         return jsonObject;

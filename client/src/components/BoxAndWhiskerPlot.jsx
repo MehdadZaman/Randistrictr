@@ -76,7 +76,9 @@ const BoxAndWhiskerPlot = ({ data }) => {
     },
   };
 
-  // { ...data, animationEnabled: true }
+  if (!data) {
+    return null;
+  }
   return (
     <Chart options={options} series={data.series} type='boxPlot' height={350} />
   );

@@ -88,10 +88,7 @@ const Map = () => {
   const [boxAndWhiskerPlotOpen, setBoxAndWhiskerPlotOpen] = useState(false);
   const [boxAndWhiskerData, setBoxAndWhiskerData] = useState(null);
   const [boxAndWhiskerPlotOption, setBoxAndWhiskerPlotOption] = useState(0);
-
-  useEffect(() => {
-    fetchBoxAndWhiskerData();
-  }, [boxAndWhiskerPlotOption]);
+  const [loading, setLoading] = useState(false);
 
   const displayMap = useMemo(() => {
     let mapRef;
@@ -221,21 +218,22 @@ const Map = () => {
 
   const handleSelectState = async (stateName) => {
     try {
-      const res = await apiCaller.get('/select/state/population', {
+      await apiCaller.post(`/state/select?stateName=${stateName}`);
+      const res = await apiCaller.get('/state/population', {
         params: {
           stateName,
         },
       });
       const enactedDistrictingRes = await apiCaller.get(
-        '/select/state/enactedDistricting'
+        '/state/enactedDistricting'
       );
       const enactedDistrictingPlanStatisticsRes = await apiCaller.get(
-        '/select/state/enactedDistrictingPlanStatistics'
+        '/state/enactedDistrictingPlanStatistics'
       );
       const allDistrictingPlanStatisticsRes = await apiCaller.get(
-        '/select/state/allDistrictingPlanStatistics'
+        '/state/allDistrictingPlanStatistics'
       );
-      console.log(stateName);
+      console.log(res.data);
       console.log(allDistrictingPlanStatisticsRes.data);
       setSelectedState(stateName);
       setEnactedDistrictingPlanStatistics(
@@ -251,13 +249,15 @@ const Map = () => {
   const handleSelect = async (redistrictNumber) => {
     try {
       console.log(redistrictNumber);
-      const res = await apiCaller.get('/select/state/districting', {
+      setLoading(true);
+      const res = await apiCaller.get('/state/districting', {
         params: { redistrictNumber },
         timeout: 600000,
       });
       const districtPlanStatsRes = await apiCaller.get(
         '/select/districting/districtPlanStatistics'
       );
+      setLoading(false);
       setDistrictingPlanStatistics(districtPlanStatsRes.data);
       setActiveGeoJSON(res.data);
       setRightSidebarExpanded(true);
@@ -270,6 +270,9 @@ const Map = () => {
     setActiveGeoJSON(null);
     setLeftSidebarExpanded(false);
     setRightSidebarExpanded(false);
+    setAlgorithmStarted(false);
+    setAlgorithmSummary(null);
+
     setSelectedState('');
     map.fitBounds(bounds);
   };
@@ -334,8 +337,18 @@ const Map = () => {
 
   const handleStopAlgorithm = async () => {
     try {
-      setAlgorithmRunning(false);
       await apiCaller.post('/algorithm/stop');
+      const numIterationsRes = await apiCaller.get(
+        '/algorithm/getCurrentNumberOfIterations'
+      );
+      const currentDistrictingStatisticsRes = await apiCaller.get(
+        '/algorithm/getCurrentDistrictingStatistics'
+      );
+      setAlgorithmSummary({
+        numIterations: numIterationsRes.data,
+        currentDistrictingStatisticsRes: currentDistrictingStatisticsRes.data,
+      });
+      setAlgorithmRunning(false);
     } catch (e) {
       console.log(e);
     }
@@ -343,19 +356,19 @@ const Map = () => {
 
   const handlePopMeasureChange = async (popMeasure) => {
     setPopMeasure(popMeasure);
-    await apiCaller.post('/select/setPopulationMeasure', {
-      populationMeasure: popMeasure,
-    });
+    await apiCaller.post(
+      `/state/setPopulationMeasure?populationMeasure=${popMeasure}`
+    );
   };
 
   const handleShowBoxAndWhiskerPlot = async () => {
-    fetchBoxAndWhiskerData();
+    fetchBoxAndWhiskerData(boxAndWhiskerPlotOption);
     setBoxAndWhiskerPlotOpen(true);
   };
 
-  const fetchBoxAndWhiskerData = async () => {
-    const res = await apiCaller.get('/select/getBoxAndWhisker', {
-      params: { basis: boxAndWhiskerPlotOption },
+  const fetchBoxAndWhiskerData = async (basis) => {
+    const res = await apiCaller.get('/state/getBoxAndWhisker', {
+      params: { basis },
     });
     setBoxAndWhiskerData(res.data);
   };
@@ -447,6 +460,7 @@ const Map = () => {
                 algorithmSummary={algorithmSummary}
                 checkStatus={checkStatus}
                 isDistrictSelected={!!activeGeoJSON}
+                loading={loading}
               />
             ) : (
               <h1 style={{ fontSize: '3vh', transform: 'translateY(350%)' }}>
@@ -471,7 +485,10 @@ const Map = () => {
             <ModalHeader>Box and Whisker Plot</ModalHeader>
             <ModalBody>
               <Select
-                onChange={(e) => setBoxAndWhiskerPlotOption(e.target.value)}
+                onChange={(e) => {
+                  fetchBoxAndWhiskerData(e.target.value);
+                  setBoxAndWhiskerPlotOption(e.target.value);
+                }}
               >
                 {boxAndWhiskerPlotOptions.map((option, i) => (
                   <option value={i}>{option}</option>
