@@ -24,6 +24,8 @@ const TabView = ({
   onStop,
   algorithmStarted,
   algorithmRunning,
+  algorithmSummary,
+  checkStatus,
 }) => {
   const [tabIndex, setTabIndex] = useState(0);
 
@@ -97,6 +99,8 @@ const TabView = ({
             onStop={onStop}
             algorithmStarted={algorithmStarted}
             algorithmRunning={algorithmRunning}
+            algorithmSummary={algorithmSummary}
+            checkStatus={checkStatus}
           />
         </TabPanel>
       </TabPanels>

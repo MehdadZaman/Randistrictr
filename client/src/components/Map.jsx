@@ -84,6 +84,7 @@ const Map = () => {
   const [rightSidebarExpanded, setRightSidebarExpanded] = useState(false);
   const [algorithmStarted, setAlgorithmStarted] = useState(false);
   const [algorithmRunning, setAlgorithmRunning] = useState(false);
+  const [algorithmSummary, setAlgorithmSummary] = useState();
   const [boxAndWhiskerPlotOpen, setBoxAndWhiskerPlotOpen] = useState(false);
   const [boxAndWhiskerData, setBoxAndWhiskerData] = useState(null);
   const [boxAndWhiskerPlotOption, setBoxAndWhiskerPlotOption] = useState(0);
@@ -276,41 +277,65 @@ const Map = () => {
   const handleRunAlgorithm = async (
     minOpportunity,
     maxOpportunity,
-    minThreshold,
-    maxDiff,
-    maxEffGap,
-    minPolsbyPopper,
-    numIterations
+    maxPopDiff
   ) => {
     try {
-      setAlgorithmStarted(true);
-      setAlgorithmRunning(true);
-      await new Promise((res) => setTimeout(res, 5000));
-      const res = await apiCaller.get('/run-algorithm', {
-        params: {
-          stateName: selectedState,
-          minOpportunity,
-          maxOpportunity,
-          minThreshold,
-          maxDiff,
-          maxEffGap,
-          minPolsbyPopper,
-          numIterations,
-        },
-      });
-      setActiveGeoJSON(res.data);
+      const res = await apiCaller.post(
+        `/algorithm/run?maxPopDiff=${parseFloat(
+          maxPopDiff
+        )}&minOpportunity=${minOpportunity}&maxOpportunity=${maxOpportunity}`
+      );
+      if (res.data === 'Success') {
+        // Start timer to check server algorithm status periodically
+        setAlgorithmStarted(true);
+        setAlgorithmRunning(true);
+      }
       console.log(res.data);
     } catch (e) {
       console.log(e);
-    } finally {
+    }
+  };
+
+  const checkStatus = async () => {
+    const statusRes = await apiCaller.get('/algorithm/getAlgorithmStatus');
+    if (statusRes.data === 'Complete') {
+      const currentDistrictingPlanRes = await apiCaller.get(
+        '/algorithm/getCurrentDistrictingPlan'
+      );
+      const numIterationsRes = await apiCaller.get(
+        '/algorithm/getCurrentNumberOfIterations'
+      );
+      const currentDistrictingStatisticsRes = await apiCaller.get(
+        '/algorithm/getCurrentDistrictingStatistics'
+      );
+      setActiveGeoJSON(currentDistrictingPlanRes.data);
+      setAlgorithmSummary({
+        numIterations: numIterationsRes.data,
+        currentDistrictingStatisticsRes: currentDistrictingStatisticsRes.data,
+      });
       setAlgorithmRunning(false);
+    } else {
+      try {
+        const numIterationsRes = await apiCaller.get(
+          '/algorithm/getCurrentNumberOfIterations'
+        );
+        const currentDistrictingStatisticsRes = await apiCaller.get(
+          '/algorithm/getCurrentDistrictingStatistics'
+        );
+        setAlgorithmSummary({
+          numIterations: numIterationsRes.data,
+          currentDistrictingStatisticsRes: currentDistrictingStatisticsRes.data,
+        });
+      } catch (e) {
+        console.log(e);
+      }
     }
   };
 
   const handleStopAlgorithm = async () => {
     try {
       setAlgorithmRunning(false);
-      await apiCaller.get('/stop-algorithm');
+      await apiCaller.post('/algorithm/stop');
     } catch (e) {
       console.log(e);
     }
@@ -318,7 +343,7 @@ const Map = () => {
 
   const handlePopMeasureChange = async (popMeasure) => {
     setPopMeasure(popMeasure);
-    const res = await apiCaller.post('/select/setPopulationMeasure', {
+    await apiCaller.post('/select/setPopulationMeasure', {
       populationMeasure: popMeasure,
     });
   };
@@ -419,6 +444,8 @@ const Map = () => {
                 onStop={handleStopAlgorithm}
                 algorithmStarted={algorithmStarted}
                 algorithmRunning={algorithmRunning}
+                algorithmSummary={algorithmSummary}
+                checkStatus={checkStatus}
                 isDistrictSelected={!!activeGeoJSON}
               />
             ) : (

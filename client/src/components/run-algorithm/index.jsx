@@ -23,11 +23,13 @@ const RunAlgorithm = ({
   onStop,
   algorithmStarted,
   algorithmRunning,
+  algorithmSummary,
+  checkStatus,
 }) => {
   const [[minOpportunity, maxOpportunity], setOpportunity] = useState([0, 3]);
   const [minThreshold, setMinThreshold] = useState(50);
   const [minPopulationScore, setMinPopulationScore] = useState(75);
-  const [maxDiff, setMaxDiff] = useState();
+  const [maxPopDiff, setMaxPopDiff] = useState();
   const [maxEffGap, setMaxEffGap] = useState(0.5);
   const [minPolsbyPopper, setMinPolsbyPopper] = useState(0.5);
   const [numIterations, setNumIterations] = useState(10);
@@ -36,34 +38,26 @@ const RunAlgorithm = ({
 
   useEffect(() => {
     let interval = null;
-
+    let checkInterval = null;
     if (algorithmRunning) {
       interval = setInterval(() => {
         setTimeRunning((time) => time + 10);
       }, 10);
+      checkInterval = setInterval(() => {
+        checkStatus();
+      }, 5000);
     } else {
       clearInterval(interval);
+      clearInterval(checkInterval);
     }
     return () => {
       clearInterval(interval);
+      clearInterval(checkInterval);
     };
   }, [algorithmRunning]);
 
   function handleRun() {
-    // if (!efficiencyGapMeasure || !polsbyPopperScore) {
-    //   console.log('Please fill in all filters');
-    // } else {
-    //   onFilter();
-    // }
-    onRun(
-      minOpportunity,
-      maxOpportunity,
-      minThreshold,
-      maxDiff,
-      maxEffGap,
-      minPolsbyPopper,
-      numIterations
-    );
+    onRun(minOpportunity, maxOpportunity, maxPopDiff);
   }
 
   const Timer = ({ time }) => {
@@ -143,9 +137,9 @@ const RunAlgorithm = ({
           variant='outline'
           placeholder='Select percentage'
           style={{ marginTop: '1vh' }}
-          value={maxDiff}
+          value={maxPopDiff}
           onChange={(event) => {
-            setMaxDiff(event.target.value);
+            setMaxPopDiff(event.target.value);
           }}
         >
           <option value='0.1%'>0.1%</option>
@@ -266,6 +260,9 @@ const RunAlgorithm = ({
         <div>
           <Timer time={timeRunning} />
           <Progress size='xs' isIndeterminate={algorithmRunning} />
+          {algorithmSummary ? (
+            <div>Number of Iterations: {algorithmSummary.numIterations}</div>
+          ) : null}
         </div>
       ) : null}
     </>
