@@ -120,11 +120,11 @@ const DistrictingDetails = ({
               <Tbody>
                 <Tr>
                   <Td>Democratic</Td>
-                  <Td>{district.properties.DEMOCRAT}%</Td>
+                  <Td>{district.properties.DEMOCRAT}</Td>
                 </Tr>
                 <Tr>
                   <Td>Republican</Td>
-                  <Td>{district.properties.REPUBLICAN}%</Td>
+                  <Td>{district.properties.REPUBLICAN}</Td>
                 </Tr>
               </Tbody>
             </Table>

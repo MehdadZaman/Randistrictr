@@ -255,7 +255,7 @@ const Map = () => {
         timeout: 600000,
       });
       const districtPlanStatsRes = await apiCaller.get(
-        '/select/districting/districtPlanStatistics'
+        '/state/districting/districtPlanStatistics'
       );
       setLoading(false);
       setDistrictingPlanStatistics(districtPlanStatsRes.data);
