@@ -25,7 +25,7 @@ import {
   AccordionPanel,
   AccordionIcon,
 } from '@chakra-ui/react';
-// import { PieChart } from 'react-minimal-pie-chart';
+import numberWithCommas from '../utils/numberWithCommas';
 import PieChart from './PieChart';
 
 const DistrictingDetails = ({
@@ -36,6 +36,7 @@ const DistrictingDetails = ({
   popMeasure,
   isDistrictSelected,
   showBoxAndWhiskerPlot,
+  statePopulation,
 }) => {
   const [tabIndex, setTabIndex] = useState(0);
 
@@ -192,19 +193,6 @@ const DistrictingDetails = ({
         `${popMeasure.toLowerCase()}PopulationScore`
       ];
 
-    // const {
-    //   absoluteDifferenceInPopulation: enactedAbsoluteDifferenceInPopulation,
-    //   description: enactedDescription,
-    //   efficiencyGap: enactedEfficiencyGap,
-    //   id: enactedId,
-    //   numCongressionalDistricts: enactedNumCongressionalDistricts,
-    //   numOpportunityDistricts: enactedNumOpportunityDistricts,
-    //   objectiveFunctionScore: enactedObjectiveFunctionScore,
-    //   populationScore: enactedPopulationScore,
-    //   redistrictNumber: enactedRedistrictNumber,
-    //   state: enactedState,
-    // } = enactedDistrictingPlanStatistics;
-
     const absoluteDifferenceInPopulation =
       districtingPlanStatistics[
         `${popMeasure.toLowerCase()}AbsoluteDifferenceInPopulation`
@@ -221,19 +209,6 @@ const DistrictingDetails = ({
       ];
     const populationScore =
       districtingPlanStatistics[`${popMeasure.toLowerCase()}PopulationScore`];
-
-    // const {
-    //   absoluteDifferenceInPopulation,
-    //   description,
-    //   efficiencyGap,
-    //   id,
-    //   numCongressionalDistricts,
-    //   numOpportunityDistricts,
-    //   objectiveFunctionScore,
-    //   populationScore,
-    //   redistrictNumber,
-    //   state,
-    // } = districtingPlanStatistics;
 
     return (
       <Table variant='simple' size='sm'>
@@ -277,40 +252,62 @@ const DistrictingDetails = ({
             <Td isNumeric>{objectiveFunctionScore}</Td>
             <Td isNumeric>{enactedObjectiveFunctionScore}</Td>
           </Tr>
-
-          {/* <Tr>
-            <Td>Geometric Pactness [BRUH]</Td>
-            <Td isNumeric>0.98</Td>
-            <Td isNumeric>0.47</Td>
-          </Tr>
-
-          <Tr>
-            <Td>Poslby Popper Score [BRUH]</Td>
-            <Td isNumeric>0.96</Td>
-            <Td isNumeric>0.87</Td>
-          </Tr>
-
-          <Tr>
-            <Td>Partisan Symmetry Score [BRUH]</Td>
-            <Td isNumeric>88%</Td>
-            <Td isNumeric>71%</Td>
-          </Tr>
-
-          <Tr>
-            <Td>Republican Districts [BRUH]</Td>
-            <Td isNumeric>3</Td>
-            <Td isNumeric>5</Td>
-          </Tr>
-
-          <Tr>
-            <Td>Democratic Districts [BRUH]</Td>
-            <Td isNumeric>5</Td>
-            <Td isNumeric>3</Td>
-          </Tr> */}
         </Tbody>
       </Table>
     );
   };
+
+  if (!statePopulation) {
+    return null;
+  }
+
+  const {
+    totalTotalPopulation,
+    democratVoters,
+    republicanVoters,
+    otherVoters,
+  } = statePopulation;
+
+  const populationData = [
+    {
+      title: 'White',
+      value: statePopulation[`${popMeasure.toLowerCase()}WhitePopulation`],
+      color: '#7400B8',
+    },
+    {
+      title: 'Black or African American',
+      value: statePopulation[`${popMeasure.toLowerCase()}BlackPopulation`],
+      color: '#5E60CE',
+    },
+    {
+      title: 'Hispanic or Latino',
+      value: statePopulation[`${popMeasure.toLowerCase()}HispanicPopulation`],
+      color: '#4EA8DE',
+    },
+    {
+      title: 'Asian',
+      value: statePopulation[`${popMeasure.toLowerCase()}AsianPopulation`],
+      color: '#56CFE1',
+    },
+    {
+      title: 'Other',
+      value: statePopulation[`${popMeasure.toLowerCase()}OtherPopulation`],
+      color: '#64DFDF',
+    },
+    {
+      title: 'American Indian',
+      value:
+        statePopulation[`${popMeasure.toLowerCase()}AmericanIndianPopulation`],
+      color: '#64DFDF',
+    },
+    {
+      title: 'Hawaiian',
+      value: statePopulation[`${popMeasure.toLowerCase()}HawaiianPopulation`],
+      color: '#64DFDF',
+    },
+  ];
+
+  console.log(populationData);
   return (
     <Box p={1}>
       {selectedState ? (
@@ -325,7 +322,8 @@ const DistrictingDetails = ({
               Number of Congressional Districts: 8
             </Text>
             <Text fontSize='1xl' as='i'>
-              Population: {}
+              Population:{' '}
+              {statePopulation ? numberWithCommas(totalTotalPopulation) : null}
             </Text>
             <Button onClick={showBoxAndWhiskerPlot}>
               Show Box and Whisker Plot
@@ -341,11 +339,11 @@ const DistrictingDetails = ({
             <TabPanels>
               <TabPanel>
                 <Heading size='md' textAlign='center'>
-                  Population Percentage Per Race
+                  Population Per Race
                 </Heading>
-                {/* <PieChart data={data} /> */}
+                <PieChart data={populationData} />
                 <Heading size='md' mb={5} textAlign='center'>
-                  Population Percentage Per Political Party
+                  Population Per Political Party
                 </Heading>
                 <Table
                   style={{
@@ -365,11 +363,15 @@ const DistrictingDetails = ({
                   <Tbody>
                     <Tr>
                       <Td>Democratic</Td>
-                      <Td>52.5%</Td>
+                      <Td>{democratVoters}</Td>
                     </Tr>
                     <Tr>
                       <Td>Republican</Td>
-                      <Td>47.5%</Td>
+                      <Td>{republicanVoters}</Td>
+                    </Tr>
+                    <Tr>
+                      <Td>Other</Td>
+                      <Td>{otherVoters}</Td>
                     </Tr>
                   </Tbody>
                 </Table>

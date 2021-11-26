@@ -89,6 +89,7 @@ const Map = () => {
   const [boxAndWhiskerData, setBoxAndWhiskerData] = useState(null);
   const [boxAndWhiskerPlotOption, setBoxAndWhiskerPlotOption] = useState(0);
   const [loading, setLoading] = useState(false);
+  const [statePopulation, setStatePopulation] = useState(null);
 
   const displayMap = useMemo(() => {
     let mapRef;
@@ -233,8 +234,7 @@ const Map = () => {
       const allDistrictingPlanStatisticsRes = await apiCaller.get(
         '/state/allDistrictingPlanStatistics'
       );
-      console.log(res.data);
-      console.log(allDistrictingPlanStatisticsRes.data);
+      setStatePopulation(res.data);
       setSelectedState(stateName);
       setEnactedDistrictingPlanStatistics(
         enactedDistrictingPlanStatisticsRes.data
@@ -513,6 +513,7 @@ const Map = () => {
               }
               districtingPlanStatistics={districtingPlanStatistics}
               selectedState={selectedState}
+              statePopulation={statePopulation}
               popMeasure={popMeasure}
               isDistrictSelected={!!activeGeoJSON}
               showBoxAndWhiskerPlot={handleShowBoxAndWhiskerPlot}

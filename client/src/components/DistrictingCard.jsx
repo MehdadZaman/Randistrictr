@@ -78,13 +78,16 @@ const DistrictingCard = ({ property, popMeasure, onSelect, loading }) => {
       w='100%'
     >
       <Image src={property.imageUrl} alt={property.imageAlt}></Image>
-      <Text>
-        Absolute Difference in Population: {absoluteDifferenceInPopulation}
-      </Text>
-      <Text>Number of Opportunity Districts: {numOpportunityDistricts}</Text>
-      <Text>Mattingly Population Score: {populationScore}</Text>
-      <Text>Efficiency Gap Measure: {efficiencyGap}</Text>
-      <Text>Objective Function Score: {objectiveFunctionScore}</Text>
+      <Box p={3}>
+        <Text>
+          Absolute Difference in Population: {absoluteDifferenceInPopulation}
+        </Text>
+        <Text>Number of Opportunity Districts: {numOpportunityDistricts}</Text>
+        <Text>Mattingly Population Score: {populationScore}</Text>
+        <Text>Efficiency Gap Measure: {efficiencyGap}</Text>
+        <Text>Objective Function Score: {objectiveFunctionScore}</Text>
+      </Box>
+
       <Box p={2}>
         <Box
           color='gray.500'
