@@ -16,8 +16,10 @@ public class District implements Serializable {
     private String congressionalDistrict;
     private int districtingPlan;
 
-    @ElementCollection
-    private List<String> adjacentDistrictIDs;
+    private String adjacentDistrictString;
+
+    @Transient
+    String[] adjacentDistrictIDs;
 
     @OneToOne
     @JoinColumns({
@@ -101,11 +103,19 @@ public class District implements Serializable {
         this.population = population;
     }
 
-    public List<String> getAdjacentDistrictIDs() {
+    public String getAdjacentDistrictString() {
+        return adjacentDistrictString;
+    }
+
+    public void setAdjacentDistrictString(String adjacentDistrictString) {
+        this.adjacentDistrictString = adjacentDistrictString;
+    }
+
+    public String[] getAdjacentDistrictIDs() {
         return adjacentDistrictIDs;
     }
 
-    public void setAdjacentDistrictIDs(List<String> adjacentDistrictIDs) {
+    public void setAdjacentDistrictIDs(String[] adjacentDistrictIDs) {
         this.adjacentDistrictIDs = adjacentDistrictIDs;
     }
 

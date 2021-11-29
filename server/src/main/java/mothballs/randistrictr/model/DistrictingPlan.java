@@ -138,7 +138,8 @@ public class DistrictingPlan implements Serializable {
     }
 
     public void instantiateDataStructures(District district) {
-        List<String> adjacentDistrictIDs = district.getAdjacentDistrictIDs();
+        district.setAdjacentDistrictIDs(district.getAdjacentDistrictString().split(","));
+        String[] adjacentDistrictIDs = district.getAdjacentDistrictIDs();
         List<District> adjacentDistricts = new ArrayList<>();
         HashMap<String, District> idMappings = new HashMap<>();
 
