@@ -24,7 +24,9 @@ public class State implements Serializable {
     List<BoxAndWhisker> boxAndWhiskerPlots;
 
     @OneToOne
-    @PrimaryKeyJoinColumn
+    @JoinColumns({
+            @JoinColumn(name="state", referencedColumnName="geoID20")
+    })
     Population population;
 
     public String getState() {

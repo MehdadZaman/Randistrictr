@@ -32,7 +32,9 @@ public class CensusBlock implements Serializable {
     }
 
     @OneToOne
-    @PrimaryKeyJoinColumn
+    @JoinColumns({
+            @JoinColumn(name="geoID20", referencedColumnName="geoID20")
+    })
     private Population population;
 
     public String getGeoID20() {
@@ -106,5 +108,4 @@ public class CensusBlock implements Serializable {
     public void setCongressionalDistrictID(String congressionalDistrictID) {
         this.congressionalDistrictID = congressionalDistrictID;
     }
-
 }

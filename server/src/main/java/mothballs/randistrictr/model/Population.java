@@ -336,22 +336,6 @@ public class Population {
         otherVoters -= population.getOtherVoters();
     }
 
-    public boolean areMinoritiesMajority(PopulationMeasure populationMeasure) {
-        if(populationMeasure == PopulationMeasure.TOTAL) {
-            return (totalBlackPopulation + totalHispanicPopulation + totalAmericanIndianPopulation + totalAsianPopulation +
-                    totalHawaiianPopulation + totalOtherPopulation) > totalWhitePopulation;
-        }
-        else if(populationMeasure == PopulationMeasure.CVAP) {
-            return (cvapBlackPopulation + cvapHispanicPopulation + cvapAmericanIndianPopulation + cvapAsianPopulation +
-                    cvapHawaiianPopulation + cvapOtherPopulation) > cvapWhitePopulation;
-        }
-        else if(populationMeasure == PopulationMeasure.VAP) {
-            return (vapBlackPopulation + vapHispanicPopulation + vapAmericanIndianPopulation + vapAsianPopulation +
-                    vapHawaiianPopulation + vapOtherPopulation) > vapWhitePopulation;
-        }
-        return false;
-    }
-
     @Override
     public String toString() {
         return String.format(

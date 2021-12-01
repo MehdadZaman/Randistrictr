@@ -145,10 +145,6 @@ public class District implements Serializable {
         population.removePopulation(censusBlock.getPopulation());
     }
 
-    public boolean isOpportunityDistrict(PopulationMeasure populationMeasure) {
-        return population.areMinoritiesMajority(populationMeasure);
-    }
-
     public boolean dataStructuresInstantiated() {
         return adjacentDistricts != null && movableCensusBlocks != null;
     }

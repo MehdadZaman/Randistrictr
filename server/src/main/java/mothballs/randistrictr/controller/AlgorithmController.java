@@ -19,7 +19,7 @@ public class AlgorithmController {
     public String runAlgorithm(@RequestParam(value = "maxPopDiff") double maxPopDiff,
                                   @RequestParam(value = "minOpportunity") int minOpportunity,
                                   @RequestParam(value = "maxOpportunity") int maxOpportunity) {
-        algorithmService.startImprovedDistrictingPlanAlgorithm(maxPopDiff, minOpportunity, maxOpportunity);
+        algorithmService.startImprovedDistrictingPlanAlgorithm(maxPopDiff);
         return "Success";
     }
 

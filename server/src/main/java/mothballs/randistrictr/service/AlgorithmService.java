@@ -26,11 +26,11 @@ public class AlgorithmService {
     private final int MAX_ITERATIONS = 100000;
 
     @Async
-    public void startImprovedDistrictingPlanAlgorithm(double maxPopDiff, int minOpportunity, int maxOpportunity) {
-        runAlgorithm(minOpportunity, maxOpportunity);
+    public void startImprovedDistrictingPlanAlgorithm(double maxPopDiff) {
+        runAlgorithm();
     }
 
-    private void runAlgorithm(int minOpportunity, int maxOpportunity) {
+    private void runAlgorithm() {
         DistrictingPlan currentDistrictingPlan = districtService.getCurrentDistrictingPlan();
 
         // Instantiating district data structures
@@ -47,31 +47,22 @@ public class AlgorithmService {
             currentDistrictingPlan.makeMove(censusBlockToMove);
             DistrictingPlanStatistics oldDistrictingPlanStatistics = currentDistrictingPlan.getDistrictingPlanStatistics().deepClone();
             currentDistrictingPlan.recalculateMeasures();
-            if (!isValidMove(oldDistrictingPlanStatistics, currentDistrictingPlan.getDistrictingPlanStatistics(), minOpportunity, maxOpportunity)) {
+            if (!isValidMove(oldDistrictingPlanStatistics, currentDistrictingPlan.getDistrictingPlanStatistics())) {
                 currentDistrictingPlan.makeMove(censusBlockToMove);
                 currentDistrictingPlan.setDistrictingPlanStatistics(oldDistrictingPlanStatistics);
             }
         }
     }
 
-    private boolean isValidMove(DistrictingPlanStatistics originalDistrictingPlanStatistics, DistrictingPlanStatistics updatedDistrictingPlanStatistics, int minOpportunity, int maxOpportunity) {
+    private boolean isValidMove(DistrictingPlanStatistics originalDistrictingPlanStatistics, DistrictingPlanStatistics updatedDistrictingPlanStatistics) {
         if(districtService.getPopulationMeasure() == PopulationMeasure.TOTAL) {
-            if (updatedDistrictingPlanStatistics.getTotalNumOpportunityDistricts() < minOpportunity || updatedDistrictingPlanStatistics.getTotalNumOpportunityDistricts() > maxOpportunity) {
-                return false;
-            }
-            return (updatedDistrictingPlanStatistics.getTotalAbsoluteDifferenceInPopulation() < originalDistrictingPlanStatistics.getTotalAbsoluteDifferenceInPopulation());
+            return (updatedDistrictingPlanStatistics.getTotalPopulationScore() < originalDistrictingPlanStatistics.getTotalPopulationScore());
         }
         else if(districtService.getPopulationMeasure() == PopulationMeasure.CVAP) {
-            if (updatedDistrictingPlanStatistics.getCvapNumOpportunityDistricts() < minOpportunity || updatedDistrictingPlanStatistics.getCvapNumOpportunityDistricts() > maxOpportunity) {
-                return false;
-            }
-            return (updatedDistrictingPlanStatistics.getCvapAbsoluteDifferenceInPopulation() < originalDistrictingPlanStatistics.getCvapAbsoluteDifferenceInPopulation());
+            return (updatedDistrictingPlanStatistics.getCvapPopulationScore() < originalDistrictingPlanStatistics.getCvapPopulationScore());
         }
         else if(districtService.getPopulationMeasure() == PopulationMeasure.VAP) {
-            if (updatedDistrictingPlanStatistics.getVapNumOpportunityDistricts() < minOpportunity || updatedDistrictingPlanStatistics.getVapNumOpportunityDistricts() > maxOpportunity) {
-                return false;
-            }
-            return (updatedDistrictingPlanStatistics.getVapAbsoluteDifferenceInPopulation() < originalDistrictingPlanStatistics.getVapAbsoluteDifferenceInPopulation());
+            return (updatedDistrictingPlanStatistics.getVapPopulationScore() < originalDistrictingPlanStatistics.getVapPopulationScore());
         }
 
         return false;

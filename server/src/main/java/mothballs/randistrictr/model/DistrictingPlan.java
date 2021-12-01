@@ -90,27 +90,9 @@ public class DistrictingPlan implements Serializable {
     }
 
     public void recalculateMeasures() {
-        this.districtingPlanStatistics.setTotalAbsoluteDifferenceInPopulation(getAbsPopDiff(PopulationMeasure.TOTAL));
-        this.districtingPlanStatistics.setTotalAbsoluteDifferenceInPopulation(getAbsPopDiff(PopulationMeasure.CVAP));
-        this.districtingPlanStatistics.setTotalAbsoluteDifferenceInPopulation(getAbsPopDiff(PopulationMeasure.VAP));
-        int totalNumOppDistricts = 0;
-        int cvapNumOppDistricts = 0;
-        int vapNumOppDistricts = 0;
-        for(District district : districts) {
-            if(district.isOpportunityDistrict(PopulationMeasure.TOTAL)) {
-                totalNumOppDistricts++;
-            }
-            if(district.isOpportunityDistrict(PopulationMeasure.CVAP)) {
-                cvapNumOppDistricts++;
-            }
-            if(district.isOpportunityDistrict(PopulationMeasure.VAP)) {
-                vapNumOppDistricts++;
-            }
-        }
-
-        this.districtingPlanStatistics.setTotalNumOpportunityDistricts(totalNumOppDistricts);
-        this.districtingPlanStatistics.setCvapNumOpportunityDistricts(cvapNumOppDistricts);
-        this.districtingPlanStatistics.setVapAbsoluteDifferenceInPopulation(vapNumOppDistricts);
+        this.districtingPlanStatistics.setTotalPopulationScore(getAbsPopDiff(PopulationMeasure.TOTAL));
+        this.districtingPlanStatistics.setCvapPopulationScore(getAbsPopDiff(PopulationMeasure.CVAP));
+        this.districtingPlanStatistics.setVapEfficiencyGap(getAbsPopDiff(PopulationMeasure.VAP));
     }
 
     public double getAbsPopDiff(PopulationMeasure populationMeasure) {
