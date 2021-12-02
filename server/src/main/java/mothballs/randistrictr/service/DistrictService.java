@@ -34,6 +34,8 @@ public class DistrictService {
 
     private State currentState;
     private DistrictingPlan currentDistrictingPlan;
+    private DistrictingPlan seawulfDistrictingPlan;
+
     private boolean hasInitializedCensusBlocks;
     private JSONObject enactedDistrictPlan;
     PopulationMeasure populationMeasure = PopulationMeasure.TOTAL;
@@ -63,6 +65,7 @@ public class DistrictService {
     public JSONObject getDistrictingPlan(int districtPlanNumber) {
         if(!hasInitializedCensusBlocks){
             this.currentDistrictingPlan = stateRepository.findStateByState(this.currentState.getState()).getDistrictingPlans().get(districtPlanNumber);
+            this.seawulfDistrictingPlan = stateRepository.findStateByState(this.currentState.getState()).getDistrictingPlans().get(districtPlanNumber);
             hasInitializedCensusBlocks = true;
         }
         return dissolvingService.getDistrictingJSON(this.currentDistrictingPlan);
@@ -103,6 +106,7 @@ public class DistrictService {
         this.hasInitializedCensusBlocks = false;
         this.currentState = null;
         this.currentDistrictingPlan = null;
+        this.seawulfDistrictingPlan = null;
         this.enactedDistrictPlan = null;
     }
 
@@ -143,6 +147,10 @@ public class DistrictService {
         if(currentDistrictingPlan != null) {
             componentArray.add(getCurrentDistrictingOverlay(basis));
         }
+        if(seawulfDistrictingPlan != null) {
+            componentArray.add(getSeawulfDistrictingOverlay(basis));
+        }
+
         JSONObject retJSONObject = new JSONObject();
         retJSONObject.put("series", componentArray);
         return retJSONObject;
@@ -170,6 +178,25 @@ public class DistrictService {
         jsonObject.put("name", "current districting plan");
         JSONArray scatterArray = new JSONArray();
         List<District> allDistricts = currentDistrictingPlan.getDistricts();
+        Collections.sort(allDistricts, (a, b) -> (int)(a.getPopulation().getPopulationByBasis(basis) - b.getPopulation().getPopulationByBasis(basis)));
+        int position = 1;
+        for(District district : allDistricts) {
+            JSONObject box = new JSONObject();
+            box.put("x", position);
+            box.put("y", district.getPopulation().getPopulationByBasis(basis));
+            position++;
+            scatterArray.add(box);
+        }
+        jsonObject.put("data", scatterArray);
+        return jsonObject;
+    }
+
+    public JSONObject getSeawulfDistrictingOverlay(Basis basis) {
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("type", "scatter");
+        jsonObject.put("name", "seawulf districting plan");
+        JSONArray scatterArray = new JSONArray();
+        List<District> allDistricts = seawulfDistrictingPlan.getDistricts();
         Collections.sort(allDistricts, (a, b) -> (int)(a.getPopulation().getPopulationByBasis(basis) - b.getPopulation().getPopulationByBasis(basis)));
         int position = 1;
         for(District district : allDistricts) {
