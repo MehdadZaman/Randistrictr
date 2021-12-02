@@ -98,8 +98,8 @@ public class District implements Serializable {
         this.population = population;
     }
 
-    public CensusBlock selectCensusBlock() {
-        District randomNeighboringDistrict = adjacentDistricts.get((int)Math.random() * adjacentDistricts.size());
+    public CensusBlock selectCensusBlock(PopulationMeasure populationMeasure) {
+        District randomNeighboringDistrict = selectAdjacentDistrict(populationMeasure);
         Set<CensusBlock> selectedCensusBlocks = movableCensusBlocks.get(randomNeighboringDistrict);
         int randomIndex = (int)Math.random() * selectedCensusBlocks.size();
         int iter = 0;
@@ -110,6 +110,33 @@ public class District implements Serializable {
             iter++;
         }
         return null;
+    }
+
+    public District selectAdjacentDistrict(PopulationMeasure populationMeasure) {
+        District smallestDistrict = null;
+        double smallestPop = Double.MAX_VALUE;
+        for(District district: adjacentDistricts) {
+            if(populationMeasure == PopulationMeasure.TOTAL) {
+                if(district.getPopulation().getTotalTotalPopulation() < smallestPop) {
+                    smallestDistrict = district;
+                    smallestPop = district.getPopulation().getTotalTotalPopulation();
+                }
+            }
+            else if(populationMeasure == PopulationMeasure.CVAP) {
+                if(district.getPopulation().getCvapTotalPopulation() < smallestPop) {
+                    smallestDistrict = district;
+                    smallestPop = district.getPopulation().getCvapTotalPopulation();
+                }
+            }
+            else if(populationMeasure == PopulationMeasure.VAP) {
+                if(district.getPopulation().getVapTotalPopulation() < smallestPop) {
+                    smallestDistrict = district;
+                    smallestPop = district.getPopulation().getVapTotalPopulation();
+                }
+            }
+        }
+        return smallestDistrict;
+        // return adjacentDistricts.get((int)Math.random() * adjacentDistricts.size());
     }
 
     public void addCensusBlock(CensusBlock censusBlock, District neighboringDistrict) {

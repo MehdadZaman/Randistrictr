@@ -44,8 +44,10 @@ public class AlgorithmService {
         }
 
         for (currentIteration = 0; currentIteration < MAX_ITERATIONS; currentIteration++) {
-            District selectedDistrict = currentDistrictingPlan.selectDistrict();
-            CensusBlock censusBlockToMove = selectedDistrict.selectCensusBlock();
+            District selectedDistrict = currentDistrictingPlan.selectDistrict(districtService.getPopulationMeasure());
+            if(selectedDistrict == null) continue;
+            CensusBlock censusBlockToMove = selectedDistrict.selectCensusBlock(districtService.getPopulationMeasure());
+            if(censusBlockToMove == null) continue;
             currentDistrictingPlan.makeMove(censusBlockToMove);
             DistrictingPlanStatistics oldDistrictingPlanStatistics = currentDistrictingPlan.getDistrictingPlanStatistics().deepClone();
             currentDistrictingPlan.recalculateMeasures();

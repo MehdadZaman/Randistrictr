@@ -69,8 +69,31 @@ public class DistrictingPlan implements Serializable {
         this.districtingPlanStatistics = districtingPlanStatistics;
     }
 
-    public District selectDistrict() {
-        return districts.get((int)(Math.random() * districts.size()));
+    public District selectDistrict(PopulationMeasure populationMeasure) {
+        District largestDistrict = null;
+        double largestPop = Double.MIN_VALUE;
+        for(District district: districts) {
+            if(populationMeasure == PopulationMeasure.TOTAL) {
+                if(district.getPopulation().getTotalTotalPopulation() > largestPop) {
+                    largestDistrict = district;
+                    largestPop = district.getPopulation().getTotalTotalPopulation();
+                }
+            }
+            else if(populationMeasure == PopulationMeasure.CVAP) {
+                if(district.getPopulation().getCvapTotalPopulation() > largestPop) {
+                    largestDistrict = district;
+                    largestPop = district.getPopulation().getCvapTotalPopulation();
+                }
+            }
+            else if(populationMeasure == PopulationMeasure.VAP) {
+                if(district.getPopulation().getVapTotalPopulation() > largestPop) {
+                    largestDistrict = district;
+                    largestPop = district.getPopulation().getVapTotalPopulation();
+                }
+            }
+        }
+        return largestDistrict;
+        //return districts.get((int)(Math.random() * districts.size()));
     }
 
     public void makeMove(CensusBlock censusBlock) {
