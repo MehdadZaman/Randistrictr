@@ -68,7 +68,19 @@ public class DistrictService {
             this.seawulfDistrictingPlan = stateRepository.findStateByState(this.currentState.getState()).getDistrictingPlans().get(districtPlanNumber);
             hasInitializedCensusBlocks = true;
         }
-        return dissolvingService.getDistrictingJSON(this.currentDistrictingPlan);
+
+        try {
+            JSONParser jsonParser = new JSONParser();
+            FileReader reader = new FileReader("src/main/java/mothballs/randistrictr/constants/" + currentState.getState().toLowerCase() + "_" + districtPlanNumber + ".json");
+            Object obj = jsonParser.parse(reader);
+            JSONObject jsonObject = (JSONObject) obj;
+            enactedDistrictPlan = jsonObject;
+            return jsonObject;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+        // return dissolvingService.getDistrictingJSON(this.currentDistrictingPlan);
     }
 
     public DistrictingPlanStatistics getDistrictingPlanStatistics() {
