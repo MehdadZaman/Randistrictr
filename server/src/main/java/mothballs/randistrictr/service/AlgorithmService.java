@@ -35,6 +35,8 @@ public class AlgorithmService {
 
         // Instantiating district data structures
         List<District> districts = currentDistrictingPlan.getDistricts();
+        currentDistrictingPlan.instantiateIDMappings();
+
         for(District district : districts) {
             if(!district.dataStructuresInstantiated()) {
                 currentDistrictingPlan.instantiateDataStructures(district);

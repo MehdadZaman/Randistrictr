@@ -26,6 +26,9 @@ public class DistrictingPlan implements Serializable {
     })
     private List<District> districts;
 
+    @Transient
+    HashMap<String, District> idMappings;
+
     public String getId() {
         return id;
     }
@@ -120,21 +123,9 @@ public class DistrictingPlan implements Serializable {
     }
 
     public void instantiateDataStructures(District district) {
-        district.setAdjacentDistrictIDs(district.getAdjacentDistrictString().split(","));
-        String[] adjacentDistrictIDs = district.getAdjacentDistrictIDs();
         List<District> adjacentDistricts = new ArrayList<>();
-        HashMap<String, District> idMappings = new HashMap<>();
-
-        for(String adjID : adjacentDistrictIDs) {
-            for(District otherDistrict : districts) {
-                idMappings.put(district.getGeoID20(), otherDistrict);
-                if(otherDistrict.getGeoID20().equals(adjID)) {
-                    adjacentDistricts.add(otherDistrict);
-                }
-            }
-        }
-
         Map<District, Set<CensusBlock>> movableCensusBlocks = new HashMap<>();
+
         Set<CensusBlock> censusBlocks = district.getCensusBlocks();
         for(CensusBlock censusBlock : censusBlocks) {
             if((censusBlock.getAdjacentCongressionalDistrict() != null) && (!censusBlock.getAdjacentCongressionalDistrict().equals(censusBlock.getCongressionalDistrictID()))) {
@@ -144,12 +135,23 @@ public class DistrictingPlan implements Serializable {
                 else {
                     movableCensusBlocks.put(idMappings.get(censusBlock.getAdjacentCongressionalDistrict()), new HashSet<>());
                     movableCensusBlocks.get(idMappings.get(censusBlock.getAdjacentCongressionalDistrict())).add(censusBlock);
+                    adjacentDistricts.add(idMappings.get(censusBlock.getAdjacentCongressionalDistrict()));
                 }
             }
-
         }
 
         district.setAdjacentDistricts(adjacentDistricts);
         district.setMovableCensusBlocks(movableCensusBlocks);
+    }
+
+    public void instantiateIDMappings() {
+        if(this.idMappings != null) {
+            return;
+        }
+
+        this.idMappings = new HashMap<>();
+        for(District district : districts) {
+            this.idMappings.put(district.getGeoID20(), district);
+        }
     }
 }
