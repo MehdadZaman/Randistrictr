@@ -27,10 +27,10 @@ public class AlgorithmService {
 
     @Async
     public void startImprovedDistrictingPlanAlgorithm(double maxPopDiff) {
-        runAlgorithm();
+        runAlgorithm(maxPopDiff, districtService.getPopulationMeasure());
     }
 
-    private void runAlgorithm() {
+    private void runAlgorithm(double maxPopDiff, PopulationMeasure populationMeasure) {
         DistrictingPlan currentDistrictingPlan = districtService.getCurrentDistrictingPlan();
 
         // Instantiating district data structures
@@ -44,6 +44,25 @@ public class AlgorithmService {
         }
 
         for (currentIteration = 0; currentIteration < MAX_ITERATIONS; currentIteration++) {
+            if(populationMeasure == PopulationMeasure.TOTAL) {
+                if(currentDistrictingPlan.getDistrictingPlanStatistics().getTotalPopulationScore() <= maxPopDiff) {
+                    currentIteration = MAX_ITERATIONS;
+                    break;
+                }
+            }
+            else if(populationMeasure == PopulationMeasure.CVAP) {
+                if(currentDistrictingPlan.getDistrictingPlanStatistics().getCvapPopulationScore() <= maxPopDiff) {
+                    currentIteration = MAX_ITERATIONS;
+                    break;
+                }
+            }
+            else if(populationMeasure == PopulationMeasure.VAP) {
+                if (currentDistrictingPlan.getDistrictingPlanStatistics().getVapPopulationScore() <= maxPopDiff) {
+                    currentIteration = MAX_ITERATIONS;
+                    break;
+                }
+            }
+
             District selectedDistrict = currentDistrictingPlan.selectDistrict(districtService.getPopulationMeasure());
             if(selectedDistrict == null) continue;
             CensusBlock censusBlockToMove = selectedDistrict.selectCensusBlock(districtService.getPopulationMeasure());
