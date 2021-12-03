@@ -118,7 +118,38 @@ public class DistrictingPlan implements Serializable {
     public void recalculateMeasures() {
         this.districtingPlanStatistics.setTotalPopulationScore(getAbsPopDiff(PopulationMeasure.TOTAL));
         this.districtingPlanStatistics.setCvapPopulationScore(getAbsPopDiff(PopulationMeasure.CVAP));
-        this.districtingPlanStatistics.setVapEfficiencyGap(getAbsPopDiff(PopulationMeasure.VAP));
+        this.districtingPlanStatistics.setVapPopulationScore(getAbsPopDiff(PopulationMeasure.VAP));
+
+        int numDemocratDistricts = 0;
+        int numRepublicanDistricts = 0;
+
+        double totalVotes = 0;
+        double wastedVotes = 0;
+
+        for(District district : districts) {
+            double districtDemocratVoters = district.getPopulation().getDemocratVoters();
+            double districtRepublicanVoters = district.getPopulation().getRepublicanVoters();
+            double districtTotalVoters = districtDemocratVoters + districtRepublicanVoters;
+            double fiftyPercentMark = (districtDemocratVoters + districtRepublicanVoters) / 2.0;
+            totalVotes += districtTotalVoters;
+
+            if(districtDemocratVoters >= districtRepublicanVoters) {
+                numDemocratDistricts++;
+
+                wastedVotes += (districtDemocratVoters - fiftyPercentMark);
+                wastedVotes += districtRepublicanVoters;
+            }
+            else {
+                numRepublicanDistricts++;
+
+                wastedVotes += (districtRepublicanVoters - fiftyPercentMark);
+                wastedVotes += districtDemocratVoters;
+            }
+        }
+
+        this.districtingPlanStatistics.setEfficiencyGap((wastedVotes / totalVotes));
+        this.districtingPlanStatistics.setNumDemocraticCongressionalDistricts(numDemocratDistricts);
+        this.districtingPlanStatistics.setNumRepublicanCongressionalDistricts(numRepublicanDistricts);
     }
 
     public double getAbsPopDiff(PopulationMeasure populationMeasure) {
