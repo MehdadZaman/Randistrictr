@@ -9,7 +9,6 @@ public class DistrictingPlanStatistics {
     private String id;
     private String state;
     private int redistrictNumber;
-    private String description;
 
     private double efficiencyGap;
     private double totalPopulationScore;
@@ -23,14 +22,13 @@ public class DistrictingPlanStatistics {
 
     public DistrictingPlanStatistics(){}
 
-    public DistrictingPlanStatistics(String id, String state, int redistrictNumber, String description,
+    public DistrictingPlanStatistics(String id, String state, int redistrictNumber,
                                      double efficiencyGap, double totalPopulationScore, double cvapPopulationScore,
                                      double vapPopulationScore, int numCongressionalDistricts, int numRepublicanCongressionalDistricts,
                                      int numDemocraticCongressionalDistricts) {
         this.id = id;
         this.state = state;
         this.redistrictNumber = redistrictNumber;
-        this.description = description;
         this.efficiencyGap = efficiencyGap;
         this.totalPopulationScore = totalPopulationScore;
         this.cvapPopulationScore = cvapPopulationScore;
@@ -62,14 +60,6 @@ public class DistrictingPlanStatistics {
 
     public void setRedistrictNumber(int redistrictNumber) {
         this.redistrictNumber = redistrictNumber;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
     }
 
     public double getEfficiencyGap() {
@@ -129,7 +119,7 @@ public class DistrictingPlanStatistics {
     }
 
     public DistrictingPlanStatistics deepClone() {
-        return new DistrictingPlanStatistics(id, state, redistrictNumber, description, efficiencyGap,
+        return new DistrictingPlanStatistics(id, state, redistrictNumber, efficiencyGap,
                 totalPopulationScore, cvapPopulationScore, vapPopulationScore, numCongressionalDistricts,
                 numRepublicanCongressionalDistricts, numDemocraticCongressionalDistricts);
     }
