@@ -55,6 +55,10 @@ public class DistrictService {
     }
 
     public List<DistrictingPlanStatistics> getAllDistrictingPlanStatistics() {
+        if(this.currentState.getDistrictingPlans() != null) {
+            Collections.sort(this.currentState.getDistrictingPlans(), (a, b) -> a.getDistrictingPlan() - b.getDistrictingPlan());
+        }
+
         List<DistrictingPlanStatistics> districtingPlanStatistics = new ArrayList<>();
         for(DistrictingPlan districtingPlan : currentState.getDistrictingPlans()) {
             districtingPlanStatistics.add(districtingPlan.getDistrictingPlanStatistics());
@@ -63,24 +67,33 @@ public class DistrictService {
     }
 
     public JSONObject getDistrictingPlan(int districtPlanNumber) {
-        if(!hasInitializedCensusBlocks){
+        if(!hasInitializedCensusBlocks || (this.currentDistrictingPlan != null && districtPlanNumber != this.currentDistrictingPlan.getDistrictingPlan())){
+            List<DistrictingPlan> districtPlans = currentState.getDistrictingPlans();
+            int i = 0;
+            for(; i < districtPlans.size(); i++) {
+                if(districtPlanNumber == districtPlans.get(i).getDistrictingPlan()) {
+                    break;
+                }
+            }
+            districtPlanNumber = i;
             this.currentDistrictingPlan = stateRepository.findStateByState(this.currentState.getState()).getDistrictingPlans().get(districtPlanNumber);
             this.seawulfDistrictingPlan = stateRepository.findStateByState(this.currentState.getState()).getDistrictingPlans().get(districtPlanNumber);
             hasInitializedCensusBlocks = true;
         }
 
-        try {
-            JSONParser jsonParser = new JSONParser();
-            FileReader reader = new FileReader("src/main/java/mothballs/randistrictr/constants/" + currentState.getState().toLowerCase() + "_" + districtPlanNumber + ".json");
-            Object obj = jsonParser.parse(reader);
-            JSONObject jsonObject = (JSONObject) obj;
-            enactedDistrictPlan = jsonObject;
-            return jsonObject;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return null;
-        // return dissolvingService.getDistrictingJSON(this.currentDistrictingPlan);
+//        try {
+//            JSONParser jsonParser = new JSONParser();
+//            FileReader reader = new FileReader("src/main/java/mothballs/randistrictr/constants/" + currentState.getState().toLowerCase() + "_" + districtPlanNumber + ".json");
+//            Object obj = jsonParser.parse(reader);
+//            JSONObject jsonObject = (JSONObject) obj;
+//            enactedDistrictPlan = jsonObject;
+//            return jsonObject;
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//        return null;
+        System.out.println("DISSOLVING");
+        return dissolvingService.getDistrictingJSON(this.currentDistrictingPlan);
     }
 
     public DistrictingPlanStatistics getDistrictingPlanStatistics() {
