@@ -11,6 +11,7 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.List;
 
 @EnableAsync
@@ -23,7 +24,7 @@ public class AlgorithmService {
     DissolvingService dissolvingService;
 
     private int currentIteration;
-    private final int MAX_ITERATIONS = 100000;
+    private final int MAX_ITERATIONS = 10000000;
 
     @Async
     public void startImprovedDistrictingPlanAlgorithm(double maxPopDiff) {
@@ -31,6 +32,7 @@ public class AlgorithmService {
     }
 
     private void runAlgorithm(double maxPopDiff, PopulationMeasure populationMeasure) {
+        HashSet<CensusBlock> censusBlocksMoved = new HashSet<>();
         DistrictingPlan currentDistrictingPlan = districtService.getCurrentDistrictingPlan();
 
         // Instantiating district data structures
@@ -62,7 +64,6 @@ public class AlgorithmService {
                     break;
                 }
             }
-
             District selectedDistrict = currentDistrictingPlan.selectDistrict(districtService.getPopulationMeasure());
             if(selectedDistrict == null) continue;
             CensusBlock censusBlockToMove = selectedDistrict.selectCensusBlock(districtService.getPopulationMeasure());
@@ -74,6 +75,17 @@ public class AlgorithmService {
                 currentDistrictingPlan.makeMove(censusBlockToMove);
                 currentDistrictingPlan.setDistrictingPlanStatistics(oldDistrictingPlanStatistics);
             }
+            else {
+                censusBlocksMoved.add(censusBlockToMove);
+            }
+        }
+
+        // Printing out moved censusblocks
+        System.out.println(censusBlocksMoved.size());
+        for(CensusBlock censusBlock : censusBlocksMoved) {
+            System.out.println(censusBlock.getGeoID20());
+            System.out.println("BEFORE: " + censusBlock.getAdjacentCongressionalDistrict());
+            System.out.println("AFTER: " + censusBlock.getCongressionalDistrict());
         }
     }
 

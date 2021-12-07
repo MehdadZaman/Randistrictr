@@ -70,30 +70,30 @@ public class DistrictingPlan implements Serializable {
     }
 
     public District selectDistrict(PopulationMeasure populationMeasure) {
-        District largestDistrict = null;
-        double largestPop = Double.MIN_VALUE;
-        for(District district: districts) {
-            if(populationMeasure == PopulationMeasure.TOTAL) {
-                if(district.getPopulation().getTotalTotalPopulation() > largestPop) {
-                    largestDistrict = district;
-                    largestPop = district.getPopulation().getTotalTotalPopulation();
-                }
-            }
-            else if(populationMeasure == PopulationMeasure.CVAP) {
-                if(district.getPopulation().getCvapTotalPopulation() > largestPop) {
-                    largestDistrict = district;
-                    largestPop = district.getPopulation().getCvapTotalPopulation();
-                }
-            }
-            else if(populationMeasure == PopulationMeasure.VAP) {
-                if(district.getPopulation().getVapTotalPopulation() > largestPop) {
-                    largestDistrict = district;
-                    largestPop = district.getPopulation().getVapTotalPopulation();
-                }
-            }
-        }
-        return largestDistrict;
-        //return districts.get((int)(Math.random() * districts.size()));
+//        District largestDistrict = null;
+//        double largestPop = Double.MIN_VALUE;
+//        for(District district: districts) {
+//            if(populationMeasure == PopulationMeasure.TOTAL) {
+//                if(district.getPopulation().getTotalTotalPopulation() > largestPop) {
+//                    largestDistrict = district;
+//                    largestPop = district.getPopulation().getTotalTotalPopulation();
+//                }
+//            }
+//            else if(populationMeasure == PopulationMeasure.CVAP) {
+//                if(district.getPopulation().getCvapTotalPopulation() > largestPop) {
+//                    largestDistrict = district;
+//                    largestPop = district.getPopulation().getCvapTotalPopulation();
+//                }
+//            }
+//            else if(populationMeasure == PopulationMeasure.VAP) {
+//                if(district.getPopulation().getVapTotalPopulation() > largestPop) {
+//                    largestDistrict = district;
+//                    largestPop = district.getPopulation().getVapTotalPopulation();
+//                }
+//            }
+//        }
+//        return largestDistrict;
+        return districts.get((int)(Math.random() * districts.size()));
     }
 
     public void makeMove(CensusBlock censusBlock) {
@@ -103,15 +103,19 @@ public class DistrictingPlan implements Serializable {
             if(censusBlock.getCongressionalDistrict().equals(district.getCongressionalDistrict())) {
                 removedFrom = district;
             }
-
-            if(censusBlock.getAdjacentCongressionalDistrict().equals(district.getCongressionalDistrict())) {
+            else if(censusBlock.getAdjacentCongressionalDistrict().equals(district.getCongressionalDistrict())) {
                 addedTo = district;
             }
         }
 
+        if(removedFrom == null || addedTo == null || removedFrom.getCongressionalDistrict().equals(addedTo.getCongressionalDistrict())) {
+            return;
+        }
+
         removedFrom.removeCensusBlock(censusBlock, addedTo);
         addedTo.addCensusBlock(censusBlock, removedFrom);
-        censusBlock.setDistrictingPlan(addedTo.getDistrictingPlan());
+
+        censusBlock.setCongressionalDistrict(addedTo.getCongressionalDistrict());
         censusBlock.setAdjacentCongressionalDistrict(removedFrom.getCongressionalDistrict());
     }
 
@@ -123,31 +127,18 @@ public class DistrictingPlan implements Serializable {
         int numDemocratDistricts = 0;
         int numRepublicanDistricts = 0;
 
-        double totalVotes = 0;
-        double wastedVotes = 0;
-
         for(District district : districts) {
             double districtDemocratVoters = district.getPopulation().getDemocratVoters();
             double districtRepublicanVoters = district.getPopulation().getRepublicanVoters();
-            double districtTotalVoters = districtDemocratVoters + districtRepublicanVoters;
-            double fiftyPercentMark = (districtDemocratVoters + districtRepublicanVoters) / 2.0;
-            totalVotes += districtTotalVoters;
 
             if(districtDemocratVoters >= districtRepublicanVoters) {
                 numDemocratDistricts++;
-
-                wastedVotes += (districtDemocratVoters - fiftyPercentMark);
-                wastedVotes += districtRepublicanVoters;
             }
             else {
                 numRepublicanDistricts++;
-
-                wastedVotes += (districtRepublicanVoters - fiftyPercentMark);
-                wastedVotes += districtDemocratVoters;
             }
         }
 
-        this.districtingPlanStatistics.setEfficiencyGap((wastedVotes / totalVotes));
         this.districtingPlanStatistics.setNumDemocraticCongressionalDistricts(numDemocratDistricts);
         this.districtingPlanStatistics.setNumRepublicanCongressionalDistricts(numRepublicanDistricts);
     }
@@ -179,7 +170,6 @@ public class DistrictingPlan implements Serializable {
     public void instantiateDataStructures(District district) {
         List<District> adjacentDistricts = new ArrayList<>();
         Map<District, Set<CensusBlock>> movableCensusBlocks = new HashMap<>();
-
         Set<CensusBlock> censusBlocks = district.getCensusBlocks();
         for(CensusBlock censusBlock : censusBlocks) {
             if((censusBlock.getAdjacentCongressionalDistrict() != null) && (!censusBlock.getAdjacentCongressionalDistrict().equals(censusBlock.getCongressionalDistrictID()))) {
@@ -193,7 +183,6 @@ public class DistrictingPlan implements Serializable {
                 }
             }
         }
-
         district.setAdjacentDistricts(adjacentDistricts);
         district.setMovableCensusBlocks(movableCensusBlocks);
     }
@@ -205,7 +194,7 @@ public class DistrictingPlan implements Serializable {
 
         this.idMappings = new HashMap<>();
         for(District district : districts) {
-            this.idMappings.put(district.getGeoID20(), district);
+            this.idMappings.put(district.getCongressionalDistrict(), district);
         }
     }
 }

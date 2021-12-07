@@ -16,9 +16,7 @@ public class AlgorithmController {
     AlgorithmService algorithmService;
 
     @PostMapping("/run")
-    public String runAlgorithm(@RequestParam(value = "maxPopDiff") double maxPopDiff,
-                                  @RequestParam(value = "minOpportunity") int minOpportunity,
-                                  @RequestParam(value = "maxOpportunity") int maxOpportunity) {
+    public String runAlgorithm(@RequestParam(value = "maxPopDiff") double maxPopDiff) {
         algorithmService.startImprovedDistrictingPlanAlgorithm(maxPopDiff);
         return "Success";
     }

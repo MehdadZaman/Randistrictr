@@ -31,7 +31,7 @@ public class CensusBlock implements Serializable {
         this.districtingPlan = districtingPlan;
     }
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.EAGER)
     @JoinColumns({
             @JoinColumn(name="geoID20", referencedColumnName="geoID20")
     })

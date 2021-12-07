@@ -81,18 +81,6 @@ public class DistrictService {
             hasInitializedCensusBlocks = true;
         }
 
-//        try {
-//            JSONParser jsonParser = new JSONParser();
-//            FileReader reader = new FileReader("src/main/java/mothballs/randistrictr/constants/" + currentState.getState().toLowerCase() + "_" + districtPlanNumber + ".json");
-//            Object obj = jsonParser.parse(reader);
-//            JSONObject jsonObject = (JSONObject) obj;
-//            enactedDistrictPlan = jsonObject;
-//            return jsonObject;
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//        return null;
-        System.out.println("DISSOLVING");
         return dissolvingService.getDistrictingJSON(this.currentDistrictingPlan);
     }
 

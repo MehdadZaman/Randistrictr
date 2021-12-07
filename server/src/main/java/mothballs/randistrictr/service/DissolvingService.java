@@ -5,6 +5,7 @@ import mothballs.randistrictr.model.District;
 import mothballs.randistrictr.model.DistrictingPlan;
 import mothballs.randistrictr.model.Population;
 import mothballs.randistrictr.repository.CensusBlockRepository;
+import org.hibernate.Hibernate;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -42,7 +43,12 @@ public class DissolvingService {
         JSONArray censusBlockArray = new JSONArray();
         List<District> districts = districtingPlan.getDistricts();
         for(District district : districts) {
-            Set<CensusBlock> censusBlocks = district.getCensusBlocks();
+            Set<CensusBlock> censusBlocks;
+            if(!district.isInitializedCensusBlocks()) {
+                Hibernate.initialize(district.getCensusBlocks());
+                district.setInitializedCensusBlocks(true);
+            }
+            censusBlocks = district.getCensusBlocks();
             for(CensusBlock cB : censusBlocks) {
                 Population censusBlockPopulation = cB.getPopulation();
                 JSONObject cBJSON = new JSONObject();
