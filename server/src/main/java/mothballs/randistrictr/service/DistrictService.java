@@ -89,7 +89,7 @@ public class DistrictService {
     }
 
     public DistrictingPlanStatistics getEnactedDistrictingPlanStatistics() {
-        return districtingPlanStatisticsRepository.findById(currentState.getStateNumber() + ENACTED_DISTRICTING_PLAN);
+        return districtingPlanStatisticsRepository.findById(ENACTED_DISTRICTING_PLAN + currentState.getStateNumber());
     }
 
     public DistrictingPlan getCurrentDistrictingPlan() {
