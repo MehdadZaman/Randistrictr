@@ -111,7 +111,9 @@ public class District implements Serializable {
 
     public CensusBlock selectCensusBlock(PopulationMeasure populationMeasure) {
         District randomNeighboringDistrict = selectAdjacentDistrict(populationMeasure);
+        if(randomNeighboringDistrict == null) return null;
         Set<CensusBlock> selectedCensusBlocks = movableCensusBlocks.get(randomNeighboringDistrict);
+        if(selectedCensusBlocks == null || selectedCensusBlocks.size() == 0) return null;
         int randomIndex = (int)Math.random() * selectedCensusBlocks.size();
         int iter = 0;
         for(CensusBlock cB : selectedCensusBlocks) {
