@@ -93,6 +93,7 @@ public class DistrictingPlan implements Serializable {
 //            }
 //        }
 //        return largestDistrict;
+        if(districts.size() == 0) return null;
         return districts.get((int)(Math.random() * districts.size()));
     }
 

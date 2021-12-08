@@ -147,6 +147,7 @@ public class District implements Serializable {
 //            }
 //        }
 //        return smallestDistrict;
+        if(adjacentDistricts.size() == 0) return null;
         return adjacentDistricts.get((int)Math.random() * adjacentDistricts.size());
     }
 

@@ -91,13 +91,13 @@ public class AlgorithmService {
 
     private boolean isValidMove(DistrictingPlanStatistics originalDistrictingPlanStatistics, DistrictingPlanStatistics updatedDistrictingPlanStatistics) {
         if(districtService.getPopulationMeasure() == PopulationMeasure.TOTAL) {
-            return (updatedDistrictingPlanStatistics.getTotalPopulationScore() < originalDistrictingPlanStatistics.getTotalPopulationScore());
+            return (updatedDistrictingPlanStatistics.getTotalPopulationScore() <= originalDistrictingPlanStatistics.getTotalPopulationScore());
         }
         else if(districtService.getPopulationMeasure() == PopulationMeasure.CVAP) {
-            return (updatedDistrictingPlanStatistics.getCvapPopulationScore() < originalDistrictingPlanStatistics.getCvapPopulationScore());
+            return (updatedDistrictingPlanStatistics.getCvapPopulationScore() <= originalDistrictingPlanStatistics.getCvapPopulationScore());
         }
         else if(districtService.getPopulationMeasure() == PopulationMeasure.VAP) {
-            return (updatedDistrictingPlanStatistics.getVapPopulationScore() < originalDistrictingPlanStatistics.getVapPopulationScore());
+            return (updatedDistrictingPlanStatistics.getVapPopulationScore() <= originalDistrictingPlanStatistics.getVapPopulationScore());
         }
 
         return false;
