@@ -73,14 +73,25 @@ public class AlgorithmService {
             if(censusBlockToMove == null) continue;
             currentDistrictingPlan.makeMove(censusBlockToMove);
             DistrictingPlanStatistics oldDistrictingPlanStatistics = currentDistrictingPlan.getDistrictingPlanStatistics().deepClone();
-            this.currentDistrictingPlanStatistics = oldDistrictingPlanStatistics;
+
             currentDistrictingPlan.recalculateMeasures();
+
+            //Updating current districting Plan Statistics
+            if(districtService.getPopulationMeasure() == PopulationMeasure.TOTAL && currentDistrictingPlan.getDistrictingPlanStatistics().getTotalPopulationScore() < oldDistrictingPlanStatistics.getTotalPopulationScore()) {
+                this.currentDistrictingPlanStatistics = currentDistrictingPlan.getDistrictingPlanStatistics();
+            }
+            else if(districtService.getPopulationMeasure() == PopulationMeasure.CVAP && currentDistrictingPlan.getDistrictingPlanStatistics().getCvapPopulationScore() < oldDistrictingPlanStatistics.getCvapPopulationScore()) {
+                this.currentDistrictingPlanStatistics = currentDistrictingPlan.getDistrictingPlanStatistics();
+            }
+            else if(districtService.getPopulationMeasure() == PopulationMeasure.VAP && currentDistrictingPlan.getDistrictingPlanStatistics().getVapPopulationScore() < oldDistrictingPlanStatistics.getVapPopulationScore()) {
+                this.currentDistrictingPlanStatistics = currentDistrictingPlan.getDistrictingPlanStatistics();
+            }
+
             if (!isValidMove(oldDistrictingPlanStatistics, currentDistrictingPlan.getDistrictingPlanStatistics())) {
                 currentDistrictingPlan.makeMove(censusBlockToMove);
                 currentDistrictingPlan.setDistrictingPlanStatistics(oldDistrictingPlanStatistics);
             }
             else {
-                this.currentDistrictingPlanStatistics = currentDistrictingPlan.getDistrictingPlanStatistics();
                 censusBlocksMoved.add(censusBlockToMove);
             }
         }
@@ -117,10 +128,7 @@ public class AlgorithmService {
     }
 
     public DistrictingPlanStatistics getCurrentDistrictingStatistics() {
-        if(this.currentDistrictingPlanStatistics != null) {
-            return this.currentDistrictingPlanStatistics;
-        }
-        return districtService.getCurrentDistrictingPlan().getDistrictingPlanStatistics();
+        return this.currentDistrictingPlanStatistics;
     }
 
     public int getCurrentNumberOfIterations() {
