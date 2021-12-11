@@ -102,7 +102,7 @@ public class DissolvingService {
         }
         jsonObject.put("features", censusBlockArray);
         try {
-            FileWriter file = new FileWriter("preprocessedPrecincts.json");
+            FileWriter file = new FileWriter("preprocessedCensusBlocks.json");
             file.write(jsonObject.toJSONString());
             file.close();
         } catch (Exception e) {
@@ -115,13 +115,13 @@ public class DissolvingService {
         String os = System.getProperty("os.name");
         String[] commands;
         if(os.contains("Windows")){
-            commands = new String[]{"cmd.exe", "/c", "mapshaper -i preprocessedPrecincts.json -dissolve CD " +
+            commands = new String[]{"cmd.exe", "/c", "mapshaper -i preprocessedCensusBlocks.json -dissolve CD " +
                     "sum-fields='TOTAL_TOTAL','TOTAL_WHITE','TOTAL_BLACK','TOTAL_HISPANIC','TOTAL_AMERICANINDIAN'," +
                     "'TOTAL_ASIAN','TOTAL_HAWAIIAN','TOTAL_OTHER','VAP_TOTAL','VAP_WHITE','VAP_BLACK','VAP_HISPANIC'," + "" +
                     "'VAP_AMERICANINDIAN','VAP_ASIAN','VAP_HAWAIIAN','VAP_OTHER','CVAP_TOTAL','CVAP_AMERICANINDIAN','CVAP_ASIAN'," +
                     "'CVAP_BLACK','CVAP_HAWAIIAN','CVAP_WHITE','CVAP_HISPANIC','CVAP_OTHER','DEMOCRAT','REPUBLICAN','OTHER' -o output.json"};
         } else{
-            commands = new String[]{"/bin/bash", "-c", "mapshaper -i preprocessedPrecincts.json -dissolve CD " +
+            commands = new String[]{"/bin/bash", "-c", "mapshaper -i preprocessedCensusBlocks.json -dissolve CD " +
                     "sum-fields='TOTAL_TOTAL','TOTAL_WHITE','TOTAL_BLACK','TOTAL_HISPANIC','TOTAL_AMERICANINDIAN'," +
                     "'TOTAL_ASIAN','TOTAL_HAWAIIAN','TOTAL_OTHER','VAP_TOTAL','VAP_WHITE','VAP_BLACK','VAP_HISPANIC'," + "" +
                     "'VAP_AMERICANINDIAN','VAP_ASIAN','VAP_HAWAIIAN','VAP_OTHER','CVAP_TOTAL','CVAP_AMERICANINDIAN','CVAP_ASIAN'," +
