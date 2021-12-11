@@ -228,7 +228,7 @@ public class DistrictService {
         List<Long> currPops = new ArrayList<>();
         for(int i = 0; i < districts.size(); i++) {
             JSONObject properties = (JSONObject)((JSONObject)(districts.get(i))).get("properties");
-            currPops.add((Long)(properties.get(basis.name())));
+            currPops.add((long)(properties.get(basis.name())));
         }
         Collections.sort(currPops);
         JSONObject jsonObject = new JSONObject();
