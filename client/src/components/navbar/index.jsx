@@ -4,22 +4,89 @@ import {
   Heading,
   Select,
   Stack,
+  Text,
   Button,
   useColorModeValue,
   useBreakpointValue,
 } from '@chakra-ui/react';
+import Multiselect from 'multiselect-react-dropdown';
 import StateSelect from '../StatesSelect';
+import ReactSelect from 'react-select';
+import chroma from 'chroma-js';
 
 const Navbar = ({
   map,
   selectedState,
+  boundaryType,
+  setBoundaryType,
   popMeasure,
   setPopMeasure,
   onReset,
   onSelect,
 }) => {
+  const options = [
+    { value: 'districts', label: 'Districts', color: '#0bba25' },
+    { value: 'precincts', label: 'Precincts', color: '#576dff' },
+    { value: 'counties', label: 'Counties', color: '#530087' },
+  ];
+  const colourStyles = {
+    control: (styles) => ({
+      ...styles,
+      backgroundColor: 'white',
+      width: '375px',
+    }),
+    option: (styles, { data, isDisabled, isFocused, isSelected }) => {
+      const color = chroma(data.color);
+      return {
+        ...styles,
+        backgroundColor: isDisabled
+          ? undefined
+          : isSelected
+          ? data.color
+          : isFocused
+          ? color.alpha(0.1).css()
+          : undefined,
+        color: isDisabled
+          ? '#ccc'
+          : isSelected
+          ? chroma.contrast(color, 'white') > 2
+            ? 'white'
+            : 'black'
+          : data.color,
+        cursor: isDisabled ? 'not-allowed' : 'default',
+
+        ':active': {
+          ...styles[':active'],
+          backgroundColor: !isDisabled
+            ? isSelected
+              ? data.color
+              : color.alpha(0.3).css()
+            : undefined,
+        },
+      };
+    },
+    multiValue: (styles, { data }) => {
+      const color = chroma(data.color);
+      return {
+        ...styles,
+        backgroundColor: color.alpha(0.1).css(),
+      };
+    },
+    multiValueLabel: (styles, { data }) => ({
+      ...styles,
+      color: data.color,
+    }),
+    multiValueRemove: (styles, { data }) => ({
+      ...styles,
+      color: data.color,
+      ':hover': {
+        backgroundColor: data.color,
+        color: 'white',
+      },
+    }),
+  };
   return (
-    <Box h='9vh'>
+    <Box>
       <Flex
         bg={useColorModeValue('white', 'gray.800')}
         color={useColorModeValue('gray.600', 'white')}
@@ -30,6 +97,7 @@ const Navbar = ({
         borderStyle={'solid'}
         borderColor={useColorModeValue('gray.200', 'gray.900')}
         align={'center'}
+        // height='9vh'
       >
         <Flex flex={1} justify={{ base: 'center', md: 'start' }}>
           <Heading
@@ -54,37 +122,43 @@ const Navbar = ({
                 alignItems: 'center',
               }}
             >
-              <Button onClick={onReset}>Reset All</Button>
+              <Button colorScheme='teal' onClick={onReset}>
+                Reset All
+              </Button>
             </div>
           ) : null}
         </Box>
 
-        <Stack flex={1} justify={'flex-end'} direction={'row'} spacing={6}>
-          {/* <Button
-            as={'a'}
-            fontSize={'sm'}
-            fontWeight={400}
-            variant={'link'}
-            href={'#'}
-          >
-            Sign In
-          </Button>
-          <Button
-            display={{ base: 'none', md: 'inline-flex' }}
-            fontSize={'sm'}
-            fontWeight={600}
-            color={'white'}
-            bg={'pink.400'}
-            href={'#'}
-            _hover={{
-              bg: 'pink.300',
+        <Stack flex={10} justify={'flex-end'} direction={'row'} spacing={2}>
+          <Text display='flex' alignItems='center' fontWeight={700}>
+            Boundary Type
+          </Text>
+          <ReactSelect
+            closeMenuOnSelect={false}
+            defaultValue={[options[0]]}
+            isMulti
+            options={options}
+            styles={colourStyles}
+            onChange={(values) => {
+              setBoundaryType(values.map((val) => val.value));
             }}
+          />
+          {/* <Select
+            defaultValue={boundaryType}
+            onChange={(e) => setBoundaryType(e.target.value)}
+            width='20%'
           >
-            Sign Up
-          </Button> */}
+            <option value='counties'>Counties</option>
+            <option value='precincts'>Precincts</option>
+            <option value='districts'>Districts</option>
+          </Select> */}
+          <Text display='flex' alignItems='center' fontWeight={700}>
+            Population Type
+          </Text>
           <Select
             defaultValue={popMeasure}
             onChange={(e) => setPopMeasure(e.target.value)}
+            width='10%'
           >
             <option value='TOTAL'>Total</option>
             <option value='VAP'>VAP</option>

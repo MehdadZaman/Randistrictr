@@ -5,6 +5,8 @@ import {
   TabPanels,
   Tab,
   TabPanel,
+  Button,
+  Box,
   Heading,
 } from '@chakra-ui/react';
 import FilterDistricts from './filter-districts';
@@ -16,17 +18,21 @@ import RunAlgorithm from './run-algorithm';
 
 const TabView = ({
   districtings,
+  activeGeoJSON,
   selectedState,
   popMeasure,
   isDistrictSelected,
   onSelect,
   onRun,
   onStop,
+  currentDistrictingStatistics,
   algorithmStarted,
   algorithmRunning,
   algorithmSummary,
   checkStatus,
+  districtNumberLoading,
   loading,
+  showBoxAndWhiskerPlot,
 }) => {
   const [tabIndex, setTabIndex] = useState(0);
 
@@ -68,45 +74,86 @@ const TabView = ({
   // }, [selectedState]);
 
   return (
-    <Tabs index={tabIndex} onChange={(index) => setTabIndex(index)}>
-      <TabList>
-        {/* <Tab>Filter District</Tab> */}
-        <Tab>Select Districting Plan</Tab>
-        <Tab isDisabled={!isDistrictSelected}>Run Algorithm</Tab>
-      </TabList>
-      <TabPanels style={{ overflowY: 'auto', height: '100%' }}>
-        {/* <TabPanel>
-          <Heading size='md'>Filters for {selectedState} districts</Heading>
-          <FilterDistricts
-            onFilter={() => {
-              setCards(generateDummyCards(6));
-              setTabIndex(1);
-            }}
-          />
-        </TabPanel> */}
-        <TabPanel style={{ overflowY: 'hidden', height: '100%' }}>
-          <Heading size='md'>
-            {districtings.length} redistrictings generated
-          </Heading>
-          <DistrictingPreview
-            cards={districtings}
-            popMeasure={popMeasure}
-            onSelect={onSelect}
-            loading={loading}
-          />
-        </TabPanel>
-        <TabPanel>
-          <RunAlgorithm
-            onRun={onRun}
-            onStop={onStop}
-            algorithmStarted={algorithmStarted}
-            algorithmRunning={algorithmRunning}
-            algorithmSummary={algorithmSummary}
-            checkStatus={checkStatus}
-          />
-        </TabPanel>
-      </TabPanels>
-    </Tabs>
+    <Box p={2}>
+      <Box display='flex' flexDir='row' alignItems='center' mb={5}>
+        <Heading size='md' flex={2}>
+          {districtings.length} redistrictings generated
+        </Heading>
+        <a
+          href={`data:text/json;charset=utf-8,${encodeURIComponent(
+            JSON.stringify(activeGeoJSON)
+          )}`}
+          download='districting.json'
+        >
+          <Button flex={1} fontSize={16}>
+            Export Current GeoJSON
+          </Button>
+        </a>
+      </Box>
+
+      <Box overflowY='scroll' h={375}>
+        <DistrictingPreview
+          cards={districtings}
+          popMeasure={popMeasure}
+          onSelect={onSelect}
+          districtNumberLoading={districtNumberLoading}
+          loading={loading}
+        />
+      </Box>
+      <Box backgroundColor='#f5fff5' borderRadius={10} mt={5} p={2} h={450}>
+        <Heading size='md'>Algorithm Panel</Heading>
+        <RunAlgorithm
+          onRun={onRun}
+          onStop={onStop}
+          popMeasure={popMeasure}
+          currentDistrictingStatistics={currentDistrictingStatistics}
+          algorithmStarted={algorithmStarted}
+          algorithmRunning={algorithmRunning}
+          algorithmSummary={algorithmSummary}
+          checkStatus={checkStatus}
+          showBoxAndWhiskerPlot={showBoxAndWhiskerPlot}
+        />
+      </Box>
+    </Box>
+    // <Tabs index={tabIndex} onChange={(index) => setTabIndex(index)}>
+    //   <TabList>
+    //     {/* <Tab>Filter District</Tab> */}
+    //     <Tab>Select Districting Plan</Tab>
+    //     <Tab isDisabled={!isDistrictSelected}>Run Algorithm</Tab>
+    //   </TabList>
+    //   <TabPanels style={{ overflowY: 'auto', height: '100%' }}>
+    //     {/* <TabPanel>
+    //       <Heading size='md'>Filters for {selectedState} districts</Heading>
+    //       <FilterDistricts
+    //         onFilter={() => {
+    //           setCards(generateDummyCards(6));
+    //           setTabIndex(1);
+    //         }}
+    //       />
+    //     </TabPanel> */}
+    //     <TabPanel style={{ overflowY: 'hidden', height: '100%', padding: 5 }}>
+    //       <Heading size='md'>
+    //         {districtings.length} redistrictings generated
+    //       </Heading>
+    //       <DistrictingPreview
+    //         cards={districtings}
+    //         popMeasure={popMeasure}
+    //         onSelect={onSelect}
+    //         loading={loading}
+    //       />
+    //     </TabPanel>
+    //     <TabPanel>
+    //       <RunAlgorithm
+    //         onRun={onRun}
+    //         onStop={onStop}
+    //         algorithmStarted={algorithmStarted}
+    //         algorithmRunning={algorithmRunning}
+    //         algorithmSummary={algorithmSummary}
+    //         checkStatus={checkStatus}
+    //       />
+    //     </TabPanel>
+    //   </TabPanels>
+    // </Tabs>
   );
 };
 

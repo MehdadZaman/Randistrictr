@@ -27,6 +27,7 @@ import {
 } from '@chakra-ui/react';
 import numberWithCommas from '../utils/numberWithCommas';
 import PieChart from './PieChart';
+import ReactLoading from 'react-loading';
 
 const DistrictingDetails = ({
   data,
@@ -40,8 +41,7 @@ const DistrictingDetails = ({
 }) => {
   const [tabIndex, setTabIndex] = useState(0);
 
-  console.log('DATA', data);
-  function addAccordianItems() {
+  function addAccordionItems() {
     const districts = data.features;
     let retVal = [];
     for (let i = 1; i <= districts.length; i++) {
@@ -83,7 +83,7 @@ const DistrictingDetails = ({
           color: '#64DFDF',
         },
       ];
-      console.log(districtData);
+      console.log(district.properties);
       retVal.push(
         <AccordionItem key={i}>
           <h2>
@@ -96,35 +96,78 @@ const DistrictingDetails = ({
           </h2>
           <AccordionPanel paddingX={0} pb={4}>
             <Heading size='md' textAlign='center'>
-              Population Percentage Per Race
+              Population Per Race
             </Heading>
             <PieChart data={districtData} />
-            <Heading size='md' mb={5} textAlign='center'>
-              Population Percentage Per Political Party
+            <Heading size='md' mb={3} textAlign='center'>
+              Population Per Political Party
             </Heading>
             <Table
               style={{
                 paddingLeft: '0vh',
                 paddingRight: '0vh',
-                paddingTop: '2vh',
+                paddingTop: '1vh',
               }}
               variant='simple'
               size='sm'
             >
               <Thead>
                 <Tr style={{ textAlign: 'center' }}>
-                  <Th>Political Party</Th>
-                  <Th>Percentage of Votes</Th>
+                  <Td style={{ fontWeight: 600 }}>Political Party</Td>
+                  <Td style={{ fontWeight: 600 }}>Number of Votes</Td>
+                  <Td style={{ fontWeight: 600 }}>Percentage</Td>
                 </Tr>
               </Thead>
               <Tbody>
                 <Tr>
                   <Td>Democratic</Td>
-                  <Td>{district.properties.DEMOCRAT}</Td>
+                  <Td>
+                    {numberWithCommas(district.properties.DEMOCRAT.toFixed(0))}
+                  </Td>
+                  <Td>
+                    {(
+                      (district.properties.DEMOCRAT /
+                        (district.properties.DEMOCRAT +
+                          district.properties.REPUBLICAN +
+                          district.properties.OTHER)) *
+                      100
+                    ).toFixed(0)}
+                    %
+                  </Td>
                 </Tr>
                 <Tr>
                   <Td>Republican</Td>
-                  <Td>{district.properties.REPUBLICAN}</Td>
+                  <Td>
+                    {numberWithCommas(
+                      district.properties.REPUBLICAN.toFixed(0)
+                    )}
+                  </Td>
+                  <Td>
+                    {(
+                      (district.properties.REPUBLICAN /
+                        (district.properties.DEMOCRAT +
+                          district.properties.REPUBLICAN +
+                          district.properties.OTHER)) *
+                      100
+                    ).toFixed(0)}
+                    %
+                  </Td>
+                </Tr>
+                <Tr>
+                  <Td>Other</Td>
+                  <Td>
+                    {numberWithCommas(district.properties.OTHER.toFixed(0))}
+                  </Td>
+                  <Td>
+                    {(
+                      (district.properties.OTHER /
+                        (district.properties.DEMOCRAT +
+                          district.properties.REPUBLICAN +
+                          district.properties.OTHER)) *
+                      100
+                    ).toFixed(0)}
+                    %
+                  </Td>
                 </Tr>
               </Tbody>
             </Table>
@@ -172,14 +215,23 @@ const DistrictingDetails = ({
     console.log(districtingPlanStatistics);
     console.log(enactedDistrictingPlanStatistics);
 
+    const {
+      numDemocraticCongressionalDistricts,
+      numRepublicanCongressionalDistricts,
+    } = districtingPlanStatistics;
+    const {
+      numDemocraticCongressionalDistricts:
+        enactedNumDemocraticCongressionalDistricts,
+      numRepublicanCongressionalDistricts:
+        enactedNumRepublicanCongressionalDistricts,
+    } = enactedDistrictingPlanStatistics;
+
     const enactedAbsoluteDifferenceInPopulation =
       enactedDistrictingPlanStatistics[
         `${popMeasure.toLowerCase()}AbsoluteDifferenceInPopulation`
       ];
-    const enactedEfficiencyGap =
-      enactedDistrictingPlanStatistics[
-        `${popMeasure.toLowerCase()}EfficiencyGap`
-      ];
+    const enactedEfficiencyGap = enactedDistrictingPlanStatistics.efficiencyGap;
+
     const enactedNumOpportunityDistricts =
       enactedDistrictingPlanStatistics[
         `${popMeasure.toLowerCase()}NumOpportunityDistricts`
@@ -197,8 +249,8 @@ const DistrictingDetails = ({
       districtingPlanStatistics[
         `${popMeasure.toLowerCase()}AbsoluteDifferenceInPopulation`
       ];
-    const efficiencyGap =
-      districtingPlanStatistics[`${popMeasure.toLowerCase()}EfficiencyGap`];
+    const efficiencyGap = districtingPlanStatistics.efficiencyGap;
+
     const numOpportunityDistricts =
       districtingPlanStatistics[
         `${popMeasure.toLowerCase()}NumOpportunityDistricts`
@@ -213,45 +265,45 @@ const DistrictingDetails = ({
     return (
       <Table variant='simple' size='sm'>
         <TableCaption>
-          Simulated Redistricting statistics vs enacted districting statistics
+          simulated redistricting statistics vs enacted districting statistics
         </TableCaption>
         <Thead>
           <Tr>
-            <Th></Th>
-            <Th>Simulated redistricting</Th>
-            <Th>Enacted districting</Th>
+            <Td style={{ fontWeight: 600 }}></Td>
+            <Td style={{ fontWeight: 600 }}>Simulated redistricting</Td>
+            <Td style={{ fontWeight: 600 }}>Enacted districting</Td>
           </Tr>
         </Thead>
         <Tbody>
           <Tr>
-            <Td>Majority Minority Districts</Td>
-            <Td isNumeric>{numOpportunityDistricts}</Td>
-            <Td isNumeric>{enactedNumOpportunityDistricts}</Td>
-          </Tr>
-
-          <Tr>
-            <Td>Difference between least and most populous districts</Td>
-            <Td isNumeric>{absoluteDifferenceInPopulation}%</Td>
-            <Td isNumeric>{enactedAbsoluteDifferenceInPopulation}%</Td>
-          </Tr>
-
-          <Tr>
             <Td>Efficiency Gap Measure</Td>
-            <Td isNumeric>{efficiencyGap}</Td>
-            <Td isNumeric>{enactedEfficiencyGap}</Td>
+            <Td>{efficiencyGap.toFixed(4)}%</Td>
+            <Td>{enactedEfficiencyGap.toFixed(4)}%</Td>
           </Tr>
-
           <Tr>
             <Td>Population Score</Td>
-            <Td isNumeric>{populationScore}</Td>
-            <Td isNumeric>{enactedPopulationScore}</Td>
+            <Td>{populationScore.toFixed(4)}%</Td>
+            <Td>{enactedPopulationScore.toFixed(4)}%</Td>
           </Tr>
-
           <Tr>
+            <Td># of Democratic Congressional Districts</Td>
+            <Td>{numberWithCommas(numDemocraticCongressionalDistricts)}</Td>
+            <Td>{numberWithCommas(numRepublicanCongressionalDistricts)}</Td>
+          </Tr>
+          <Tr>
+            <Td># of Republican Congressional Districts</Td>
+            <Td>
+              {numberWithCommas(enactedNumDemocraticCongressionalDistricts)}
+            </Td>
+            <Td>
+              {numberWithCommas(enactedNumRepublicanCongressionalDistricts)}
+            </Td>
+          </Tr>
+          {/* <Tr>
             <Td>Population Score</Td>
             <Td isNumeric>{objectiveFunctionScore}</Td>
             <Td isNumeric>{enactedObjectiveFunctionScore}</Td>
-          </Tr>
+          </Tr> */}
         </Tbody>
       </Table>
     );
@@ -267,6 +319,7 @@ const DistrictingDetails = ({
     republicanVoters,
     otherVoters,
   } = statePopulation;
+  console.log(statePopulation);
 
   const populationData = [
     {
@@ -308,9 +361,10 @@ const DistrictingDetails = ({
   ];
 
   console.log(populationData);
+  console.log(selectedState);
   return (
     <Box p={1}>
-      {selectedState ? (
+      {selectedState && enactedDistrictingPlanStatistics ? (
         <Box>
           <Stack spacing={0.25} m={2}>
             {' '}
@@ -318,23 +372,29 @@ const DistrictingDetails = ({
             <Text fontSize='4xl' as='b'>
               {selectedState}
             </Text>
-            <Text fontSize='1xl' as='i'>
-              Number of Congressional Districts: 8
+            <Text fontSize='1xl'>
+              Number of Congressional Districts:{' '}
+              {enactedDistrictingPlanStatistics.numCongressionalDistricts}
             </Text>
-            <Text fontSize='1xl' as='i'>
+            <Text fontSize='1xl'>
               Population:{' '}
               {statePopulation ? numberWithCommas(totalTotalPopulation) : null}
             </Text>
-            <Button onClick={showBoxAndWhiskerPlot}>
-              Show Box and Whisker Plot
-            </Button>
           </Stack>
-
           <Tabs index={tabIndex} onChange={(index) => setTabIndex(index)}>
             <TabList>
               <Tab>Population</Tab>
               <Tab isDisabled={!isDistrictSelected}>Districting</Tab>
-              <Tab isDisabled={!isDistrictSelected}>Statistics</Tab>
+              <Tab
+                isDisabled={
+                  !(
+                    districtingPlanStatistics &&
+                    enactedDistrictingPlanStatistics
+                  )
+                }
+              >
+                Statistics
+              </Tab>
             </TabList>
             <TabPanels>
               <TabPanel>
@@ -342,43 +402,68 @@ const DistrictingDetails = ({
                   Population Per Race
                 </Heading>
                 <PieChart data={populationData} />
-                <Heading size='md' mb={5} textAlign='center'>
+                <Heading size='md' mb={3} textAlign='center'>
                   Population Per Political Party
                 </Heading>
                 <Table
                   style={{
                     paddingLeft: '0vh',
                     paddingRight: '0vh',
-                    paddingTop: '2vh',
+                    paddingTop: '1vh',
                   }}
                   variant='simple'
                   size='sm'
                 >
                   <Thead>
                     <Tr style={{ textAlign: 'center' }}>
-                      <Th>Political Party</Th>
-                      <Th>Percentage of Votes</Th>
+                      <Td style={{ fontWeight: 600 }}>Political Party</Td>
+                      <Td style={{ fontWeight: 600 }}>Number of Votes</Td>
+                      <Td style={{ fontWeight: 600 }}>Percentage</Td>
                     </Tr>
                   </Thead>
                   <Tbody>
                     <Tr>
                       <Td>Democratic</Td>
-                      <Td>{democratVoters}</Td>
+                      <Td>{numberWithCommas(democratVoters.toFixed(0))}</Td>
+                      <Td>
+                        {(
+                          (democratVoters /
+                            (democratVoters + republicanVoters + otherVoters)) *
+                          100
+                        ).toFixed(0)}
+                        %
+                      </Td>
                     </Tr>
                     <Tr>
                       <Td>Republican</Td>
-                      <Td>{republicanVoters}</Td>
+                      <Td>{numberWithCommas(republicanVoters.toFixed(0))}</Td>
+                      <Td>
+                        {(
+                          (republicanVoters /
+                            (democratVoters + republicanVoters + otherVoters)) *
+                          100
+                        ).toFixed(0)}
+                        %
+                      </Td>
                     </Tr>
                     <Tr>
                       <Td>Other</Td>
-                      <Td>{otherVoters}</Td>
+                      <Td>{numberWithCommas(otherVoters.toFixed(0))}</Td>
+                      <Td>
+                        {(
+                          (otherVoters /
+                            (democratVoters + republicanVoters + otherVoters)) *
+                          100
+                        ).toFixed(0)}
+                        %
+                      </Td>
                     </Tr>
                   </Tbody>
                 </Table>
               </TabPanel>
               <TabPanel>
-                <Accordion>
-                  {data && data.features ? addAccordianItems() : null}
+                <Accordion allowToggle>
+                  {data && data.features ? addAccordionItems() : null}
                 </Accordion>
               </TabPanel>
               <TabPanel>
@@ -391,16 +476,17 @@ const DistrictingDetails = ({
           </Tabs>
         </Box>
       ) : (
-        <h1
-          style={{
-            display: 'flex',
-            justifyContent: 'center',
-            fontSize: '3vh',
-            transform: 'translateY(350%)',
-          }}
-        >
-          Please select a state to continue
-        </h1>
+        <ReactLoading type='spokes' color='#000' />
+        // <h1
+        //   style={{
+        //     display: 'flex',
+        //     justifyContent: 'center',
+        //     fontSize: '3vh',
+        //     transform: 'translateY(350%)',
+        //   }}
+        // >
+        //   Please select a state to continue
+        // </h1>
       )}
     </Box>
   );

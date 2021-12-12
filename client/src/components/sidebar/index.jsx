@@ -3,6 +3,7 @@ import './index.css';
 
 const Sidebar = ({
   map,
+  disabled,
   expanded,
   onToggle,
   position,
@@ -14,6 +15,7 @@ const Sidebar = ({
     left: expanded ? width : '15px',
     transition: 'left 0.5s',
     borderRadius: '0 4px 4px 0',
+    cursor: disabled ? 'not-allowed' : 'pointer',
   };
   let expandIcon = '<';
   let collapseIcon = '>';
@@ -32,6 +34,7 @@ const Sidebar = ({
     expandIcon = '>';
     collapseIcon = '<';
   }
+  console.log(disabled);
   return (
     <>
       <aside
@@ -39,12 +42,25 @@ const Sidebar = ({
         style={{ ...positionStyle, width: expanded ? width : '15px' }}
       >
         <div className='sidebarWrapper'>
-          <div style={{ display: expanded ? 'block' : 'none', padding: 10 }}>
+          <div
+            style={{
+              display: expanded ? 'block' : 'none',
+              padding: 5,
+              // height: '100%',
+              // justifyContent: 'center',
+              // alignItems: 'center',
+            }}
+          >
             {children}
           </div>
         </div>
       </aside>
-      <button className='toggleButton' style={buttonStyle} onClick={onToggle}>
+      <button
+        className='toggleButton'
+        style={buttonStyle}
+        onClick={onToggle}
+        disabled={disabled}
+      >
         {expanded ? expandIcon : collapseIcon}
       </button>
     </>

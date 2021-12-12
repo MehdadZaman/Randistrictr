@@ -24,11 +24,18 @@ import Sidebar from './sidebar';
 import Position from './Position';
 import TabView from './TabView';
 import DistrictingDetails from './DistrictingDetails';
+import ReactLoading from 'react-loading';
 // JSON
 import statesdata from '../json/states.json';
 import MarylandCongressionalDistricts from '../json/congressional-districts/maryland_congressional_districts.json';
 import MichiganCongressionalDistricts from '../json/congressional-districts/michigan_congressional_districts.json';
 import UtahCongressionalDistricts from '../json/congressional-districts/utah_congressional_districts.json';
+
+import MarylandCountyBoundaries from '../json/maryland/Maryland_county_boundaries.json';
+import MarylandPrecinctBoundaries from '../json/maryland/Maryland_precinct_boundaries.json';
+import UtahCountyBoundaries from '../json/utah/Utah_county_boundaries.json';
+import UtahPrecinctBoundaries from '../json/utah/Utah_precinct_boundaries.json';
+
 import MarylandVotingDistricts from '../json/voting districts/maryland_voting_simplified.json';
 import MichiganVotingDistricts from '../json/voting districts/michigan_voting_simplified.json';
 import UtahVotingDistricts from '../json/voting districts/utah_voting_simplified.json';
@@ -85,11 +92,16 @@ const Map = () => {
   const [algorithmStarted, setAlgorithmStarted] = useState(false);
   const [algorithmRunning, setAlgorithmRunning] = useState(false);
   const [algorithmSummary, setAlgorithmSummary] = useState();
+  const [boxAndWhiskerLoading, setBoxAndWhiskerLoading] = useState(false);
   const [boxAndWhiskerPlotOpen, setBoxAndWhiskerPlotOpen] = useState(false);
   const [boxAndWhiskerData, setBoxAndWhiskerData] = useState(null);
-  const [boxAndWhiskerPlotOption, setBoxAndWhiskerPlotOption] = useState(0);
+  const [boxAndWhiskerPlotOption, setBoxAndWhiskerPlotOption] = useState(2);
+  const [districtNumberLoading, setDistrictNumberLoading] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [currentDistrictingStatistics, setCurrentDistrictingStatistics] =
+    useState(null);
   const [statePopulation, setStatePopulation] = useState(null);
+  const [boundaryType, setBoundaryType] = useState(['districts']);
 
   const displayMap = useMemo(() => {
     let mapRef;
@@ -167,7 +179,7 @@ const Map = () => {
     return (
       <MapContainer
         className='sidebar-map'
-        style={{ height: '91vh', zIndex: 0, minHeight: 390, minWidth: 768 }}
+        style={{ height: '94vh', zIndex: 0, minHeight: 390, minWidth: 768 }}
         center={center}
         zoom={zoom}
         scrollWheelZoom={false}
@@ -190,22 +202,46 @@ const Map = () => {
           <GeoJSON data={statesdata} onEachFeature={onEachFeature} />
         </Pane>
         <Pane name='congressional' style={{ zIndex: 410 }}>
-          {activeGeoJSON ? (
+          {boundaryType.includes('districts') && activeGeoJSON ? (
             <GeoJSON
               data={activeGeoJSON}
-              style={{ color: 'green', fillOpacity: 0.2, weight: 3 }}
+              style={{ color: '#0bba25', fillOpacity: 0, weight: 3 }}
             />
           ) : null}
         </Pane>
-        <Pane name='voting' style={{ zIndex: 400 }}>
+        {/* <Pane name='voting' style={{ zIndex: 400 }}>
           {votingGeoJSON ? (
             <GeoJSON
               data={votingGeoJSON}
               style={{ color: '#3388ff', fillOpacity: 0.2, weight: 1 }}
             />
           ) : null}
-        </Pane>
+        </Pane> */}
 
+        {boundaryType.includes('counties') && selectedState === 'Maryland' ? (
+          <GeoJSON
+            data={MarylandCountyBoundaries}
+            style={{ color: '#530087', fillOpacity: 0, weight: 2 }}
+          />
+        ) : null}
+        {boundaryType.includes('counties') && selectedState === 'Utah' ? (
+          <GeoJSON
+            data={UtahCountyBoundaries}
+            style={{ color: '#530087', fillOpacity: 0, weight: 2 }}
+          />
+        ) : null}
+        {boundaryType.includes('precincts') && selectedState === 'Maryland' ? (
+          <GeoJSON
+            data={MarylandPrecinctBoundaries}
+            style={{ color: '#576dff', fillOpacity: 0, weight: 1 }}
+          />
+        ) : null}
+        {boundaryType.includes('precincts') && selectedState === 'Utah' ? (
+          <GeoJSON
+            data={UtahPrecinctBoundaries}
+            style={{ color: '#576dff', fillOpacity: 0, weight: 1 }}
+          />
+        ) : null}
         {/* <GeoJSON data={MaryLandCongressionalDistricts} />
         <GeoJSON data={MichiganCongressionalDistricts} />
         <GeoJSON data={UtahCongressionalDistricts} />
@@ -215,7 +251,7 @@ const Map = () => {
         <ZoomControl position='bottomright' />
       </MapContainer>
     );
-  }, [map, selectedState, activeGeoJSON, votingGeoJSON]);
+  }, [map, selectedState, activeGeoJSON, votingGeoJSON, boundaryType]);
 
   const handleSelectState = async (stateName) => {
     try {
@@ -239,8 +275,8 @@ const Map = () => {
       setEnactedDistrictingPlanStatistics(
         enactedDistrictingPlanStatisticsRes.data
       );
-      // setActiveGeoJSON(enactedDistrictingRes.data);
-      setDistrictingPlans(allDistrictingPlanStatisticsRes.data);
+      setActiveGeoJSON(enactedDistrictingRes.data);
+      setDistrictings(allDistrictingPlanStatisticsRes.data);
     } catch (e) {
       console.log(e);
     }
@@ -250,6 +286,7 @@ const Map = () => {
     try {
       console.log(redistrictNumber);
       setLoading(true);
+      setDistrictNumberLoading(redistrictNumber);
       const res = await apiCaller.get('/state/districting', {
         params: { redistrictNumber },
         timeout: 600000,
@@ -257,6 +294,7 @@ const Map = () => {
       const districtPlanStatsRes = await apiCaller.get(
         '/state/districting/districtPlanStatistics'
       );
+      setDistrictNumberLoading(null);
       setLoading(false);
       setDistrictingPlanStatistics(districtPlanStatsRes.data);
       setActiveGeoJSON(res.data);
@@ -272,21 +310,22 @@ const Map = () => {
     setRightSidebarExpanded(false);
     setAlgorithmStarted(false);
     setAlgorithmSummary(null);
-
+    setEnactedDistrictingPlanStatistics(null);
+    setDistrictingPlanStatistics(null);
+    setCurrentDistrictingStatistics(null);
     setSelectedState('');
     map.fitBounds(bounds);
   };
 
-  const handleRunAlgorithm = async (
-    minOpportunity,
-    maxOpportunity,
-    maxPopDiff
-  ) => {
+  const handleRunAlgorithm = async (maxPopDiff) => {
     try {
+      setAlgorithmSummary(null);
+      const currentDistrictingStatisticsRes = await apiCaller.get(
+        '/algorithm/getCurrentDistrictingStatistics'
+      );
+      setCurrentDistrictingStatistics(currentDistrictingStatisticsRes.data);
       const res = await apiCaller.post(
-        `/algorithm/run?maxPopDiff=${parseFloat(
-          maxPopDiff
-        )}&minOpportunity=${minOpportunity}&maxOpportunity=${maxOpportunity}`
+        `/algorithm/run?maxPopDiff=${parseFloat(maxPopDiff)}`
       );
       if (res.data === 'Success') {
         // Start timer to check server algorithm status periodically
@@ -302,21 +341,22 @@ const Map = () => {
   const checkStatus = async () => {
     const statusRes = await apiCaller.get('/algorithm/getAlgorithmStatus');
     if (statusRes.data === 'Complete') {
-      const currentDistrictingPlanRes = await apiCaller.get(
-        '/algorithm/getCurrentDistrictingPlan'
-      );
+      setAlgorithmRunning(false);
       const numIterationsRes = await apiCaller.get(
         '/algorithm/getCurrentNumberOfIterations'
       );
       const currentDistrictingStatisticsRes = await apiCaller.get(
         '/algorithm/getCurrentDistrictingStatistics'
       );
-      setActiveGeoJSON(currentDistrictingPlanRes.data);
       setAlgorithmSummary({
         numIterations: numIterationsRes.data,
         currentDistrictingStatisticsRes: currentDistrictingStatisticsRes.data,
       });
-      setAlgorithmRunning(false);
+      const currentDistrictingPlanRes = await apiCaller.get(
+        '/algorithm/getCurrentDistrictingPlan',
+        { timeout: 600000 }
+      );
+      setActiveGeoJSON(currentDistrictingPlanRes.data);
     } else {
       try {
         const numIterationsRes = await apiCaller.get(
@@ -367,10 +407,13 @@ const Map = () => {
   };
 
   const fetchBoxAndWhiskerData = async (basis) => {
+    setBoxAndWhiskerLoading(true);
     const res = await apiCaller.get('/state/getBoxAndWhisker', {
       params: { basis },
+      timeout: 600000,
     });
     setBoxAndWhiskerData(res.data);
+    setBoxAndWhiskerLoading(false);
   };
 
   const setDistrictingPlans = (districtingPlanStatistics) => {
@@ -387,35 +430,28 @@ const Map = () => {
     }
   };
 
-  const boxAndWhiskerPlotOptions = [
-    'TOTAL_TOTAL',
-    'TOTAL_WHITE',
-    'TOTAL_BLACK',
-    'TOTAL_HISPANIC',
-    'TOTAL_AMERICANINDIAN',
-    'TOTAL_ASIAN',
-    'TOTAL_HAWAIIAN',
-    'TOTAL_OTHER',
-    'VAP_TOTAL',
-    'VAP_WHITE',
-    'VAP_BLACK',
-    'VAP_HISPANIC',
-    'VAP_AMERICANINDIAN',
-    'VAP_ASIAN',
-    'VAP_HAWAIIAN',
-    'VAP_OTHER',
-    'CVAP_TOTAL',
-    'CVAP_AMERICANINDIAN',
-    'CVAP_ASIAN',
-    'CVAP_BLACK',
-    'CVAP_HAIWAIIAN',
-    'CVAP_WHITE',
-    'CVAP_HISPANIC',
-    'CVAP_OTHER',
-    'DEMOCRAT',
-    'REPUBLICAN',
-    'OTHER',
-  ];
+  const basisOptions = {
+    Black: 2,
+    'VAP Black': 10,
+    'CVAP Black': 18,
+    Hispanic: 3,
+    'VAP Hispanic': 11,
+    'CVAP Hispanic': 19,
+    'American Indian': 4,
+    'VAP American Indian': 12,
+    'CVAP American Indian': 20,
+    Asian: 5,
+    'VAP Asian': 13,
+    'CVAP Asian': 21,
+    Hawaiian: 6,
+    'VAP Hawaiian': 14,
+    'CVAP Hawaiian': 22,
+    Other: 7,
+    'VAP Other': 15,
+    'CVAP Other': 23,
+    Democrat: 24,
+    Republican: 25,
+  };
 
   return (
     <>
@@ -423,6 +459,8 @@ const Map = () => {
         <Navbar
           map={map}
           selectedState={selectedState}
+          boundaryType={boundaryType}
+          setBoundaryType={setBoundaryType}
           popMeasure={popMeasure}
           setPopMeasure={handlePopMeasureChange}
           onReset={handleReset}
@@ -441,31 +479,39 @@ const Map = () => {
         />
       ) : null}
       <div style={{ position: 'relative', overflow: 'hidden' }}>
-        {map ? (
+        {map && !!selectedState ? (
           <Sidebar
+            disabled={!!!selectedState}
             expanded={leftSidebarExpanded}
             onToggle={() => setLeftSidebarExpanded(!leftSidebarExpanded)}
             map={map}
+            width={600}
           >
             {selectedState ? (
               <TabView
                 districtings={districtings}
+                activeGeoJSON={activeGeoJSON}
                 selectedState={selectedState}
                 popMeasure={popMeasure}
                 onSelect={handleSelect}
                 onRun={handleRunAlgorithm}
                 onStop={handleStopAlgorithm}
+                currentDistrictingStatistics={currentDistrictingStatistics}
                 algorithmStarted={algorithmStarted}
                 algorithmRunning={algorithmRunning}
                 algorithmSummary={algorithmSummary}
                 checkStatus={checkStatus}
                 isDistrictSelected={!!activeGeoJSON}
+                districtNumberLoading={districtNumberLoading}
                 loading={loading}
+                showBoxAndWhiskerPlot={handleShowBoxAndWhiskerPlot}
               />
             ) : (
-              <h1 style={{ fontSize: '3vh', transform: 'translateY(350%)' }}>
-                Please select a state to continue
-              </h1>
+              <ReactLoading type='spokes' color='#000' />
+
+              // <h1 style={{ fontSize: '3vh', transform: 'translateY(350%)' }}>
+              //   Please select a state to continue
+              // </h1>
             )}
           </Sidebar>
         ) : null}
@@ -490,16 +536,20 @@ const Map = () => {
                   setBoxAndWhiskerPlotOption(e.target.value);
                 }}
               >
-                {boxAndWhiskerPlotOptions.map((option, i) => (
-                  <option value={i}>{option}</option>
+                {Object.keys(basisOptions).map((option) => (
+                  <option value={basisOptions[option]}>{option}</option>
                 ))}
               </Select>
-              <BoxAndWhiskerPlot data={boxAndWhiskerData} />
+              <BoxAndWhiskerPlot
+                data={boxAndWhiskerData}
+                loading={boxAndWhiskerLoading}
+              />
             </ModalBody>
           </ModalContent>
         </Modal>
-        {map ? (
+        {map && !!selectedState ? (
           <Sidebar
+            disabled={!!!selectedState}
             expanded={rightSidebarExpanded}
             onToggle={() => setRightSidebarExpanded(!rightSidebarExpanded)}
             map={map}

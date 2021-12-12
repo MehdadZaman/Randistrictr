@@ -13,8 +13,21 @@ import {
   PopoverCloseButton,
 } from '@chakra-ui/react';
 
-const DistrictingCardPopover = ({ card, popMeasure, onSelect, loading }) => {
+const DistrictingCardPopover = ({
+  card,
+  popMeasure,
+  onSelect,
+  districtNumberLoading,
+  loading,
+}) => {
   const initialFocusRef = useRef();
+  const {
+    redistrictNumber,
+    efficiencyGap,
+    numDemocraticCongressionalDistricts,
+    numRepublicanCongressionalDistricts,
+  } = card;
+  const populationScore = card[`${popMeasure.toLowerCase()}PopulationScore`];
 
   return (
     <Popover
@@ -22,7 +35,7 @@ const DistrictingCardPopover = ({ card, popMeasure, onSelect, loading }) => {
       placement='right'
       offset={[5, 0]} //i hate styling
       trigger='hover'
-      isOpen={false}
+      // isOpen={false}
     >
       <PopoverTrigger>
         <Box d='flex' justifyContent='center' w='95%'>
@@ -30,6 +43,7 @@ const DistrictingCardPopover = ({ card, popMeasure, onSelect, loading }) => {
             property={card}
             popMeasure={popMeasure}
             onSelect={onSelect}
+            districtNumberLoading={districtNumberLoading}
             loading={loading}
           />
         </Box>
@@ -40,34 +54,41 @@ const DistrictingCardPopover = ({ card, popMeasure, onSelect, loading }) => {
         borderColor='rgba(35, 55, 75, 0.8)'
       >
         <PopoverHeader pt={4} fontWeight='bold' border='0'>
-          Random Districting 1
+          Districting {redistrictNumber}
         </PopoverHeader>
         <PopoverCloseButton />
         <PopoverBody fontSize='sm'>
-          {/* <Text>
-            {card.minorityMajorityDistrict} Majority Minority districts at{' '}
-            {card.threshold}% threshold
+          <Text>Population Score: {populationScore.toFixed(4)}%</Text>
+          <Text>Efficiency Gap Measure: {efficiencyGap}</Text>
+          <Text>
+            Number of Democratic Congressional Districts:{' '}
+            {numDemocraticCongressionalDistricts}
           </Text>
-          <Text>Maximum Population Range: {card.maxPopulationRange}</Text> */}
-          <Text>Mattingly Population Score: {card.populationScore}</Text>
-          <Text>Efficiency Gap Measure: {card.efficiencyGap}</Text>
-          {/* <Text>Polsby Popper Score: {card.polsbyPopperScore}</Text> */}
+          <Text>
+            Number of Republican Congressional Districts:{' '}
+            {numRepublicanCongressionalDistricts}
+          </Text>
         </PopoverBody>
       </PopoverContent>
     </Popover>
   );
 };
 
-const DistrictingCard = ({ property, popMeasure, onSelect, loading }) => {
-  const absoluteDifferenceInPopulation =
-    property[`${popMeasure.toLowerCase()}AbsoluteDifferenceInPopulation`];
-  const efficiencyGap = property[`${popMeasure.toLowerCase()}EfficiencyGap`];
-  const numOpportunityDistricts =
-    property[`${popMeasure.toLowerCase()}NumOpportunityDistricts`];
-  const objectiveFunctionScore =
-    property[`${popMeasure.toLowerCase()}ObjectiveFunctionScore`];
+const DistrictingCard = ({
+  property,
+  popMeasure,
+  onSelect,
+  districtNumberLoading,
+  loading,
+}) => {
   const populationScore =
     property[`${popMeasure.toLowerCase()}PopulationScore`];
+  const {
+    redistrictNumber,
+    efficiencyGap,
+    numDemocraticCongressionalDistricts,
+    numRepublicanCongressionalDistricts,
+  } = property;
 
   return (
     <Box
@@ -79,15 +100,18 @@ const DistrictingCard = ({ property, popMeasure, onSelect, loading }) => {
     >
       <Image src={property.imageUrl} alt={property.imageAlt}></Image>
       <Box p={3}>
+        {/* <Text>District Number: {redistrictNumber} </Text> */}
+        <Text>Population Score: {populationScore.toFixed(4)}%</Text>
+        {/* <Text>Efficiency Gap Measure: {efficiencyGap}</Text>
         <Text>
-          Absolute Difference in Population: {absoluteDifferenceInPopulation}
+          Number of Democratic Congressional Districts:{' '}
+          {numDemocraticCongressionalDistricts}
         </Text>
-        <Text>Number of Opportunity Districts: {numOpportunityDistricts}</Text>
-        <Text>Mattingly Population Score: {populationScore}</Text>
-        <Text>Efficiency Gap Measure: {efficiencyGap}</Text>
-        <Text>Objective Function Score: {objectiveFunctionScore}</Text>
+        <Text>
+          Number of Republican Congressional Districts:{' '}
+          {numRepublicanCongressionalDistricts}
+        </Text> */}
       </Box>
-
       <Box p={2}>
         <Box
           color='gray.500'
@@ -97,8 +121,10 @@ const DistrictingCard = ({ property, popMeasure, onSelect, loading }) => {
           textTransform='uppercase'
           ml='1'
         >
-          {property.numCongressionalDistricts} Congressional Districts &bull;{' '}
-          {/* {property.votingDistricts.toLocaleString()} Voting */}
+          {/* {property.numDemocraticCongressionalDistricts} Democratic
+          Congressional Districts &bull;{' '}
+          {property.numRepublicanCongressionalDistricts.toLocaleString()}{' '}
+          Republican Congressional Districts */}
         </Box>
         <Box
           mt='1'
@@ -122,7 +148,8 @@ const DistrictingCard = ({ property, popMeasure, onSelect, loading }) => {
             <Button
               colorScheme='green'
               onClick={() => onSelect(property.redistrictNumber)}
-              isLoading={loading}
+              isLoading={districtNumberLoading === property.redistrictNumber}
+              disabled={loading}
             >
               Use!
             </Button>

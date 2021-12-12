@@ -1,7 +1,18 @@
 import Chart from 'react-apexcharts';
+import ReactLoading from 'react-loading';
 
-const BoxAndWhiskerPlot = ({ data }) => {
+const BoxAndWhiskerPlot = ({ data, loading }) => {
   console.log(data);
+  data.series.forEach((d) => {
+    d.data.forEach((p) => {
+      p.x = Math.round(p.x);
+      if (Array.isArray(p.y)) {
+        p.y = p.y.map((num) => Math.round(num));
+      } else {
+        p.y = Math.round(p.y);
+      }
+    });
+  });
   const series = [
     {
       name: 'box',
@@ -76,8 +87,8 @@ const BoxAndWhiskerPlot = ({ data }) => {
     },
   };
 
-  if (!data) {
-    return null;
+  if (!data || loading) {
+    return <ReactLoading type='bubbles' color='black' />;
   }
   return (
     <Chart options={options} series={data.series} type='boxPlot' height={350} />

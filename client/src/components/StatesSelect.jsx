@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react';
-import { Select } from '@chakra-ui/react';
+import { Text, Select } from '@chakra-ui/react';
 import states from '../constants/states';
 import { bounds } from '../constants/map';
 
@@ -20,17 +20,24 @@ const StateSelect = ({ map, selectedState, onSelect }) => {
   );
 
   return (
-    <Select
-      placeholder='Select state'
-      value={selectedState}
-      onChange={(e) => handleStateSelect(e.target.value)}
-    >
-      {states.map((state) => (
-        <option key={state.name} value={state.name}>
-          {state.name}
-        </option>
-      ))}
-    </Select>
+    <>
+      <Text display='flex' alignItems='center' fontWeight={700}>
+        State
+      </Text>
+      <Select
+        placeholder='Select state'
+        value={selectedState}
+        onChange={(e) => handleStateSelect(e.target.value)}
+        marginInlineStart={10}
+        width='15%'
+      >
+        {states.map((state) => (
+          <option key={state.name} value={state.name}>
+            {state.name}
+          </option>
+        ))}
+      </Select>
+    </>
   );
 };
 
