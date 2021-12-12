@@ -233,21 +233,17 @@ const RunAlgorithm = ({
                   <Tr>
                     <Td>Population Score Before Algorithm</Td>
                     <Td>
-                      {`${(
-                        currentDistrictingStatistics[
-                          `${popMeasure.toLowerCase()}PopulationScore`
-                        ] * 100
-                      ).toFixed(4)}%`}
+                      {`${currentDistrictingStatistics[
+                        `${popMeasure.toLowerCase()}PopulationScore`
+                      ].toFixed(4)}%`}
                     </Td>
                   </Tr>
                   <Tr>
                     <Td>Current Population Score</Td>
                     <Td>
-                      {`${(
-                        algorithmSummary.currentDistrictingStatisticsRes[
-                          `${popMeasure.toLowerCase()}PopulationScore`
-                        ] * 100
-                      ).toFixed(4)}%`}
+                      {`${algorithmSummary.currentDistrictingStatisticsRes[
+                        `${popMeasure.toLowerCase()}PopulationScore`
+                      ].toFixed(4)}%`}
                     </Td>
                   </Tr>
                 </Tbody>

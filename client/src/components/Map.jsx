@@ -8,6 +8,7 @@ import {
   Pane,
 } from 'react-leaflet';
 import {
+  Box,
   Select,
   Modal,
   ModalOverlay,
@@ -77,6 +78,7 @@ function style(feature) {
 const Map = () => {
   const [map, setMap] = useState(null);
   const [selectedState, setSelectedState, selectedStateRef] = useStateRef();
+  const [stateLoading, setStateLoading] = useState(false);
   const [popMeasure, setPopMeasure] = useState('TOTAL');
   const [districtings, setDistrictings] = useState([]);
   const [
@@ -135,18 +137,16 @@ const Map = () => {
       // setSelected({});
       e.target.setStyle(style(e.target.feature));
     };
-    const zoomToFeature = (e) => {
+    const zoomToFeature = async (e) => {
       console.log('TARGET FEATURE', e.target);
       const { NAME } = e.target.feature.properties;
       if (NAME !== selectedStateRef.current) {
+        await handleSelectState(NAME);
         setLeftSidebarExpanded(true);
         setRightSidebarExpanded(true);
-        setActiveGeoJSON(null);
-        handleSelectState(NAME);
+        map.fitBounds(e.target.getBounds());
         // setSelectedState(NAME);
       }
-
-      map.fitBounds(e.target.getBounds());
     };
 
     const onEachFeature = (feature, layer) => {
@@ -255,6 +255,8 @@ const Map = () => {
 
   const handleSelectState = async (stateName) => {
     try {
+      await handleReset();
+      setStateLoading(true);
       await apiCaller.post(`/state/select?stateName=${stateName}`);
       const res = await apiCaller.get('/state/population', {
         params: {
@@ -277,6 +279,7 @@ const Map = () => {
       );
       setActiveGeoJSON(enactedDistrictingRes.data);
       setDistrictings(allDistrictingPlanStatisticsRes.data);
+      setStateLoading(false);
     } catch (e) {
       console.log(e);
     }
@@ -472,7 +475,8 @@ const Map = () => {
           popMeasure={popMeasure}
           setPopMeasure={handlePopMeasureChange}
           onReset={handleReset}
-          onSelect={(state) => {
+          onSelect={async (state) => {
+            await handleSelectState(state);
             if (state) {
               setLeftSidebarExpanded(true);
               setRightSidebarExpanded(true);
@@ -480,7 +484,6 @@ const Map = () => {
               setLeftSidebarExpanded(false);
               setRightSidebarExpanded(false);
             }
-            handleSelectState(state);
             // setActiveGeoJSON(null);
             // setSelectedState(state);
           }}
@@ -525,7 +528,26 @@ const Map = () => {
           </Sidebar>
         ) : null}
 
-        {displayMap}
+        <Box position='relative'>
+          {stateLoading && (
+            <Box
+              position='absolute'
+              w='100vw'
+              h='100vh'
+              bgColor='rgba(51,50,48,0.6)'
+              zIndex={9999}
+              justifyContent='center'
+              alignItems='center'
+              display='flex'
+            >
+              <Box>
+                <ReactLoading />
+              </Box>
+            </Box>
+          )}
+
+          <Box>{displayMap}</Box>
+        </Box>
         <Modal
           isOpen={boxAndWhiskerPlotOpen}
           onClose={() => setBoxAndWhiskerPlotOpen(false)}

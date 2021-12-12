@@ -5,11 +5,11 @@ import { bounds } from '../constants/map';
 
 const StateSelect = ({ map, selectedState, onSelect }) => {
   const handleStateSelect = useCallback(
-    (stateName) => {
+    async (stateName) => {
       const state = states.find((state) => state.name === stateName);
       console.log('stateName', stateName);
       console.log('state', state);
-      onSelect(stateName);
+      await onSelect(stateName);
       if (state) {
         map.fitBounds(state.bounds);
       } else {
