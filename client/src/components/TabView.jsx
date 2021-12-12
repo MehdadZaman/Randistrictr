@@ -20,6 +20,7 @@ const TabView = ({
   districtings,
   activeGeoJSON,
   selectedState,
+  districtingPlanStatistics,
   popMeasure,
   isDistrictSelected,
   onSelect,
@@ -108,13 +109,14 @@ const TabView = ({
         h={450}
         position='relative'
       >
-        <Box position='absolute'>bruh</Box>
+        {/* <Box position='absolute'>Please s</Box> */}
         <Box>
           <Heading size='md'>Algorithm Panel</Heading>
           <RunAlgorithm
             onRun={onRun}
             onStop={onStop}
             popMeasure={popMeasure}
+            districtingPlanStatistics={districtingPlanStatistics}
             currentDistrictingStatistics={currentDistrictingStatistics}
             algorithmStarted={algorithmStarted}
             algorithmRunning={algorithmRunning}
@@ -125,45 +127,6 @@ const TabView = ({
         </Box>
       </Box>
     </Box>
-    // <Tabs index={tabIndex} onChange={(index) => setTabIndex(index)}>
-    //   <TabList>
-    //     {/* <Tab>Filter District</Tab> */}
-    //     <Tab>Select Districting Plan</Tab>
-    //     <Tab isDisabled={!isDistrictSelected}>Run Algorithm</Tab>
-    //   </TabList>
-    //   <TabPanels style={{ overflowY: 'auto', height: '100%' }}>
-    //     {/* <TabPanel>
-    //       <Heading size='md'>Filters for {selectedState} districts</Heading>
-    //       <FilterDistricts
-    //         onFilter={() => {
-    //           setCards(generateDummyCards(6));
-    //           setTabIndex(1);
-    //         }}
-    //       />
-    //     </TabPanel> */}
-    //     <TabPanel style={{ overflowY: 'hidden', height: '100%', padding: 5 }}>
-    //       <Heading size='md'>
-    //         {districtings.length} redistrictings generated
-    //       </Heading>
-    //       <DistrictingPreview
-    //         cards={districtings}
-    //         popMeasure={popMeasure}
-    //         onSelect={onSelect}
-    //         loading={loading}
-    //       />
-    //     </TabPanel>
-    //     <TabPanel>
-    //       <RunAlgorithm
-    //         onRun={onRun}
-    //         onStop={onStop}
-    //         algorithmStarted={algorithmStarted}
-    //         algorithmRunning={algorithmRunning}
-    //         algorithmSummary={algorithmSummary}
-    //         checkStatus={checkStatus}
-    //       />
-    //     </TabPanel>
-    //   </TabPanels>
-    // </Tabs>
   );
 };
 

@@ -310,6 +310,7 @@ const Map = () => {
 
   const handleReset = async () => {
     await apiCaller.post('/state/reset');
+    // setBoundaryType(['districts']);
     setActiveGeoJSON(null);
     setLeftSidebarExpanded(false);
     setRightSidebarExpanded(false);
@@ -326,7 +327,7 @@ const Map = () => {
     try {
       setAlgorithmSummary(null);
       const currentDistrictingStatisticsRes = await apiCaller.get(
-        '/algorithm/getCurrentDistrictingStatistics'
+        '/state/districting/districtPlanStatistics'
       );
       setCurrentDistrictingStatistics(currentDistrictingStatisticsRes.data);
       const res = await apiCaller.post(
@@ -371,6 +372,7 @@ const Map = () => {
         const currentDistrictingStatisticsRes = await apiCaller.get(
           '/algorithm/getCurrentDistrictingStatistics'
         );
+        console.log('POPSCORE', currentDistrictingStatisticsRes.data);
         setAlgorithmSummary({
           numIterations: numIterationsRes.data,
           currentDistrictingStatisticsRes: currentDistrictingStatisticsRes.data,
@@ -502,6 +504,7 @@ const Map = () => {
                 onSelect={handleSelect}
                 onRun={handleRunAlgorithm}
                 onStop={handleStopAlgorithm}
+                districtingPlanStatistics={districtingPlanStatistics}
                 currentDistrictingStatistics={currentDistrictingStatistics}
                 algorithmStarted={algorithmStarted}
                 algorithmRunning={algorithmRunning}

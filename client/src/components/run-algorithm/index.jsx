@@ -32,6 +32,7 @@ const RunAlgorithm = ({
   onRun,
   onStop,
   popMeasure,
+  districtingPlanStatistics,
   currentDistrictingStatistics,
   algorithmStarted,
   algorithmRunning,
@@ -170,7 +171,7 @@ const RunAlgorithm = ({
       <div style={{ marginTop: 5, textAlign: 'center' }}>
         {!algorithmRunning ? (
           <>
-            {currentDistrictingStatistics ? (
+            {districtingPlanStatistics ? (
               <Button
                 isLoading={algorithmRunning}
                 colorScheme='blue'
