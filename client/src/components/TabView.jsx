@@ -100,19 +100,29 @@ const TabView = ({
           loading={loading}
         />
       </Box>
-      <Box backgroundColor='#f5fff5' borderRadius={10} mt={5} p={2} h={450}>
-        <Heading size='md'>Algorithm Panel</Heading>
-        <RunAlgorithm
-          onRun={onRun}
-          onStop={onStop}
-          popMeasure={popMeasure}
-          currentDistrictingStatistics={currentDistrictingStatistics}
-          algorithmStarted={algorithmStarted}
-          algorithmRunning={algorithmRunning}
-          algorithmSummary={algorithmSummary}
-          checkStatus={checkStatus}
-          showBoxAndWhiskerPlot={showBoxAndWhiskerPlot}
-        />
+      <Box
+        backgroundColor='#f5fff5'
+        borderRadius={10}
+        mt={5}
+        p={2}
+        h={450}
+        position='relative'
+      >
+        <Box position='absolute'>bruh</Box>
+        <Box>
+          <Heading size='md'>Algorithm Panel</Heading>
+          <RunAlgorithm
+            onRun={onRun}
+            onStop={onStop}
+            popMeasure={popMeasure}
+            currentDistrictingStatistics={currentDistrictingStatistics}
+            algorithmStarted={algorithmStarted}
+            algorithmRunning={algorithmRunning}
+            algorithmSummary={algorithmSummary}
+            checkStatus={checkStatus}
+            showBoxAndWhiskerPlot={showBoxAndWhiskerPlot}
+          />
+        </Box>
       </Box>
     </Box>
     // <Tabs index={tabIndex} onChange={(index) => setTabIndex(index)}>

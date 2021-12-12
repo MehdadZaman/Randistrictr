@@ -14,6 +14,7 @@ import {
   NumberIncrementStepper,
   NumberDecrementStepper,
   Progress,
+  Tooltip,
   Table,
   Thead,
   Tbody,
@@ -168,14 +169,24 @@ const RunAlgorithm = ({
       </div>
       <div style={{ marginTop: 5, textAlign: 'center' }}>
         {!algorithmRunning ? (
-          <Button
-            isLoading={algorithmRunning}
-            colorScheme='blue'
-            size='lg'
-            onClick={handleRun}
-          >
-            Run Algorithm
-          </Button>
+          <>
+            {currentDistrictingStatistics ? (
+              <Button
+                isLoading={algorithmRunning}
+                colorScheme='blue'
+                size='lg'
+                onClick={handleRun}
+              >
+                Run Algorithm
+              </Button>
+            ) : (
+              <Tooltip label='Please select districting in above panel first!'>
+                <Button colorScheme='blue' size='lg' disabled={true}>
+                  Run Algorithm
+                </Button>
+              </Tooltip>
+            )}
+          </>
         ) : (
           <Button colorScheme='red' size='lg' onClick={onStop}>
             Stop Algorithm

@@ -59,13 +59,13 @@ const DistrictingCardPopover = ({
         <PopoverCloseButton />
         <PopoverBody fontSize='sm'>
           <Text>Population Score: {populationScore.toFixed(4)}%</Text>
-          <Text>Efficiency Gap Measure: {efficiencyGap}</Text>
+          <Text>Efficiency Gap Measure: {efficiencyGap.toFixed(4)}</Text>
           <Text>
-            Number of Democratic Congressional Districts:{' '}
+            # of Democratic Congressional Districts:{' '}
             {numDemocraticCongressionalDistricts}
           </Text>
           <Text>
-            Number of Republican Congressional Districts:{' '}
+            # of Republican Congressional Districts:{' '}
             {numRepublicanCongressionalDistricts}
           </Text>
         </PopoverBody>

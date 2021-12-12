@@ -57,7 +57,7 @@ public class StateSelectorController {
         return districtService.getDistrictingPlanStatistics();
     }
 
-    @GetMapping("/reset")
+    @PostMapping("/reset")
     public void resetState() {
         districtService.resetState();
     }

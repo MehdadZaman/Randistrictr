@@ -285,6 +285,9 @@ const Map = () => {
   const handleSelect = async (redistrictNumber) => {
     try {
       console.log(redistrictNumber);
+      setAlgorithmStarted(false);
+      setAlgorithmSummary(null);
+      setDistrictingPlanStatistics(null);
       setLoading(true);
       setDistrictNumberLoading(redistrictNumber);
       const res = await apiCaller.get('/state/districting', {
@@ -297,6 +300,7 @@ const Map = () => {
       setDistrictNumberLoading(null);
       setLoading(false);
       setDistrictingPlanStatistics(districtPlanStatsRes.data);
+      setActiveGeoJSON(null);
       setActiveGeoJSON(res.data);
       setRightSidebarExpanded(true);
     } catch (e) {
@@ -304,7 +308,8 @@ const Map = () => {
     }
   };
 
-  const handleReset = () => {
+  const handleReset = async () => {
+    await apiCaller.post('/state/reset');
     setActiveGeoJSON(null);
     setLeftSidebarExpanded(false);
     setRightSidebarExpanded(false);
@@ -356,6 +361,7 @@ const Map = () => {
         '/algorithm/getCurrentDistrictingPlan',
         { timeout: 600000 }
       );
+      setActiveGeoJSON(null);
       setActiveGeoJSON(currentDistrictingPlanRes.data);
     } else {
       try {
