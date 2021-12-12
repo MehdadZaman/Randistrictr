@@ -2,16 +2,21 @@ import argparse
 from src.GerrymanderingMCMC import GerrymanderingMCMC
 from mpi4py import MPI
 
-default_file = "./src/data/marylandGerrymandering.json"
+default_file = "./src/data/utahGerrymandering.json"
 default_output = "output"
 
 def makeDistrictings(mcmc, rounds, output_dir):
     comm = MPI.COMM_WORLD
-    rank = comm.Get_rank()
-    size = comm.Get_size()
+    rank = comm.Get_rank()  # rank represents specific process number
+    size = comm.Get_size()  # number of total processes
 
+    """
+    divide the rounds to be calculated by the number of nodes, for example:
+    110 rounds divided by 20 processes means,
+    5 rounds per process, with 10 rounds remaining,
+    10 processes need to pick up an additional round, process numbers 0-9 will do so
+    """
     remaining = 1 if rank < rounds % size else 0
-
     mcmc.generate_alternative_plans(int(rounds / size) + remaining, rank, output_dir)
 
 def main():

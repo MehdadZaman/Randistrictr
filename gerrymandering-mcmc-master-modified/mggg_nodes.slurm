@@ -22,7 +22,7 @@ pip install mpi4py
 mkdir output
 
 # -np 336 -c 5000 -r 100
-mpirun -np 1 python cli.py -g ./src/data/marylandGerrymandering.json -c 1 -r 10
+mpirun -np 1 python cli.py -g ./src/data/utahGerrymandering.json -c 0 -r 1
 python BoxWhiskerGenerator.py
 conda deactivate
 

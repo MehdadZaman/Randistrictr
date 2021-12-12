@@ -69,20 +69,16 @@ class BoxWhiskerGenerator:
         generate the min, 25th, 50th, 75th, and max that makes up a box plot.
         This is done for each district in districting plan.
         """
-        # TODO: Maryland has 8 districts, change for other states
+        # TODO: Utah has 4 districts, change for other states
         box_whisker_dataframe = pd.DataFrame({
             0: [sorted_districts[0] for sorted_districts in agg_list],
             1: [sorted_districts[1] for sorted_districts in agg_list],
             2: [sorted_districts[2] for sorted_districts in agg_list],
-            3: [sorted_districts[3] for sorted_districts in agg_list],
-            4: [sorted_districts[4] for sorted_districts in agg_list],
-            5: [sorted_districts[5] for sorted_districts in agg_list],
-            6: [sorted_districts[6] for sorted_districts in agg_list],
-            7: [sorted_districts[7] for sorted_districts in agg_list]
+            3: [sorted_districts[3] for sorted_districts in agg_list]
         })
         # indexed by position in list i.e. 0th index represents 1st box plot in box whisker plot
         box_whisker_data = []
-        for index in range(8):
+        for index in range(4):
             box_plot_data = [int(box_whisker_dataframe[index].min()),
                              int(box_whisker_dataframe[index].quantile(0.25)),
                              int(box_whisker_dataframe[index].quantile(0.5)),
