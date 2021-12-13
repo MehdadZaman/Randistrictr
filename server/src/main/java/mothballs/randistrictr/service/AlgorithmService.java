@@ -30,7 +30,7 @@ public class AlgorithmService {
 
     @Async
     public void startImprovedDistrictingPlanAlgorithm(double maxPopDiff) {
-        this.currentDistrictingPlanStatistics = districtService.getCurrentDistrictingPlan().getDistrictingPlanStatistics();
+        this.currentDistrictingPlanStatistics = districtService.getCurrentDistrictingPlan().getDistrictingPlanStatistics().deepClone();
         runAlgorithm(maxPopDiff, districtService.getPopulationMeasure());
     }
 
@@ -73,36 +73,39 @@ public class AlgorithmService {
             if(censusBlockToMove == null) continue;
             currentDistrictingPlan.makeMove(censusBlockToMove);
             DistrictingPlanStatistics oldDistrictingPlanStatistics = currentDistrictingPlan.getDistrictingPlanStatistics().deepClone();
+            this.currentDistrictingPlanStatistics = oldDistrictingPlanStatistics.deepClone();
 
             currentDistrictingPlan.recalculateMeasures();
 
             //Updating current districting Plan Statistics
             if(districtService.getPopulationMeasure() == PopulationMeasure.TOTAL && currentDistrictingPlan.getDistrictingPlanStatistics().getTotalPopulationScore() < oldDistrictingPlanStatistics.getTotalPopulationScore()) {
-                this.currentDistrictingPlanStatistics = currentDistrictingPlan.getDistrictingPlanStatistics();
+                this.currentDistrictingPlanStatistics = currentDistrictingPlan.getDistrictingPlanStatistics().deepClone();
             }
             else if(districtService.getPopulationMeasure() == PopulationMeasure.CVAP && currentDistrictingPlan.getDistrictingPlanStatistics().getCvapPopulationScore() < oldDistrictingPlanStatistics.getCvapPopulationScore()) {
-                this.currentDistrictingPlanStatistics = currentDistrictingPlan.getDistrictingPlanStatistics();
+                this.currentDistrictingPlanStatistics = currentDistrictingPlan.getDistrictingPlanStatistics().deepClone();
             }
             else if(districtService.getPopulationMeasure() == PopulationMeasure.VAP && currentDistrictingPlan.getDistrictingPlanStatistics().getVapPopulationScore() < oldDistrictingPlanStatistics.getVapPopulationScore()) {
-                this.currentDistrictingPlanStatistics = currentDistrictingPlan.getDistrictingPlanStatistics();
+                this.currentDistrictingPlanStatistics = currentDistrictingPlan.getDistrictingPlanStatistics().deepClone();
             }
 
             if (!isValidMove(oldDistrictingPlanStatistics, currentDistrictingPlan.getDistrictingPlanStatistics())) {
                 currentDistrictingPlan.makeMove(censusBlockToMove);
-                currentDistrictingPlan.setDistrictingPlanStatistics(oldDistrictingPlanStatistics);
+                currentDistrictingPlan.setDistrictingPlanStatistics(oldDistrictingPlanStatistics.deepClone());
+                this.currentDistrictingPlanStatistics = oldDistrictingPlanStatistics.deepClone();
             }
             else {
+                this.currentDistrictingPlanStatistics = currentDistrictingPlan.getDistrictingPlanStatistics().deepClone();
                 censusBlocksMoved.add(censusBlockToMove);
             }
         }
 
         // Printing out moved censusblocks
         System.out.println(censusBlocksMoved.size());
-        for(CensusBlock censusBlock : censusBlocksMoved) {
-            System.out.println(censusBlock.getGeoID20());
-            System.out.println("BEFORE: " + censusBlock.getAdjacentCongressionalDistrict());
-            System.out.println("AFTER: " + censusBlock.getCongressionalDistrict());
-        }
+//        for(CensusBlock censusBlock : censusBlocksMoved) {
+//            System.out.println(censusBlock.getGeoID20());
+//            System.out.println("BEFORE: " + censusBlock.getAdjacentCongressionalDistrict());
+//            System.out.println("AFTER: " + censusBlock.getCongressionalDistrict());
+//        }
     }
 
     private boolean isValidMove(DistrictingPlanStatistics originalDistrictingPlanStatistics, DistrictingPlanStatistics updatedDistrictingPlanStatistics) {
