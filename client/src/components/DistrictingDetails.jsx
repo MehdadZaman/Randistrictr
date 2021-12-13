@@ -277,8 +277,8 @@ const DistrictingDetails = ({
         <Tbody>
           <Tr>
             <Td>Efficiency Gap Measure</Td>
-            <Td>{efficiencyGap.toFixed(4)}%</Td>
-            <Td>{enactedEfficiencyGap.toFixed(4)}%</Td>
+            <Td>{(efficiencyGap * 100).toFixed(4)}%</Td>
+            <Td>{(enactedEfficiencyGap * 100).toFixed(4)}%</Td>
           </Tr>
           <Tr>
             <Td>Population Score</Td>

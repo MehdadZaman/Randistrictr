@@ -335,7 +335,7 @@ const Map = () => {
       );
       setCurrentDistrictingStatistics(currentDistrictingStatisticsRes.data);
       const res = await apiCaller.post(
-        `/algorithm/run?maxPopDiff=${parseFloat(maxPopDiff)}`
+        `/algorithm/run?maxPopDiff=${parseFloat(maxPopDiff / 100)}`
       );
       if (res.data === 'Success') {
         // Start timer to check server algorithm status periodically
@@ -406,10 +406,16 @@ const Map = () => {
     }
   };
 
+  const populationMeasures = {
+    TOTAL: 0,
+    VAP: 1,
+    CVAP: 2,
+  };
+
   const handlePopMeasureChange = async (popMeasure) => {
     setPopMeasure(popMeasure);
     await apiCaller.post(
-      `/state/setPopulationMeasure?populationMeasure=${popMeasure}`
+      `/state/setPopulationMeasure?populationMeasure=${populationMeasures[popMeasure]}`
     );
   };
 

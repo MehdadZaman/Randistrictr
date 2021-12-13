@@ -43,7 +43,7 @@ const RunAlgorithm = ({
   const [[minOpportunity, maxOpportunity], setOpportunity] = useState([0, 3]);
   const [minThreshold, setMinThreshold] = useState(50);
   const [minPopulationScore, setMinPopulationScore] = useState(75);
-  const [maxPopDiff, setMaxPopDiff] = useState(0.3);
+  const [maxPopDiff, setMaxPopDiff] = useState(0);
   const [maxEffGap, setMaxEffGap] = useState(0.5);
   const [minPolsbyPopper, setMinPolsbyPopper] = useState(0.5);
   const [numIterations, setNumIterations] = useState(10);
@@ -212,11 +212,11 @@ const RunAlgorithm = ({
                     <Td>Estimated Time Left</Td>
                     <Td>
                       {numberWithCommas(
-                        (
+                        Math.abs(
                           ((timeLeftRunning /
                             (algorithmSummary.numIterations / 1000)) *
                             (10000 - algorithmSummary.numIterations / 1000)) /
-                          10000
+                            10000
                         ).toFixed(0)
                       )}{' '}
                       seconds left
