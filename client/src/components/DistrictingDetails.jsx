@@ -282,19 +282,19 @@ const DistrictingDetails = ({
           </Tr>
           <Tr>
             <Td>Population Score</Td>
-            <Td>{populationScore.toFixed(4)}%</Td>
-            <Td>{enactedPopulationScore.toFixed(4)}%</Td>
+            <Td>{(populationScore * 100).toFixed(4)}%</Td>
+            <Td>{(enactedPopulationScore * 100).toFixed(4)}%</Td>
           </Tr>
           <Tr>
             <Td># of Democratic Congressional Districts</Td>
             <Td>{numberWithCommas(numDemocraticCongressionalDistricts)}</Td>
-            <Td>{numberWithCommas(numRepublicanCongressionalDistricts)}</Td>
-          </Tr>
-          <Tr>
-            <Td># of Republican Congressional Districts</Td>
             <Td>
               {numberWithCommas(enactedNumDemocraticCongressionalDistricts)}
             </Td>
+          </Tr>
+          <Tr>
+            <Td># of Republican Congressional Districts</Td>
+            <Td>{numberWithCommas(numRepublicanCongressionalDistricts)}</Td>
             <Td>
               {numberWithCommas(enactedNumRepublicanCongressionalDistricts)}
             </Td>

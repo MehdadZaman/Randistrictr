@@ -314,6 +314,7 @@ const Map = () => {
   const handleReset = async () => {
     await apiCaller.post('/state/reset');
     // setBoundaryType(['districts']);
+    setStateLoading(false);
     setActiveGeoJSON(null);
     setLeftSidebarExpanded(false);
     setRightSidebarExpanded(false);
