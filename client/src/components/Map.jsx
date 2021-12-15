@@ -17,6 +17,9 @@ import {
   ModalFooter,
   ModalBody,
   ModalCloseButton,
+  Spinner,
+  Text,
+  useToast,
 } from '@chakra-ui/react';
 import { center, zoom, bounds } from '../constants/map';
 // Components
@@ -104,6 +107,9 @@ const Map = () => {
     useState(null);
   const [statePopulation, setStatePopulation] = useState(null);
   const [boundaryType, setBoundaryType] = useState(['districts']);
+  const [algorithmResultLoading, setAlgorithmResultLoading] = useState(false);
+
+  const toast = useToast();
 
   const displayMap = useMemo(() => {
     let mapRef;
@@ -362,12 +368,29 @@ const Map = () => {
         numIterations: numIterationsRes.data,
         currentDistrictingStatisticsRes: currentDistrictingStatisticsRes.data,
       });
+      setAlgorithmResultLoading(true);
+      toast({
+        position: 'bottom',
+        duration: null,
+        render: () => (
+          <Box color='white' p={3} bg='blue.500' display='flex'>
+            <Spinner />
+            <Text pl={2}>Algorithm result GeoJSON loading onto map</Text>
+          </Box>
+        ),
+      });
       const currentDistrictingPlanRes = await apiCaller.get(
         '/algorithm/getCurrentDistrictingPlan',
         { timeout: 600000 }
       );
+      toast.closeAll();
+      setAlgorithmResultLoading(false);
       setActiveGeoJSON(null);
       setActiveGeoJSON(currentDistrictingPlanRes.data);
+      const districtPlanStatsRes = await apiCaller.get(
+        '/state/districting/districtPlanStatistics'
+      );
+      setDistrictingPlanStatistics(districtPlanStatsRes.data);
     } else {
       try {
         const numIterationsRes = await apiCaller.get(

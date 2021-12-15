@@ -209,7 +209,7 @@ const RunAlgorithm = ({
               <Table variant='simple'>
                 <Tbody>
                   <Tr>
-                    <Td>Estimated Time Left</Td>
+                    {/* <Td>Estimated Time Left</Td>
                     <Td>
                       {numberWithCommas(
                         Math.abs(
@@ -220,7 +220,7 @@ const RunAlgorithm = ({
                         ).toFixed(0)
                       )}{' '}
                       seconds left
-                    </Td>
+                    </Td> */}
                   </Tr>
                   <Tr>
                     <Td>Number of Iterations</Td>

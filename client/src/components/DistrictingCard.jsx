@@ -101,33 +101,8 @@ const DistrictingCard = ({
       w='100%'
     >
       <Image src={property.imageUrl} alt={property.imageAlt}></Image>
-      <Box p={3}>
-        {/* <Text>District Number: {redistrictNumber} </Text> */}
-        <Text>Population Score: {(populationScore * 100).toFixed(4)}%</Text>
-        {/* <Text>Efficiency Gap Measure: {efficiencyGap}</Text>
-        <Text>
-          Number of Democratic Congressional Districts:{' '}
-          {numDemocraticCongressionalDistricts}
-        </Text>
-        <Text>
-          Number of Republican Congressional Districts:{' '}
-          {numRepublicanCongressionalDistricts}
-        </Text> */}
-      </Box>
-      <Box p={2}>
-        <Box
-          color='gray.500'
-          fontWeight='semibold'
-          letterSpacing='wide'
-          fontSize='xs'
-          textTransform='uppercase'
-          ml='1'
-        >
-          {/* {property.numDemocraticCongressionalDistricts} Democratic
-          Congressional Districts &bull;{' '}
-          {property.numRepublicanCongressionalDistricts.toLocaleString()}{' '}
-          Republican Congressional Districts */}
-        </Box>
+
+      <Box px={2}>
         <Box
           mt='1'
           fontWeight='semibold'
@@ -137,13 +112,15 @@ const DistrictingCard = ({
         >
           Districting {property.redistrictNumber}
         </Box>
-        <Text size='sm'>{property.description}</Text>
+        <Box>
+          <Text>Population Score: {(populationScore * 100).toFixed(4)}%</Text>
+        </Box>
         <Box
-          pt='10'
           border='0'
           d='flex'
           alignItems='center'
           justifyContent='flex-end'
+          pt={1}
           pb={2}
         >
           <ButtonGroup size='sm'>
