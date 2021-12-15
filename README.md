@@ -1,13 +1,12 @@
 # Randistrictr
 
-Lawrence Lin, Kevin Chao, Mehdad Zaman, Gordon Zhong
+Lawrence Lin, Kevin Chao, Mehdad Zaman
 
 ## Technologies
 - [React](https://reactjs.org/)
 - [Tailwind CSS](https://tailwindcss.com/)
 - [React Leaflet](https://react-leaflet.js.org/)
-
-## Installation
+- [Spring](https://spring.io/)
 
 ### Client
 1. Clone the repository.
@@ -16,4 +15,3 @@ Lawrence Lin, Kevin Chao, Mehdad Zaman, Gordon Zhong
 4. `yarn start` to start the app.
 
 ### Server
-Coming soon
