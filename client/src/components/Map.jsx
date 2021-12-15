@@ -424,6 +424,28 @@ const Map = () => {
         currentDistrictingStatisticsRes: currentDistrictingStatisticsRes.data,
       });
       setAlgorithmRunning(false);
+      toast({
+        position: 'bottom',
+        duration: null,
+        render: () => (
+          <Box color='white' p={3} bg='blue.500' display='flex'>
+            <Spinner />
+            <Text pl={2}>Algorithm result GeoJSON loading onto map</Text>
+          </Box>
+        ),
+      });
+      const currentDistrictingPlanRes = await apiCaller.get(
+        '/algorithm/getCurrentDistrictingPlan',
+        { timeout: 600000 }
+      );
+      toast.closeAll();
+      setAlgorithmResultLoading(false);
+      setActiveGeoJSON(null);
+      setActiveGeoJSON(currentDistrictingPlanRes.data);
+      const districtPlanStatsRes = await apiCaller.get(
+        '/state/districting/districtPlanStatistics'
+      );
+      setDistrictingPlanStatistics(districtPlanStatsRes.data);
     } catch (e) {
       console.log(e);
     }
